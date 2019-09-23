@@ -11,9 +11,9 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
 SELECT DISTINCT ?s ?p
 WHERE {
-      ?s a dbo:MusicalArtist .
-      ?s dbo:birthPlace :Karlsruhe .
-      ?s ?p ?o .
+    ?s a dbo:MusicalArtist .
+    ?s dbo:birthPlace :Karlsruhe .
+    ?s ?p ?o .
 }
 ORDER BY ?s
 LIMIT 100
