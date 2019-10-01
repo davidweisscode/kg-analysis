@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 
 # data = open("simple-query.csv", "r")
 # next(data, None) # Skip csv header
-
 # G = nx.parse_edgelist(data, delimiter=",")
 
 G = nx.Graph()
@@ -24,7 +23,7 @@ else:
     V = bipartition_2
     U = bipartition_1
 
-G_S = nx.algorithms.bipartite.projection.weighted_projected_graph(G, V)
+G_S = nx.algorithms.bipartite.projection.weighted_projected_graph(G, U)
 
 N = G_S.number_of_nodes()
 E = G_S.number_of_edges()
@@ -35,22 +34,23 @@ for edge in list(G_S.edges.data("weight")):
             k_max = edge[2]
 print("k_max =", k_max)
 
-densitySum = 0
+G_1 = G_S.copy()
 
+densitySum = 0
 for k in range(1, k_max + 2):
     for edge in list(G_S.edges.data("weight")):
         if edge[2] < k:
             G_S.remove_edge(edge[0], edge[1])
-    print("Density @", k, "=", nx.classes.function.density(G_S))
+    print("Density @ k =", k, "=", nx.classes.function.density(G_S))
     densitySum += nx.classes.function.density(G_S)
 
 RC = (1 / k_max) * densitySum
-print("RC", RC)
+print("RC =", RC)
 
 # bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
 # nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=10, edge_color="grey")
 
-nx.draw_networkx(G_S, nx.circular_layout(G_S))
-nx.draw_networkx_edge_labels(G_S, nx.circular_layout(G_S))
+nx.draw_networkx(G_1, nx.circular_layout(G_1))
+nx.draw_networkx_edge_labels(G_1, nx.circular_layout(G_1))
 
 plt.show()
