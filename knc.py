@@ -13,6 +13,14 @@ G = nx.parse_edgelist(data, delimiter=",")
 #             (5, 9)]
 # G.add_edges_from(edgeList)
 
+coloring = nx.greedy_color(G)
+colorList = []
+for node in G.nodes():
+    if coloring[node] == 0:
+        colorList.append("red")
+    else:
+        colorList.append("green")
+
 bipartition_1, bipartition_2 = nx.bipartite.sets(G)
 if len(bipartition_1) > len(bipartition_2):
     U, V = bipartition_2, bipartition_1
@@ -62,24 +70,20 @@ print(knc_list_V)
 RC_V = (1 / k_max_V) * densitySum
 print("RC_V =", RC_V)
 
-bipartite_graph = plt.figure(1)
+plt.subplot(221, frameon=False)
 bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
-nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=10, edge_color="grey")
-bipartite_graph.show()
+nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=10, node_color=colorList, edge_color="grey")
 
-U_graph = plt.figure(2)
-nx.draw_networkx(G_U_1, nx.circular_layout(G_U_1), with_labels=True, edge_color="grey")
-# nx.draw_networkx_edge_labels(G_U_1, nx.circular_layout(G_U_1))
-U_graph.show()
+plt.subplot(223, frameon=False)
+nx.draw_networkx(G_U_1, nx.circular_layout(G_U_1), with_labels=True, node_color="red", edge_color="grey")
+nx.draw_networkx_edge_labels(G_U_1, nx.circular_layout(G_U_1))
 
-V_graph = plt.figure(3)
-nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, edge_color="grey")
+plt.subplot(224, frameon=False)
+nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, node_color="green", edge_color="grey")
 # nx.draw_networkx_edge_labels(G_V_1, nx.circular_layout(G_V_1))
-V_graph.show()
 
-knc_plot = plt.figure(4)
-plt.plot(*zip(*knc_list_U))
-plt.plot(*zip(*knc_list_V))
-knc_plot.show()
+plt.subplot(222, frameon=False)
+plt.plot(*zip(*knc_list_U), color="red")
+plt.plot(*zip(*knc_list_V), color="green")
 
 plt.show()
