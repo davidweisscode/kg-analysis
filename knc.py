@@ -13,13 +13,13 @@ G = nx.parse_edgelist(data, delimiter=",")
 #             (5, 9)]
 # G.add_edges_from(edgeList)
 
-coloring = nx.greedy_color(G)
+coloring = nx.greedy_color(G) # TODO: Throw error if not bipartite
 colorList = []
 for node in G.nodes():
     if coloring[node] == 0:
-        colorList.append("red")
+        colorList.append("#ff0000")
     else:
-        colorList.append("green")
+        colorList.append("#00ff00")
 
 bipartition_1, bipartition_2 = nx.bipartite.sets(G)
 if len(bipartition_1) > len(bipartition_2):
@@ -75,15 +75,17 @@ bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
 nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=10, node_color=colorList, edge_color="grey")
 
 plt.subplot(223, frameon=False)
-nx.draw_networkx(G_U_1, nx.circular_layout(G_U_1), with_labels=True, node_color="red", edge_color="grey")
+nx.draw_networkx(G_U_1, nx.circular_layout(G_U_1), with_labels=True, node_color="#ff0000", edge_color="grey")
 nx.draw_networkx_edge_labels(G_U_1, nx.circular_layout(G_U_1))
 
 plt.subplot(224, frameon=False)
-nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, node_color="green", edge_color="grey")
+nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, node_color="#00ff00", edge_color="grey")
 # nx.draw_networkx_edge_labels(G_V_1, nx.circular_layout(G_V_1))
 
 plt.subplot(222, frameon=False)
-plt.plot(*zip(*knc_list_U), color="red")
-plt.plot(*zip(*knc_list_V), color="green")
+# plt.plot(*zip(*knc_list_U), color="#ff0000")
+# plt.plot(*zip(*knc_list_V), color="#00ff00")
+plt.bar(list(zip(*knc_list_U))[0], list(zip(*knc_list_U))[1], width=-1/k_max_U, align="edge", color="#ff0000aa", edgecolor="#ff000055")
+plt.bar(list(zip(*knc_list_V))[0], list(zip(*knc_list_V))[1], width=-1/k_max_V, align="edge", color="#00ff00aa", edgecolor="#00ff0055")
 
 plt.show()
