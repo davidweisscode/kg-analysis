@@ -3,6 +3,9 @@
 import sys
 import networkx as nx
 import matplotlib.pyplot as plt
+import time
+
+start_time = time.time()
 
 CL_RED = "#e13232"
 CL_GREEN = "#32c832"
@@ -12,17 +15,17 @@ data = open(inputfile, "r")
 next(data, None)
 G = nx.parse_edgelist(data, delimiter=",")
 
+print("G connected:", nx.is_connected(G))
 print("G bipartite:", nx.bipartite.is_bipartite(G))
-print("G nodes:", list(G)) # TODO: Warum jeweils Space im Knoten- und Edgenamen?
-print("G edges:", list(G.edges()))
+# print("G nodes:", list(G))
+# print("G edges:", list(G.edges()))
 
-nx.draw_networkx(G)
-plt.show
-
+if not nx.is_connected(G):
+    sys.exit("Error: Input graph is not connected")
 if not nx.bipartite.is_bipartite(G):
     sys.exit("Error: Input graph is not bipartite")
 
-coloring = nx.greedy_color(G) # TODO: Throw error if not bipartite
+coloring = nx.greedy_color(G)
 colorList = []
 for node in G.nodes():
     if coloring[node] == 0:
@@ -79,22 +82,24 @@ print(knc_list_V)
 RC_V = (1 / k_max_V) * densitySum
 print("RC_V =", RC_V)
 
-# plt.subplot(221, frameon=False)
-# bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
-# nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=10, node_color=colorList, edge_color="grey")
+plt.subplot(221, frameon=False)
+bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
+nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=10, node_color=colorList, edge_color="grey")
 
-# plt.subplot(223, frameon=False)
-# nx.draw_networkx(G_U_1, nx.circular_layout(G_U_1), with_labels=True, node_color=CL_RED, edge_color="grey")
-# nx.draw_networkx_edge_labels(G_U_1, nx.circular_layout(G_U_1))
+plt.subplot(223, frameon=False)
+nx.draw_networkx(G_U_1, nx.circular_layout(G_U_1), with_labels=True, node_color=CL_RED, edge_color="grey")
+nx.draw_networkx_edge_labels(G_U_1, nx.circular_layout(G_U_1))
 
-# plt.subplot(224, frameon=False)
-# nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, node_color=CL_GREEN, edge_color="grey")
-# # nx.draw_networkx_edge_labels(G_V_1, nx.circular_layout(G_V_1))
+plt.subplot(224, frameon=False)
+nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, node_color=CL_GREEN, edge_color="grey")
+# nx.draw_networkx_edge_labels(G_V_1, nx.circular_layout(G_V_1))
 
-# plt.subplot(222, frameon=False)
-# # plt.plot(*zip(*knc_list_U), color="#ff0000")
-# # plt.plot(*zip(*knc_list_V), color="#00ff00")
-# plt.bar(list(zip(*knc_list_U))[0], list(zip(*knc_list_U))[1], width=-1/k_max_U, align="edge", color=CL_RED+"aa", edgecolor=CL_RED+"55")
-# plt.bar(list(zip(*knc_list_V))[0], list(zip(*knc_list_V))[1], width=-1/k_max_V, align="edge", color=CL_GREEN+"aa", edgecolor=CL_GREEN+"55")
+plt.subplot(222, frameon=False)
+# plt.plot(*zip(*knc_list_U), color="#ff0000")
+# plt.plot(*zip(*knc_list_V), color="#00ff00")
+plt.bar(list(zip(*knc_list_U))[0], list(zip(*knc_list_U))[1], width=-1/k_max_U, align="edge", color=CL_RED+"aa", edgecolor=CL_RED+"55")
+plt.bar(list(zip(*knc_list_V))[0], list(zip(*knc_list_V))[1], width=-1/k_max_V, align="edge", color=CL_GREEN+"aa", edgecolor=CL_GREEN+"55")
+
+print("Script execution time: %s seconds" % (time.time() - start_time))
 
 plt.show()
