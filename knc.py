@@ -18,8 +18,6 @@ G = nx.parse_edgelist(data, delimiter=",")
 
 print("G connected:", nx.is_connected(G))
 print("G bipartite:", nx.bipartite.is_bipartite(G))
-# print("G nodes:", list(G))
-# print("G edges:", list(G.edges()))
 
 if not nx.is_connected(G):
     sys.exit("Error: Input graph is not connected")
@@ -53,28 +51,24 @@ print("k_max_V =", k_max_V)
 G_U_1 = G_U.copy()
 G_V_1 = G_V.copy()
 
-print("\nKNC for U")
 densitySum = 0
 knc_list_U = []
 for k in range(1, k_max_U + 1):
     for edge in list(G_U.edges.data("weight")):
         if edge[2] < k:
             G_U.remove_edge(edge[0], edge[1])
-    # print("Density @ k:", k, "=", nx.classes.function.density(G_U))
     knc_list_U.append((k/k_max_U, nx.classes.function.density(G_U)))
     densitySum += nx.classes.function.density(G_U)
 
 RC_U = (1 / k_max_U) * densitySum
 print("RC_U =", RC_U)
 
-print("\nKNC for V")
 densitySum = 0
 knc_list_V = []
 for k in range(1, k_max_V + 1):
     for edge in list(G_V.edges.data("weight")):
         if edge[2] < k:
             G_V.remove_edge(edge[0], edge[1])
-    # print("Density @ k:", k, "=", nx.classes.function.density(G_V))
     knc_list_V.append((k/k_max_V, nx.classes.function.density(G_V)))
     densitySum += nx.classes.function.density(G_V)
 
@@ -91,7 +85,6 @@ nx.draw_networkx_edge_labels(G_U_1, nx.circular_layout(G_U_1), font_size=6)
 
 plt.subplot(324, frameon=False) # One mode network G_V
 nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, node_color=CL_GREEN, edge_color="grey")
-# nx.draw_networkx_edge_labels(G_V_1, nx.circular_layout(G_V_1))
 
 plt.subplot(322, frameon=False) # KNC plot
 # plt.plot(*zip(*knc_list_U), color="#ff0000")
@@ -109,6 +102,7 @@ plt.setp(ax_U.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor"
 plt.imshow(G_U_adj, interpolation='nearest', cmap=plt.cm.Reds)
 plt.colorbar()
 
+# np.set_printoptions(threshold=sys.maxsize)
 G_V_adj = nx.to_numpy_matrix(G_V_1)
 ax_V = plt.subplot(326, frameon=False) # Adjacency matrix G_V as heatmap
 ax_V.set_xticks(np.arange(len(G_V_1.nodes())))
@@ -119,6 +113,20 @@ plt.setp(ax_V.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor"
 plt.imshow(G_V_adj, interpolation='nearest', cmap=plt.cm.Greens)
 plt.colorbar()
 
-print("Script execution time: %s seconds" % (time.time() - start_time))
+pairs = []
+for row in range(0, k_max_U):
+    for col in range(row + 1, k_max_U):
+        pairs.append((G_V_adj.item(row, col), row, col))
+
+sorted_pairs = sorted(pairs, key=lambda x: x[0], reverse=True) # Use list[x] value as sort criterion
+
+for i in range(0, 700): # Print top 10 strongest pairs
+    pair = sorted_pairs[i]
+    print(i + 1, pair[0], list(G_V_1.nodes)[pair[1]], list(G_V_1.nodes)[pair[2]])
+
+# G_U_adj[np.tril_indices_from(G_U_adj, -1)] = 0 # Set lower triangle to zeros
+# top_pairs = np.unravel_index(np.argsort(G_U_adj.ravel())[-2:], G_U_adj.shape) # TODO: What is -2: doing?
+
+print("\nScript execution time: %s seconds" % (time.time() - start_time))
 
 plt.show()
