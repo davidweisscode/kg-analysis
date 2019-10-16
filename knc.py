@@ -14,7 +14,8 @@ CL_GREEN = "#32c832"
 inputfile = sys.argv[1]
 data = open(inputfile, "r")
 next(data, None)
-G = nx.parse_edgelist(data, delimiter=",")
+G = nx.parse_edgelist(data, delimiter=",", comments="mysupercomplicatedmarker")
+# TODO: Change the way a graph is build, From HDT file & query
 
 print("G connected:", nx.is_connected(G))
 print("G bipartite:", nx.bipartite.is_bipartite(G))
@@ -93,6 +94,7 @@ plt.bar(list(zip(*knc_list_U))[0], list(zip(*knc_list_U))[1], width=-1/k_max_U, 
 plt.bar(list(zip(*knc_list_V))[0], list(zip(*knc_list_V))[1], width=-1/k_max_V, align="edge", color=CL_GREEN+"aa", edgecolor=CL_GREEN+"55")
 
 G_U_adj = nx.to_numpy_matrix(G_U_1)
+G_U_adj[np.triu_indices_from(G_U_adj, 0)] = 0 # Set upper triangle to zeros
 ax_U = plt.subplot(325, frameon=False) # Adjacency matrix G_U as heatmap
 ax_U.set_xticks(np.arange(len(G_U_1.nodes()))) # TODO: Use only frequent properties
 ax_U.set_yticks(np.arange(len(G_U_1.nodes())))
@@ -102,8 +104,8 @@ plt.setp(ax_U.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor"
 plt.imshow(G_U_adj, interpolation='nearest', cmap=plt.cm.Reds)
 plt.colorbar()
 
-# np.set_printoptions(threshold=sys.maxsize)
 G_V_adj = nx.to_numpy_matrix(G_V_1)
+G_V_adj[np.triu_indices_from(G_V_adj, 0)] = 0 # Set upper triangle to zeros
 ax_V = plt.subplot(326, frameon=False) # Adjacency matrix G_V as heatmap
 ax_V.set_xticks(np.arange(len(G_V_1.nodes())))
 ax_V.set_yticks(np.arange(len(G_V_1.nodes())))
