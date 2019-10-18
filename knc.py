@@ -96,7 +96,7 @@ plt.bar(list(zip(*knc_list_V))[0], list(zip(*knc_list_V))[1], width=-1/k_max_V, 
 G_U_adj = nx.to_numpy_matrix(G_U_1)
 G_U_adj[np.triu_indices_from(G_U_adj, 0)] = 0 # Set upper triangle to zeros
 ax_U = plt.subplot(325, frameon=False) # Adjacency matrix G_U as heatmap
-ax_U.set_xticks(np.arange(len(G_U_1.nodes()))) # TODO: Use only frequent properties
+ax_U.set_xticks(np.arange(len(G_U_1.nodes())))
 ax_U.set_yticks(np.arange(len(G_U_1.nodes())))
 ax_U.set_xticklabels(G_U_1.nodes()) # TODO: Shorten node names, Only use from right side until first slash?
 ax_U.set_yticklabels(G_U_1.nodes())
@@ -109,8 +109,8 @@ G_V_adj[np.triu_indices_from(G_V_adj, 0)] = 0 # Set upper triangle to zeros
 ax_V = plt.subplot(326, frameon=False) # Adjacency matrix G_V as heatmap
 ax_V.set_xticks(np.arange(len(G_V_1.nodes())))
 ax_V.set_yticks(np.arange(len(G_V_1.nodes())))
-ax_V.set_xticklabels(G_V_1.nodes())
-ax_V.set_yticklabels(G_V_1.nodes())
+ax_V.set_xticklabels(G_V_1.nodes(), {"fontsize": 6})
+ax_V.set_yticklabels(G_V_1.nodes(), {"fontsize": 6})
 plt.setp(ax_V.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 plt.imshow(G_V_adj, interpolation='nearest', cmap=plt.cm.Greens)
 plt.colorbar()
@@ -127,7 +127,7 @@ for i in range(0, 700): # Print top 10 strongest pairs
     print(i + 1, pair[0], list(G_V_1.nodes)[pair[1]], list(G_V_1.nodes)[pair[2]])
 
 # G_U_adj[np.tril_indices_from(G_U_adj, -1)] = 0 # Set lower triangle to zeros
-# top_pairs = np.unravel_index(np.argsort(G_U_adj.ravel())[-2:], G_U_adj.shape) # TODO: What is -2: doing?
+# top_pairs = np.unravel_index(np.argsort(G_U_adj.ravel())[-2:], G_U_adj.shape) # TODO: What is -2: ?
 
 print("\nScript execution time: %s seconds" % (time.time() - start_time))
 
