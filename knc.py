@@ -15,6 +15,25 @@ DBO = "http://dbpedia.org/ontology/"
 DBR = "http://dbpedia.org/resource/"
 RED = "#e13232"
 GREEN = "#32c832"
+# Graph might be disconnected.
+BLACKLIST = [
+    # "http://dbpedia.org/ontology/wikiPageID",
+    # "http://dbpedia.org/ontology/wikiPageLength",
+    # "http://dbpedia.org/ontology/wikiPageWikiLink",
+    # "http://dbpedia.org/ontology/wikiPageRevisionID",
+    # "http://dbpedia.org/ontology/wikiPageOutDegree",
+    # "http://dbpedia.org/ontology/wikiPageExternalLink"
+    # "http://dbpedia.org/ontology/wikiPageWikiLinkText",
+    # "http://dbpedia.org/ontology/abstract",
+    # "http://dbpedia.org/property/wikiPageUsesTemplate",
+    # "http://dbpedia.org/property/name",
+    # "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+    # "http://purl.org/dc/terms/subject"
+]
+
+# Option 1: Mappings from dataset.join()
+# Option 2: Sequential querying with pyHDT
+# Option 3: https://github.com/comunica/comunica-actor-init-sparql-hdt
 
 # Query dataset
 inputfile = sys.argv[1]
@@ -25,26 +44,24 @@ musicians = []
 ka_musicians = []
 edge_list = []
 
-(triples, card) = dataset.search_triples("", RDF + "type", DBO + "MusicalArtist")
+(triples, card) = dataset.search_triples("", RDF + "type", DBO + "MusicalArtist", limit=5000)
 for triple in triples:
     musicians.append(triple[0])
 
-for musician in musicians:
-    (triples, card) = dataset.search_triples(musician, DBO + "birthPlace", DBR + "Karlsruhe")
-    for triple in triples:
-        ka_musicians.append(triple[0])
+# for musician in musicians:
+#     (triples, card) = dataset.search_triples(musician, DBO + "birthPlace", DBR + "Karlsruhe")
+#     for triple in triples:
+#         ka_musicians.append(triple[0])
 
-for ka_musician in ka_musicians:
-    (triples, card) = dataset.search_triples(ka_musician, "", "")
+for musician in musicians:
+    (triples, card) = dataset.search_triples(musician, "", "", limit=100)
     for triple in triples:
-        edge_list.append((triple[0], triple[1]))
+        if not triple[1] in BLACKLIST:
+            edge_list.append((triple[0], triple[1]))
 
 G.add_edges_from(edge_list)
 
 # Analyze dataset
-print("G connected:", nx.is_connected(G))
-print("G bipartite:", nx.bipartite.is_bipartite(G))
-
 if not nx.is_connected(G):
     sys.exit("Error: Input graph is not connected")
 if not nx.bipartite.is_bipartite(G):
@@ -59,15 +76,13 @@ for node in G.nodes():
         colorList.append(GREEN)
 
 bipartition_1, bipartition_2 = nx.bipartite.sets(G)
-if len(bipartition_1) > len(bipartition_2):
+if len(bipartition_1) < len(bipartition_2):
     U, V = bipartition_2, bipartition_1
 else:
     U, V = bipartition_1, bipartition_2
 
 G_U = nx.algorithms.bipartite.projection.weighted_projected_graph(G, U)
 G_V = nx.algorithms.bipartite.projection.weighted_projected_graph(G, V)
-
-# TODO: Set up a blacklist to ignore generic properties which are not class specific
 
 # Max k value of the one mode graph to have edges
 k_max_U = G_V.number_of_nodes()
@@ -101,44 +116,44 @@ for k in range(1, k_max_V + 1):
 RC_V = (1 / k_max_V) * densitySum
 print("RC_V =", RC_V, "\n")
 
-plt.subplot(321, frameon=False) # Bipartite graph G
-bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
-nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=6, node_color=colorList, edge_color="grey")
+# plt.subplot(111, frameon=False) # Bipartite graph G
+# bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
+# nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=6, node_color=colorList, edge_color="grey")
 
-plt.subplot(323, frameon=False) # One mode network G_U
-nx.draw_networkx(G_U_1, nx.circular_layout(G_U_1), with_labels=True, font_size=6, node_color=RED, edge_color="grey")
-nx.draw_networkx_edge_labels(G_U_1, nx.circular_layout(G_U_1), font_size=6)
+# plt.subplot(323, frameon=False) # One mode network G_U
+# nx.draw_networkx(G_U_1, nx.circular_layout(G_U_1), with_labels=True, font_size=6, node_color=RED, edge_color="grey")
+# nx.draw_networkx_edge_labels(G_U_1, nx.circular_layout(G_U_1), font_size=6)
 
-plt.subplot(324, frameon=False) # One mode network G_V
-nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, node_color=GREEN, edge_color="grey")
+# plt.subplot(324, frameon=False) # One mode network G_V
+# nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, node_color=GREEN, edge_color="grey")
 
-plt.subplot(322, frameon=False) # KNC plot
+plt.subplot(111, frameon=False) # KNC plot
 # plt.plot(*zip(*knc_list_U), color="#ff0000")
 # plt.plot(*zip(*knc_list_V), color="#00ff00")
 plt.bar(list(zip(*knc_list_U))[0], list(zip(*knc_list_U))[1], width=-1/k_max_U, align="edge", color=RED+"aa", edgecolor=RED+"55")
 plt.bar(list(zip(*knc_list_V))[0], list(zip(*knc_list_V))[1], width=-1/k_max_V, align="edge", color=GREEN+"aa", edgecolor=GREEN+"55")
 
-G_U_adj = nx.to_numpy_matrix(G_U_1)
-G_U_adj[np.triu_indices_from(G_U_adj, 0)] = 0 # Set upper triangle to zeros
-ax_U = plt.subplot(325, frameon=False) # Adjacency matrix G_U as heatmap
-ax_U.set_xticks(np.arange(len(G_U_1.nodes())))
-ax_U.set_yticks(np.arange(len(G_U_1.nodes())))
-ax_U.set_xticklabels(G_U_1.nodes()) # TODO: Shorten node names?
-ax_U.set_yticklabels(G_U_1.nodes())
-plt.setp(ax_U.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
-plt.imshow(G_U_adj, interpolation='nearest', cmap=plt.cm.Reds)
-plt.colorbar()
+# G_U_adj = nx.to_numpy_matrix(G_U_1)
+# G_U_adj[np.triu_indices_from(G_U_adj, 0)] = 0 # Set upper triangle to zeros
+# ax_U = plt.subplot(111, frameon=False) # Adjacency matrix G_U as heatmap
+# ax_U.set_xticks(np.arange(len(G_U_1.nodes())))
+# ax_U.set_yticks(np.arange(len(G_U_1.nodes())))
+# ax_U.set_xticklabels(G_U_1.nodes()) # TODO: Shorten node names?
+# ax_U.set_yticklabels(G_U_1.nodes())
+# plt.setp(ax_U.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+# plt.imshow(G_U_adj, interpolation='nearest', cmap=plt.cm.Reds)
+# plt.colorbar()
 
 G_V_adj = nx.to_numpy_matrix(G_V_1)
 G_V_adj[np.triu_indices_from(G_V_adj, 0)] = 0
-ax_V = plt.subplot(326, frameon=False) # Adjacency matrix G_V as heatmap
-ax_V.set_xticks(np.arange(len(G_V_1.nodes())))
-ax_V.set_yticks(np.arange(len(G_V_1.nodes())))
-ax_V.set_xticklabels(G_V_1.nodes(), {"fontsize": 6})
-ax_V.set_yticklabels(G_V_1.nodes(), {"fontsize": 6})
-plt.setp(ax_V.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
-plt.imshow(G_V_adj, interpolation='nearest', cmap=plt.cm.Greens)
-plt.colorbar()
+# ax_V = plt.subplot(111, frameon=False) # Adjacency matrix G_V as heatmap
+# ax_V.set_xticks(np.arange(len(G_V_1.nodes())))
+# ax_V.set_yticks(np.arange(len(G_V_1.nodes())))
+# ax_V.set_xticklabels(G_V_1.nodes(), {"fontsize": 6})
+# ax_V.set_yticklabels(G_V_1.nodes(), {"fontsize": 6})
+# plt.setp(ax_V.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+# plt.imshow(G_V_adj, interpolation='nearest', cmap=plt.cm.Greens)
+# plt.colorbar()
 
 pairs = []
 for row in range(0, k_max_U):
@@ -149,7 +164,7 @@ sorted_pairs = sorted(pairs, key=lambda x: x[2], reverse=True) # Use edge weight
 
 for i in range(0, 10): # Print strongest pairs
     pair = sorted_pairs[i]
-    print(i + 1, pair[2], list(G_V_1.nodes)[pair[0]], list(G_V_1.nodes)[pair[1]])
+    print(pair[2], list(G_V_1.nodes)[pair[0]], list(G_V_1.nodes)[pair[1]])
 
 print("\nScript execution time: %s seconds" % (time.time() - start_time))
 
