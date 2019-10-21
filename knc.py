@@ -142,17 +142,14 @@ plt.colorbar()
 
 pairs = []
 for row in range(0, k_max_U):
-    for col in range(row + 1, k_max_U):
-        pairs.append((G_V_adj.item(row, col), row, col))
+    for col in range(0, row):
+        pairs.append((row, col, G_V_adj.item(row, col)))
 
-sorted_pairs = sorted(pairs, key=lambda x: x[0], reverse=True) # Use pairs[0] as sort criterion
+sorted_pairs = sorted(pairs, key=lambda x: x[2], reverse=True) # Use edge weight as sorting criterion
 
 for i in range(0, 10): # Print strongest pairs
     pair = sorted_pairs[i]
-    print(i + 1, pair[0], list(G_V_1.nodes)[pair[1]], list(G_V_1.nodes)[pair[2]])
-
-# G_U_adj[np.tril_indices_from(G_U_adj, -1)] = 0 # Set lower triangle to zeros
-# top_pairs = np.unravel_index(np.argsort(G_U_adj.ravel())[-2:], G_U_adj.shape) # TODO: What is -2: ?
+    print(i + 1, pair[2], list(G_V_1.nodes)[pair[0]], list(G_V_1.nodes)[pair[1]])
 
 print("\nScript execution time: %s seconds" % (time.time() - start_time))
 
