@@ -17,25 +17,27 @@ RED = "#e13232"
 GREEN = "#32c832"
 # Graph might be disconnected.
 BLACKLIST = [
-    # "http://dbpedia.org/ontology/wikiPageID",
-    # "http://dbpedia.org/ontology/wikiPageLength",
-    # "http://dbpedia.org/ontology/wikiPageWikiLink",
-    # "http://dbpedia.org/ontology/wikiPageRevisionID",
-    # "http://dbpedia.org/ontology/wikiPageOutDegree",
-    # "http://dbpedia.org/ontology/wikiPageExternalLink"
-    # "http://dbpedia.org/ontology/wikiPageWikiLinkText",
-    # "http://dbpedia.org/ontology/abstract",
-    # "http://dbpedia.org/property/wikiPageUsesTemplate",
-    # "http://dbpedia.org/property/name",
-    # "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-    # "http://purl.org/dc/terms/subject"
+    "http://dbpedia.org/ontology/wikiPageID",
+    "http://dbpedia.org/ontology/wikiPageLength",
+    "http://dbpedia.org/ontology/wikiPageWikiLink",
+    "http://dbpedia.org/ontology/wikiPageRevisionID",
+    "http://dbpedia.org/ontology/wikiPageOutDegree",
+    "http://dbpedia.org/ontology/wikiPageExternalLink"
+    "http://dbpedia.org/ontology/wikiPageWikiLinkText",
+    "http://dbpedia.org/ontology/wikiPageWikiLinkText",
+    "http://dbpedia.org/ontology/wikiPageExternalLink",
+    "http://dbpedia.org/ontology/abstract",
+    "http://dbpedia.org/property/wikiPageUsesTemplate",
+    "http://dbpedia.org/property/name",
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+    "http://purl.org/dc/terms/subject",
 ]
 
+
+# Query dataset
 # Option 1: Mappings from dataset.join()
 # Option 2: Sequential querying with pyHDT
 # Option 3: https://github.com/comunica/comunica-actor-init-sparql-hdt
-
-# Query dataset
 inputfile = sys.argv[1]
 dataset = HDTDocument(inputfile)
 G = nx.Graph()
@@ -44,7 +46,7 @@ musicians = []
 ka_musicians = []
 edge_list = []
 
-(triples, card) = dataset.search_triples("", RDF + "type", DBO + "MusicalArtist", limit=5000)
+(triples, card) = dataset.search_triples("", RDF + "type", DBO + "Singer", limit=500)
 for triple in triples:
     musicians.append(triple[0])
 
@@ -54,7 +56,7 @@ for triple in triples:
 #         ka_musicians.append(triple[0])
 
 for musician in musicians:
-    (triples, card) = dataset.search_triples(musician, "", "", limit=100)
+    (triples, card) = dataset.search_triples(musician, "", "", limit=150)
     for triple in triples:
         if not triple[1] in BLACKLIST:
             edge_list.append((triple[0], triple[1]))
@@ -103,7 +105,7 @@ for k in range(1, k_max_U + 1):
     knc_list_U.append((k/k_max_U, nx.classes.function.density(G_U)))
     densitySum += nx.classes.function.density(G_U)
 RC_U = (1 / k_max_U) * densitySum
-print("RC_U =", RC_U)
+print("RC_U = %.4f" % RC_U)
 
 densitySum = 0
 knc_list_V = []
@@ -114,7 +116,7 @@ for k in range(1, k_max_V + 1):
     knc_list_V.append((k/k_max_V, nx.classes.function.density(G_V)))
     densitySum += nx.classes.function.density(G_V)
 RC_V = (1 / k_max_V) * densitySum
-print("RC_V =", RC_V, "\n")
+print("RC_V = %.4f" % RC_V, "\n")
 
 # plt.subplot(111, frameon=False) # Bipartite graph G
 # bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
@@ -166,6 +168,6 @@ for i in range(0, 10): # Print strongest pairs
     pair = sorted_pairs[i]
     print(pair[2], list(G_V_1.nodes)[pair[0]], list(G_V_1.nodes)[pair[1]])
 
-print("\nScript execution time: %s seconds" % (time.time() - start_time))
+print("\nScript execution time: %.3f seconds" % (time.time() - start_time))
 
 plt.show()
