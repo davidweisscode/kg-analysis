@@ -45,8 +45,8 @@ G = nx.Graph()
 musicians = []
 ka_musicians = []
 edge_list = []
-
-(triples, card) = dataset.search_triples("", RDF + "type", DBO + "Singer", limit=500)
+# http://mappings.dbpedia.org/server/ontology/classes/
+(triples, card) = dataset.search_triples("", RDF + "type", DBO + "Newspaper", limit=100)
 for triple in triples:
     musicians.append(triple[0])
 
@@ -56,7 +56,7 @@ for triple in triples:
 #         ka_musicians.append(triple[0])
 
 for musician in musicians:
-    (triples, card) = dataset.search_triples(musician, "", "", limit=150)
+    (triples, card) = dataset.search_triples(musician, "", "", limit=50)
     for triple in triples:
         if not triple[1] in BLACKLIST:
             edge_list.append((triple[0], triple[1]))
@@ -118,9 +118,9 @@ for k in range(1, k_max_V + 1):
 RC_V = (1 / k_max_V) * densitySum
 print("RC_V = %.4f" % RC_V, "\n")
 
-# plt.subplot(111, frameon=False) # Bipartite graph G
-# bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
-# nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=6, node_color=colorList, edge_color="grey")
+plt.subplot(321, frameon=False) # Bipartite graph G
+bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
+nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=6, node_color=colorList, edge_color="grey")
 
 # plt.subplot(323, frameon=False) # One mode network G_U
 # nx.draw_networkx(G_U_1, nx.circular_layout(G_U_1), with_labels=True, font_size=6, node_color=RED, edge_color="grey")
@@ -129,33 +129,33 @@ print("RC_V = %.4f" % RC_V, "\n")
 # plt.subplot(324, frameon=False) # One mode network G_V
 # nx.draw_networkx(G_V_1, nx.circular_layout(G_V_1), with_labels=False, node_color=GREEN, edge_color="grey")
 
-plt.subplot(111, frameon=False) # KNC plot
+plt.subplot(322, frameon=False) # KNC plot
 # plt.plot(*zip(*knc_list_U), color="#ff0000")
 # plt.plot(*zip(*knc_list_V), color="#00ff00")
 plt.bar(list(zip(*knc_list_U))[0], list(zip(*knc_list_U))[1], width=-1/k_max_U, align="edge", color=RED+"aa", edgecolor=RED+"55")
 plt.bar(list(zip(*knc_list_V))[0], list(zip(*knc_list_V))[1], width=-1/k_max_V, align="edge", color=GREEN+"aa", edgecolor=GREEN+"55")
 
-# G_U_adj = nx.to_numpy_matrix(G_U_1)
-# G_U_adj[np.triu_indices_from(G_U_adj, 0)] = 0 # Set upper triangle to zeros
-# ax_U = plt.subplot(111, frameon=False) # Adjacency matrix G_U as heatmap
-# ax_U.set_xticks(np.arange(len(G_U_1.nodes())))
-# ax_U.set_yticks(np.arange(len(G_U_1.nodes())))
-# ax_U.set_xticklabels(G_U_1.nodes()) # TODO: Shorten node names?
-# ax_U.set_yticklabels(G_U_1.nodes())
-# plt.setp(ax_U.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
-# plt.imshow(G_U_adj, interpolation='nearest', cmap=plt.cm.Reds)
-# plt.colorbar()
+G_U_adj = nx.to_numpy_matrix(G_U_1)
+G_U_adj[np.triu_indices_from(G_U_adj, 0)] = 0 # Set upper triangle to zeros
+ax_U = plt.subplot(325, frameon=False) # Adjacency matrix G_U as heatmap
+ax_U.set_xticks(np.arange(len(G_U_1.nodes())))
+ax_U.set_yticks(np.arange(len(G_U_1.nodes())))
+ax_U.set_xticklabels(G_U_1.nodes()) # TODO: Shorten node names?
+ax_U.set_yticklabels(G_U_1.nodes())
+plt.setp(ax_U.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+plt.imshow(G_U_adj, interpolation='nearest', cmap=plt.cm.Reds)
+plt.colorbar()
 
 G_V_adj = nx.to_numpy_matrix(G_V_1)
 G_V_adj[np.triu_indices_from(G_V_adj, 0)] = 0
-# ax_V = plt.subplot(111, frameon=False) # Adjacency matrix G_V as heatmap
-# ax_V.set_xticks(np.arange(len(G_V_1.nodes())))
-# ax_V.set_yticks(np.arange(len(G_V_1.nodes())))
-# ax_V.set_xticklabels(G_V_1.nodes(), {"fontsize": 6})
-# ax_V.set_yticklabels(G_V_1.nodes(), {"fontsize": 6})
-# plt.setp(ax_V.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
-# plt.imshow(G_V_adj, interpolation='nearest', cmap=plt.cm.Greens)
-# plt.colorbar()
+ax_V = plt.subplot(326, frameon=False) # Adjacency matrix G_V as heatmap
+ax_V.set_xticks(np.arange(len(G_V_1.nodes())))
+ax_V.set_yticks(np.arange(len(G_V_1.nodes())))
+ax_V.set_xticklabels(G_V_1.nodes(), {"fontsize": 6})
+ax_V.set_yticklabels(G_V_1.nodes(), {"fontsize": 6})
+plt.setp(ax_V.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+plt.imshow(G_V_adj, interpolation='nearest', cmap=plt.cm.Greens)
+plt.colorbar()
 
 pairs = []
 for row in range(0, k_max_U):
