@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import time
 import numpy as np
 from hdt import HDTDocument
+from rdflib import Graph, RDFS
+from tqdm import tqdm
 
 start_time = time.time()
 
@@ -41,6 +43,24 @@ BLACKLIST = [
 # Option 2: Sequential querying with pyHDT
 # Option 3: https://github.com/comunica/comunica-actor-init-sparql-hdt
 
+# Load Ontology
+ontology_fn = "/home/david/Downloads/dbpedia.owl"
+ontology = Graph().parse(ontology_fn)
+
+# Subclass query
+superclass = DBO + "Athlete"
+subclass_query = f"""
+SELECT ?subclass
+WHERE 
+{{
+    ?subclass <{str(RDFS['subClassOf'])}>* <{superclass}> .
+}}
+"""
+subclasses = [superclass]
+results = ontology.query(subclass_query)
+for result in results:
+    subclasses.append(str(result['subclass']))
+
 # Query dataset
 inputfile = sys.argv[1]
 dataset = HDTDocument(inputfile)
@@ -50,17 +70,18 @@ musicians = []
 ka_musicians = []
 edge_list = []
 
-(triples, card) = dataset.search_triples("", RDF + "type", DBO + "WrittenWork", limit=400)
-for triple in triples:
-    musicians.append(triple[0])
+for subclass in tqdm(subclasses):
+    (triples, card) = dataset.search_triples("", RDF + "type", subclass, limit=2)
+    for triple in triples:
+        musicians.append(triple[0])
 
 # for musician in musicians:
 #     (triples, card) = dataset.search_triples(musician, DBO + "birthPlace", DBR + "Karlsruhe")
 #     for triple in triples:
 #         ka_musicians.append(triple[0])
 
-for musician in musicians:
-    (triples, card) = dataset.search_triples(musician, "", "", limit=200)
+for musician in tqdm(musicians):
+    (triples, card) = dataset.search_triples(musician, "", "", limit=100)
     for triple in triples:
         if not triple[1] in BLACKLIST:
             edge_list.append((triple[0], triple[1]))
