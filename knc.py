@@ -8,10 +8,8 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from hdt import HDTDocument
 from rdflib import Graph, RDFS
+from importlib import import_module
 
-start_time = time.time()
-
-# Constants
 RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 DBO = "http://dbpedia.org/ontology/"
 DBR = "http://dbpedia.org/resource/"
@@ -37,6 +35,8 @@ BLACKLIST = [
     "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
 ]
 
+start_time = time.time()
+
 # DBpedia classes: http://mappings.dbpedia.org/server/ontology/classes/
 
 # Query ontology for subclass rdfs-entailment
@@ -58,8 +58,12 @@ for result in results:
     subclasses.append(str(result['subclass']))
 
 # Query dataset
-inputfile = sys.argv[1]
-dataset = HDTDocument(inputfile)
+config_file = sys.argv[1]
+module = import_module(config_file)
+print(module.config)
+sys.exit()
+
+dataset = HDTDocument("kg/dbpedia2016-04en.hdt")
 G = nx.Graph()
 subjects = []
 edge_list = []
