@@ -79,7 +79,7 @@ G.add_edges_from(edge_list)
 
 # Analyze dataset
 if not nx.is_connected(G):
-    sys.exit("Error: Input graph is not connected")
+    print("Info: Input graph is not connected")
 if not nx.bipartite.is_bipartite(G):
     sys.exit("Error: Input graph is not bipartite")
 
@@ -87,15 +87,18 @@ coloring = nx.greedy_color(G)
 colorList = []
 for node in G.nodes():
     if coloring[node] == 0:
-        colorList.append(RED)
-    else:
         colorList.append(GREEN)
+    else:
+        colorList.append(RED)
 
-bipartition_1, bipartition_2 = nx.bipartite.sets(G)
-if len(bipartition_1) < len(bipartition_2):
-    U, V = bipartition_2, bipartition_1
-else:
-    U, V = bipartition_1, bipartition_2
+U = []
+V = []
+for edge in edge_list:
+    U.append(edge[0])
+    V.append(edge[1])
+
+U = list(set(U))
+V = list(set(V))
 
 G_U = nx.algorithms.bipartite.projection.weighted_projected_graph(G, U)
 G_V = nx.algorithms.bipartite.projection.weighted_projected_graph(G, V)
