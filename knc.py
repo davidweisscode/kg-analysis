@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 
 import sys
-import networkx as nx
-import matplotlib.pyplot as plt
 import time
 import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+from tqdm import tqdm
 from hdt import HDTDocument
 from rdflib import Graph, RDFS
-from tqdm import tqdm
 
 start_time = time.time()
 
@@ -17,41 +17,33 @@ DBO = "http://dbpedia.org/ontology/"
 DBR = "http://dbpedia.org/resource/"
 RED = "#e13232"
 GREEN = "#32c832"
-# Graph might be disconnected.
 BLACKLIST = [
+    "http://dbpedia.org/ontology/abstract",
     "http://dbpedia.org/ontology/wikiPageID",
     "http://dbpedia.org/ontology/wikiPageLength",
     "http://dbpedia.org/ontology/wikiPageWikiLink",
-    "http://dbpedia.org/ontology/wikiPageRevisionID",
     "http://dbpedia.org/ontology/wikiPageOutDegree",
+    "http://dbpedia.org/ontology/wikiPageRevisionID",
     "http://dbpedia.org/ontology/wikiPageExternalLink"
     "http://dbpedia.org/ontology/wikiPageWikiLinkText", # TODO: Still showing up?
-    "http://dbpedia.org/ontology/abstract",
-    "http://dbpedia.org/property/wikiPageUsesTemplate",
     "http://dbpedia.org/property/name",
+    "http://dbpedia.org/property/wikiPageUsesTemplate",
+    "http://www.w3.org/2002/07/owl#sameAs",
+    "http://www.w3.org/ns/prov#wasDerivedFrom",
+    "http://www.w3.org/2000/01/rdf-schema#label",
+    "http://www.w3.org/2000/01/rdf-schema#comment",
     "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
     "http://purl.org/dc/terms/subject",
-    "http://www.w3.org/2002/07/owl#sameAs",
-    "http://www.w3.org/2000/01/rdf-schema#comment",
-    "http://www.w3.org/2000/01/rdf-schema#label",
     "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
-    "http://www.w3.org/ns/prov#wasDerivedFrom",
-    "http://dbpedia.org/ontology/wikiPageExternalLink",
 ]
 
+# DBpedia classes: http://mappings.dbpedia.org/server/ontology/classes/
 
-# Query dataset
+# Query ontology for subclass rdfs-entailment
 # Option 1: Mappings from dataset.join()
 # Option 2: Sequential querying with pyHDT
 # Option 3: https://github.com/comunica/comunica-actor-init-sparql-hdt
-
-# http://mappings.dbpedia.org/server/ontology/classes/
-
-# Load Ontology
-ontology_fn = "/home/david/Downloads/dbpedia.owl"
-ontology = Graph().parse(ontology_fn)
-
-# Subclass query
+ontology = Graph().parse("kg/dbpedia.owl")
 superclass = DBO + "Athlete"
 subclass_query = f"""
 SELECT ?subclass
@@ -60,7 +52,7 @@ WHERE
     ?subclass <{str(RDFS['subClassOf'])}>* <{superclass}> .
 }}
 """
-subclasses = [superclass]
+subclasses = []
 results = ontology.query(subclass_query)
 for result in results:
     subclasses.append(str(result['subclass']))
@@ -69,23 +61,16 @@ for result in results:
 inputfile = sys.argv[1]
 dataset = HDTDocument(inputfile)
 G = nx.Graph()
-
-musicians = []
-ka_musicians = []
+subjects = []
 edge_list = []
 
 for subclass in tqdm(subclasses):
     (triples, card) = dataset.search_triples("", RDF + "type", subclass, limit=2)
     for triple in triples:
-        musicians.append(triple[0])
+        subjects.append(triple[0])
 
-# for musician in musicians:
-#     (triples, card) = dataset.search_triples(musician, DBO + "birthPlace", DBR + "Karlsruhe")
-#     for triple in triples:
-#         ka_musicians.append(triple[0])
-
-for musician in tqdm(musicians):
-    (triples, card) = dataset.search_triples(musician, "", "", limit=100)
+for subject in tqdm(subjects):
+    (triples, card) = dataset.search_triples(subject, "", "", limit=100)
     for triple in triples:
         if not triple[1] in BLACKLIST:
             edge_list.append((triple[0], triple[1]))
@@ -115,7 +100,6 @@ else:
 G_U = nx.algorithms.bipartite.projection.weighted_projected_graph(G, U)
 G_V = nx.algorithms.bipartite.projection.weighted_projected_graph(G, V)
 
-# Max k value of the one mode graph to have edges
 k_max_U = G_V.number_of_nodes()
 k_max_V = G_U.number_of_nodes()
 print("k_max_U =", k_max_U)
@@ -147,6 +131,7 @@ for k in range(1, k_max_V + 1):
 RC_V = (1 / k_max_V) * densitySum
 print("RC_V = %.4f" % RC_V, "\n")
 
+# Visualize analysis results
 plt.subplot(321, frameon=False) # Bipartite graph G
 bipartiteLayout = nx.bipartite_layout(G, U, aspect_ratio=0.5, scale=0.2)
 nx.draw_networkx(G, bipartiteLayout, with_labels=True, font_size=6, node_color=colorList, edge_color="grey")
