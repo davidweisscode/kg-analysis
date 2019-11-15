@@ -2,7 +2,8 @@ config = {
     "classes": ["Athlete", "Musician", "WrittenWork"],
     "analyzeChildClasses": True,
     "sampleSizeLimit": 100,
-    "kgSourcePath": "kg/dbpedia2016-04en.hdt",
+    "kgSource": "kg/dbpedia2016-04en.hdt",
+    "kgOntology": "kg/dbpedia.owl",
     "u": True,
     "v": True,
 }
