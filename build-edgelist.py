@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
+# TODO: Python style guide http://google.github.io/styleguide/pyguide.html#3164-guidelines-derived-from-guidos-recommendations
+# TODO: Save a log file
+
 import sys
 import csv
 import time
-import networkx as nx
 from tqdm import tqdm
 from hdt import HDTDocument
 from rdflib import Graph, RDFS
@@ -34,48 +36,61 @@ BLACKLIST = [
 
 # DBpedia classes: http://mappings.dbpedia.org/server/ontology/classes/
 
-start_time = time.time()
-
-# Read config
-config_file = sys.argv[1]
-module = import_module(config_file)
-
 # Query ontology for subclass rdfs-entailment
+def query_subclasses(superclass):
     # Option 1: Mappings from dataset.join()
     # Option 2: Sequential querying with pyHDT
     # Option 3: https://github.com/comunica/comunica-actor-init-sparql-hdt
-ontology = Graph().parse(module.config["kgOntology"])
-superclass = DBO + module.config["classes"][0] #TODO: Support a list of classes
-subclass_query = f"""
-SELECT ?subclass
-WHERE 
-{{
-    ?subclass <{str(RDFS['subClassOf'])}>* <{superclass}> .
-}}
-"""
-subclasses = []
-results = ontology.query(subclass_query)
-for result in results:
-    subclasses.append(str(result['subclass']))
+    ontology = Graph().parse(module.config["kg_ontology"])
+    subclass_query = f"""
+    SELECT ?subclass
+    WHERE 
+    {{
+        ?subclass <{str(RDFS['subClassOf'])}>* <{DBO + superclass}> .
+    }}
+    """
+    subclasses = []
+    results = ontology.query(subclass_query)
+    for result in results:
+        subclasses.append(str(result['subclass']))
+    return subclasses
 
-# Query dataset
-dataset = HDTDocument(module.config["kgSource"])
-subjects = []
-edge_list = []
+# Get edgelist for one superclass using its subclasses
+def query_edgelist(subclasses, subject_limit, predicate_limit):
+    subjects = []
+    edgelist = []
+    print("Query subjects for each subclass")
+    for subclass in tqdm(subclasses):
+        (triples, card) = dataset.search_triples("", RDF + "type", subclass, limit=subject_limit)
+        for triple in triples:
+            subjects.append(triple[0])
+    print("Query predicates for each subject")
+    for subject in tqdm(subjects):
+        (triples, card) = dataset.search_triples(subject, "", "", limit=predicate_limit)
+        for triple in triples:
+            if not triple[1] in BLACKLIST:
+                edgelist.append((triple[0], triple[1]))
+    return edgelist
 
-for subclass in tqdm(subclasses):
-    (triples, card) = dataset.search_triples("", RDF + "type", subclass, limit=2)
-    for triple in triples:
-        subjects.append(triple[0])
+# Write edgelist file
+def write_edgelist(classname, edgelist):
+    with open("csv/" + classname + ".g.csv", "w", newline="") as file_out:
+        wr = csv.writer(file_out)
+        wr.writerows(edgelist)
 
-for subject in tqdm(subjects):
-    (triples, card) = dataset.search_triples(subject, "", "", limit=100)
-    for triple in triples:
-        if not triple[1] in BLACKLIST:
-            edge_list.append((triple[0], triple[1]))
+start_time = time.time()
 
-with open(module.config["classes"][0] + ".g.csv", "w", newline="") as file_out:
-    wr = csv.writer(file_out)
-    wr.writerows(edge_list)
+config_file = sys.argv[1]
+module = import_module(config_file)
 
-print("\nScript execution time: %.3f seconds" % (time.time() - start_time))
+dataset = HDTDocument(module.config["kg_source"])
+subject_limit = module.config["subject_limit"]
+predicate_limit = module.config["predicate_limit"]
+
+for superclass in module.config["classes"]:
+    print("\n[Build edgelist]", superclass)
+    subclasses = query_subclasses(superclass)
+    edgelist = query_edgelist(subclasses, subject_limit, predicate_limit)
+    write_edgelist(superclass, edgelist)
+
+print("\nRuntime: %.3f seconds [Build edgelist]" % (time.time() - start_time))
