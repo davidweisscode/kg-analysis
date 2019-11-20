@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+#TODO: Visualization with seaborn
+#TODO: Use other colors, see colorbrew: http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3
+
 import numpy as np
 import matplotlib.pyplot as plt
 

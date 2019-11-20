@@ -74,6 +74,7 @@ def query_edgelist(subclasses, subject_limit, predicate_limit):
 
 # Write edgelist file
 def write_edgelist(classname, edgelist):
+    #TODO: Create dir if required: https://stackoverflow.com/questions/12517451/automatically-creating-directories-with-file-output
     with open("csv/" + classname + ".g.csv", "w", newline="") as file_out:
         wr = csv.writer(file_out)
         wr.writerows(edgelist)
@@ -92,5 +93,6 @@ for superclass in module.config["classes"]:
     subclasses = query_subclasses(superclass)
     edgelist = query_edgelist(subclasses, subject_limit, predicate_limit)
     write_edgelist(superclass, edgelist)
+    #TODO: Create the result.csv here, Append superclass,subclasses,k_max_U,k_max_V,nodes,edges,connected,bipartite during the process
 
 print("\nRuntime: %.3f seconds [Build edgelist]" % (time.time() - start_time))

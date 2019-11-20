@@ -1,0 +1,3 @@
+Artist, k_max_U, k_max_V, #edges, connected, bipartite, RC_U_c1, RC_V_c1, RC_U_c2, RC_V_c2, lower_quartile, median, upper_quartile, slope, subclasses
+Athlete, k_max_U, k_max_V, #edges, connected, bipartite, RC_U_c1, RC_V_c1, RC_U_c2, RC_V_c2, lower_quartile, median, upper_quartile, slope, subclasses
+WrittenWork, k_max_U, k_max_V, #edges, connected, bipartite, RC_U_c1, RC_V_c1, RC_U_c2, RC_V_c2, lower_quartile, median, upper_quartile, slope, subclasses
