@@ -3,9 +3,11 @@
 # TODO: Python style guide http://google.github.io/styleguide/pyguide.html#3164-guidelines-derived-from-guidos-recommendations
 # TODO: Save a log file
 
+import os
 import sys
 import csv
 import time
+import pandas as pd
 from tqdm import tqdm
 from hdt import HDTDocument
 from rdflib import Graph, RDFS
@@ -14,7 +16,7 @@ from importlib import import_module
 RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 DBO = "http://dbpedia.org/ontology/"
 DBR = "http://dbpedia.org/resource/"
-BLACKLIST = [
+BLACKLIST = [ #TODO: Outsource to own file
     "http://dbpedia.org/ontology/abstract",
     "http://dbpedia.org/ontology/wikiPageID",
     "http://dbpedia.org/ontology/wikiPageLength",
@@ -75,9 +77,13 @@ def query_edgelist(subclasses, subject_limit, predicate_limit):
 # Write edgelist file
 def write_edgelist(classname, edgelist):
     #TODO: Create dir if required: https://stackoverflow.com/questions/12517451/automatically-creating-directories-with-file-output
-    with open("csv/" + classname + ".g.csv", "w", newline="") as file_out:
-        wr = csv.writer(file_out)
-        wr.writerows(edgelist)
+    df = pd.DataFrame(edgelist, columns=["u", "v"])
+    df.to_csv("csv/" + classname + ".g.csv", index=False)
+
+def append_result_rows(superclass, subclasses, number_of_edges):
+    df = pd.read_csv("csv/results.csv")
+    df.loc[len(df)] = (superclass, subclasses, number_of_edges)
+    df.to_csv("csv/results.csv", index=False)
 
 start_time = time.time()
 
@@ -88,11 +94,17 @@ dataset = HDTDocument(module.config["kg_source"])
 subject_limit = module.config["subject_limit"]
 predicate_limit = module.config["predicate_limit"]
 
+if os.path.exists("csv/results.csv"):#TODO: Create results.csv if required
+    print("Remove old results file")
+    os.remove("csv/results.csv")
+    df = pd.DataFrame(columns=["superclass", "subclasses", "num_edges"])
+    df.to_csv("csv/results.csv", index=False)
+
 for superclass in module.config["classes"]:
     print("\n[Build edgelist]", superclass)
     subclasses = query_subclasses(superclass)
     edgelist = query_edgelist(subclasses, subject_limit, predicate_limit)
     write_edgelist(superclass, edgelist)
-    #TODO: Create the result.csv here, Append superclass,subclasses,k_max_U,k_max_V,nodes,edges,connected,bipartite during the process
+    append_result_rows(superclass, subclasses, len(edgelist))#TODO: Remove "dpbedia URL" from subclass names
 
 print("\nRuntime: %.3f seconds [Build edgelist]" % (time.time() - start_time))
