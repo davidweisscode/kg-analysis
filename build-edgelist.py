@@ -94,11 +94,12 @@ dataset = HDTDocument(module.config["kg_source"])
 subject_limit = module.config["subject_limit"]
 predicate_limit = module.config["predicate_limit"]
 
-if os.path.exists("csv/results.csv"):#TODO: Create results.csv if required
+if os.path.exists("csv/results.csv"):
     print("Remove old results file")
     os.remove("csv/results.csv")
-    df = pd.DataFrame(columns=["superclass", "subclasses", "num_edges"])
-    df.to_csv("csv/results.csv", index=False)
+
+results = pd.DataFrame(columns=["superclass", "subclasses", "num_edges"])
+results.to_csv("csv/results.csv", index=False)
 
 for superclass in module.config["classes"]:
     print("\n[Build edgelist]", superclass)
