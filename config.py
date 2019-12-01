@@ -5,6 +5,6 @@ config = {
     "predicate_limit": 3,
     "kg_source": "kg/dbpedia2016-04en.hdt",
     "kg_ontology": "kg/dbpedia.owl",
-    "u": True,
-    "v": True,
+    "u": True,#TODO
+    "v": True,#TODO
 }

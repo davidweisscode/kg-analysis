@@ -43,7 +43,7 @@ def query_subclasses(superclass):
     # Option 1: Mappings from dataset.join()
     # Option 2: Sequential querying with pyHDT
     # Option 3: https://github.com/comunica/comunica-actor-init-sparql-hdt
-    ontology = Graph().parse(module.config["kg_ontology"])
+    ontology = Graph().parse(module.config["kg_ontology"])#TODO: Do this only once?
     subclass_query = f"""
     SELECT ?subclass
     WHERE 
@@ -57,8 +57,8 @@ def query_subclasses(superclass):
         subclasses.append(str(result['subclass']))
     return subclasses
 
-# Get edgelist for one superclass using its subclasses
-def query_edgelist(subclasses, subject_limit, predicate_limit):
+# Get edgelist for a superclass and all its subclasses
+def get_subject_predicate_tuples(subclasses, subject_limit, predicate_limit):
     subjects = []
     edgelist = []
     print("Query subjects for each subclass")
@@ -74,19 +74,16 @@ def query_edgelist(subclasses, subject_limit, predicate_limit):
                 edgelist.append((triple[0], triple[1]))
     return edgelist
 
-# Write edgelist file
 def write_edgelist(classname, edgelist):
-    #TODO: Create dir if required: https://stackoverflow.com/questions/12517451/automatically-creating-directories-with-file-output
     df = pd.DataFrame(edgelist, columns=["u", "v"])
-    df.to_csv("csv/" + classname + ".g.csv", index=False)
+    df.to_csv("csv/" + classname + ".g.csv", index=False)#TODO: Create dir if required
 
 def append_result_rows(superclass, subclasses, number_of_edges):
-    df = pd.read_csv("csv/results.csv")
+    df = pd.read_csv("csv/_results.csv")
     df.loc[len(df)] = (superclass, subclasses, number_of_edges)
-    df.to_csv("csv/results.csv", index=False)
+    df.to_csv("csv/_results.csv", index=False)
 
 start_time = time.time()
-
 config_file = sys.argv[1]
 module = import_module(config_file)
 
@@ -94,18 +91,18 @@ dataset = HDTDocument(module.config["kg_source"])
 subject_limit = module.config["subject_limit"]
 predicate_limit = module.config["predicate_limit"]
 
-if os.path.exists("csv/results.csv"):
+if os.path.exists("csv/_results.csv"):
     print("Remove old results file")
-    os.remove("csv/results.csv")
+    os.remove("csv/_results.csv")
 
 results = pd.DataFrame(columns=["superclass", "subclasses", "num_edges"])
-results.to_csv("csv/results.csv", index=False)
+results.to_csv("csv/_results.csv", index=False)
 
 for superclass in module.config["classes"]:
     print("\n[Build edgelist]", superclass)
     subclasses = query_subclasses(superclass)
-    edgelist = query_edgelist(subclasses, subject_limit, predicate_limit)
+    edgelist = get_subject_predicate_tuples(subclasses, subject_limit, predicate_limit)
     write_edgelist(superclass, edgelist)
     append_result_rows(superclass, subclasses, len(edgelist))#TODO: Remove "dpbedia URL" from subclass names
 
-print("\nRuntime: %.3f seconds [Build edgelist]" % (time.time() - start_time))
+print("\n[Runtime] %.3f seconds [Build edgelist]" % (time.time() - start_time))

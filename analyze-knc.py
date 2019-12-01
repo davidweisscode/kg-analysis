@@ -42,7 +42,6 @@ def read_knc(superclass):
 #     print(pair[2], list(G_V_1.nodes)[pair[0]], list(G_V_1.nodes)[pair[1]])
 
 start_time = time.time()
-
 config_file = sys.argv[1]
 module = import_module(config_file)
 
@@ -54,4 +53,4 @@ for superclass in classes:
     print("\n[Analyze knc]", superclass)
     print(read_knc(superclass)) # [(k, c1, c2, ...), (), ...]
 
-print("\nRuntime: %.3f seconds [Compute knc list]" % (time.time() - start_time))
+print("\n[Runtime] %.3f seconds [Analyze knc]" % (time.time() - start_time))
