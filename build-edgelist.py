@@ -105,4 +105,4 @@ for superclass in module.config["classes"]:
     write_edgelist(superclass, edgelist)
     append_result_rows(superclass, subclasses, len(edgelist))#TODO: Remove "dpbedia URL" from subclass names
 
-print("\n[Runtime] %.3f seconds [Build edgelist]" % (time.time() - start_time))
+print("\n[Runtime build-edgelist] %.3f sec" % (time.time() - start_time))

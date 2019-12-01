@@ -14,8 +14,9 @@ def read_knc(superclass):
     df = pd.read_csv("csv/" + superclass + ".k.csv")
     return list(df.itertuples(index=False, name=None))
 
-# U = list(set(U))
-# V = list(set(V))
+def get_result(superclass, feature):
+    df = pd.read_csv("csv/_results.csv")
+    return df.loc[df.index[df["superclass"] == superclass][0], feature]
 
 # G_U_1 = G_U.copy()
 # G_V_1 = G_V.copy()
@@ -45,12 +46,14 @@ start_time = time.time()
 config_file = sys.argv[1]
 module = import_module(config_file)
 
-classes = module.config["classes"]
-
-#TODO: Main loop
-for superclass in classes:
-    #TODO: Append: RC_U_c1, RC_V_c1, RC_U_c2, RC_V_c2, lower_quartile, median, upper_quartile, slope
+for superclass in module.config["classes"]:
     print("\n[Analyze knc]", superclass)
-    print(read_knc(superclass)) # [(k, c1, c2, ...), (), ...]
+    # .u and .v edgelists only contain nodes, which have at least one connection
+    k_max_U = int(get_result(superclass, "k_max_U"))
+    k_max_V = int(get_result(superclass, "k_max_V"))
+    knc = read_knc(superclass)
+    RC_U, RC_V = compute_RC(knc, k_max_U, k_max_V)
+    #TODO: Append: RC_U_c1, RC_V_c1, RC_U_c2, RC_V_c2, lower_quartile, median, upper_quartile, slope
+    append_result_columns(superclass, RC_U, RC_V)
 
-print("\n[Runtime] %.3f seconds [Analyze knc]" % (time.time() - start_time))
+print("\n[Runtime analyze-knc] %.3f sec" % (time.time() - start_time))

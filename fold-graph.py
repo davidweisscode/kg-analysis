@@ -44,7 +44,7 @@ def append_result_columns(superclass, k_max_U, k_max_V, connected, bipartite):
 
 # Save onemode graphs in edgelist
 def write_edgelist(classname, edgelist, onemode):
-    df = pd.DataFrame(edgelist, columns=["node_1", "node_2", "weight"])
+    df = pd.DataFrame(edgelist, columns=[onemode + "_node_1", onemode + "_node_2", "weight"])
     df.to_csv("csv/" + classname + "." + onemode + ".csv", index=False)
 
 start_time = time.time()
@@ -72,6 +72,7 @@ for superclass in module.config["classes"]:
     k_max_U = get_k_max(G_U)
     k_max_V = get_k_max(G_V)
 
+    # In onemode networks, data about disconnected nodes gets lost in edgelists
     G_U_edgelist = list(G_U.edges.data("weight"))
     G_V_edgelist = list(G_V.edges.data("weight"))
     write_edgelist(superclass, G_U_edgelist, "u")
@@ -79,4 +80,4 @@ for superclass in module.config["classes"]:
 
     append_result_columns(superclass, k_max_U, k_max_V, is_connected, is_bipartite)
 
-print("\n[Runtime] %.3f seconds [Compute knc list]" % (time.time() - start_time))
+print("\n[Runtime fold-graph] %.3f sec" % (time.time() - start_time))
