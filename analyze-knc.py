@@ -18,29 +18,25 @@ def get_result(superclass, feature):
     df = pd.read_csv("csv/_results.csv")
     return df.loc[df.index[df["superclass"] == superclass][0], feature]
 
-# G_U_1 = G_U.copy()
-# G_V_1 = G_V.copy()
+def compute_RC(knc, k_max_U, k_max_V):
+    density_sum = 0
+    for k in tqdm(range(0, k_max_U)):
+        density_sum += knc[k][1]
+    RC_U = (1 / k_max_U) * density_sum
 
-# # TODO: Refactor into method
-# # Calculate connectivity measures
-# densitySum = 0
-# for k in tqdm(range(1, k_max_U + 1)):
-#     densitySum += nx.classes.function.density(G_U)#TODO: Calculate density only one time and save it to variable?
-# RC_U = (1 / k_max_U) * densitySum
-# print("RC_U = %.4f" % RC_U)
+    density_sum = 0
+    for k in tqdm(range(k_max_U, k_max_U + k_max_V)):
+        density_sum += knc[k][1]
+    RC_V = (1 / k_max_V) * density_sum
 
-# # Get strongest pairs
-# pairs = []
-# G_V_adj = nx.to_numpy_matrix(G_V_1)
-# for row in range(0, k_max_U):
-#     for col in range(0, row):
-#         pairs.append((row, col, G_V_adj.item(row, col)))
+    print("RC_U = %.4f" % RC_U, "RC_V = %.4f" % RC_V)
+    return RC_U, RC_V
 
-# sorted_pairs = sorted(pairs, key=lambda x: x[2], reverse=True) # Use edge weight as sorting criterion
-
-# for i in range(0, 10):
-#     pair = sorted_pairs[i]
-#     print(pair[2], list(G_V_1.nodes)[pair[0]], list(G_V_1.nodes)[pair[1]])
+def append_result_columns(superclass, RC_U, RC_V):
+    df = pd.read_csv("csv/_results.csv")
+    df.loc[df.index[df["superclass"] == superclass], "RC_U"] = RC_U
+    df.loc[df.index[df["superclass"] == superclass], "RC_V"] = RC_V
+    df.to_csv("csv/_results.csv", index=False)
 
 start_time = time.time()
 config_file = sys.argv[1]
