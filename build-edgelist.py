@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # TODO: Python style guide http://google.github.io/styleguide/pyguide.html#3164-guidelines-derived-from-guidos-recommendations
-# TODO: Save a log file
+# TODO: Save named log file
 
 import os
 import sys
@@ -16,7 +16,7 @@ from importlib import import_module
 RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 DBO = "http://dbpedia.org/ontology/"
 DBR = "http://dbpedia.org/resource/"
-BLACKLIST = [ #TODO: Outsource to own file
+BLACKLIST = [ #TODO: Own file
     "http://dbpedia.org/ontology/abstract",
     "http://dbpedia.org/ontology/wikiPageID",
     "http://dbpedia.org/ontology/wikiPageLength",

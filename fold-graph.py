@@ -3,6 +3,7 @@
 import sys
 import csv
 import time
+import numpy as np
 import pandas as pd
 import networkx as nx
 from tqdm import tqdm
@@ -23,9 +24,9 @@ def fold_bipartite_graph(graph):
     U = list(set(U))
     V = list(set(V))
     print("Compute one mode graph U")
-    G_U = nx.algorithms.bipartite.projection.weighted_projected_graph(G, U)
+    G_U = nx.algorithms.bipartite.projection.weighted_projected_graph(graph, U)#TODO: RAM+SWAP at 100% after 40min, then "Killed"
     print("Compute one mode graph V")
-    G_V = nx.algorithms.bipartite.projection.weighted_projected_graph(G, V)
+    G_V = nx.algorithms.bipartite.projection.weighted_projected_graph(graph, V)
     return G_U, G_V
 
 def get_k_max(onemode_graph): # TODO: Add error handling
@@ -57,6 +58,21 @@ for superclass in module.config["classes"]:
     G = nx.Graph()
     edgelist = read_edgelist(superclass)
     G.add_edges_from(edgelist)
+    
+    U = []
+    V = []
+    for edge in edgelist:
+        U.append(edge[0])
+        V.append(edge[1])
+    U = list(set(U))
+    V = list(set(V))
+
+    # Save row and column name order, Later name lookup in folded matrix F, Names for e.g. heatmap analysis
+    A = nx.bipartite.biadjacency_matrix(G, row_order=U, column_order=V)
+    print("A shape", A.shape)
+    F_1 = np.dot(A , A.T)
+    # del F_1 # Free up memory
+    print("F_1 shape", F_1.shape)
 
     is_connected = True
     is_bipartite = True
@@ -72,7 +88,7 @@ for superclass in module.config["classes"]:
     k_max_U = get_k_max(G_U)
     k_max_V = get_k_max(G_V)
 
-    # In onemode networks, data about disconnected nodes gets lost in edgelists
+    # In onemode network edgelists, data about disconnected nodes gets lost
     G_U_edgelist = list(G_U.edges.data("weight"))
     G_V_edgelist = list(G_V.edges.data("weight"))
     write_edgelist(superclass, G_U_edgelist, "u")
