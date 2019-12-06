@@ -16,25 +16,6 @@ from importlib import import_module
 RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 DBO = "http://dbpedia.org/ontology/"
 DBR = "http://dbpedia.org/resource/"
-BLACKLIST = [ #TODO: Own file
-    "http://dbpedia.org/ontology/abstract",
-    "http://dbpedia.org/ontology/wikiPageID",
-    "http://dbpedia.org/ontology/wikiPageLength",
-    "http://dbpedia.org/ontology/wikiPageWikiLink",
-    "http://dbpedia.org/ontology/wikiPageOutDegree",
-    "http://dbpedia.org/ontology/wikiPageRevisionID",
-    "http://dbpedia.org/ontology/wikiPageExternalLink",
-    "http://dbpedia.org/ontology/wikiPageWikiLinkText",
-    "http://dbpedia.org/property/name",
-    "http://dbpedia.org/property/wikiPageUsesTemplate",
-    "http://www.w3.org/2002/07/owl#sameAs",
-    "http://www.w3.org/ns/prov#wasDerivedFrom",
-    "http://www.w3.org/2000/01/rdf-schema#label",
-    "http://www.w3.org/2000/01/rdf-schema#comment",
-    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-    "http://purl.org/dc/terms/subject",
-    "http://xmlns.com/foaf/0.1/isPrimaryTopicOf",
-]
 
 # DBpedia classes: http://mappings.dbpedia.org/server/ontology/classes/
 
@@ -84,6 +65,8 @@ def append_result_rows(superclass, subclasses, number_of_edges):
     df.to_csv("csv/_results.csv", index=False)
 
 start_time = time.time()
+with open("blacklist.txt", "r") as file:
+    BLACKLIST = file.read().splitlines()
 config_file = sys.argv[1]
 module = import_module(config_file)
 
