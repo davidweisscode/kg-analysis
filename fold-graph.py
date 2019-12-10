@@ -1,36 +1,39 @@
+"""
+This is a docstring. Contained in a module.
+"""
+
 #!/usr/bin/python3
 
 import sys
-import csv
 import time
+from importlib import import_module
 import numpy as np
 import pandas as pd
 import networkx as nx
-from tqdm import tqdm
-from hdt import HDTDocument
-from rdflib import Graph, RDFS
-from importlib import import_module
 
 def read_edgelist(superclass):
+    """ Read edge list from csv file """
     df = pd.read_csv("csv/" + superclass + ".g.csv")
     return list(df.itertuples(index=False, name=None))
 
 def fold_bipartite_graph(bipgraph, U, V):
-    # TODO: Save row and column name order, Later name lookup in folded matrix F, Names for e.g. heatmap analysis
-    # TODO: fold the onemodes one at a time to reduce RAM
+    """ Fold a bipartite graph to its onemode representations using its biadjacency matrix """
+    # TODO: Save row and column name order for later name lookup in G_U for e.g. heatmap analysis
+    # TODO: Fold the onemodes one at a time to reduce RAM
     print("Compute biadjacency matrix A")
     A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=U, column_order=V)
     print("A shape", A.shape)
     print("Compute G_U")
-    G_U = np.dot(A , A.T)
+    G_U = np.dot(A, A.T)
     print("G_U shape", G_U.shape)
     # del G_U # Free up memory
     print("Compute G_V")
-    G_V = np.dot(A.T , A)
+    G_V = np.dot(A.T, A)
     print("G_V shape", G_V.shape)
     return G_U, G_V
 
 def append_result_columns(superclass, k_max_U, k_max_V, connected, bipartite):
+    """ Save more properties for each superclass in the result csv file """
     df = pd.read_csv("csv/_results.csv")
     df.loc[df.index[df["superclass"] == superclass], "k_max_U"] = k_max_U
     df.loc[df.index[df["superclass"] == superclass], "k_max_V"] = k_max_V
@@ -38,8 +41,8 @@ def append_result_columns(superclass, k_max_U, k_max_V, connected, bipartite):
     df.loc[df.index[df["superclass"] == superclass], "bipartite"] = bipartite
     df.to_csv("csv/_results.csv", index=False)
 
-# Save onemode graphs in edgelist
 def write_edgelist(classname, edgelist, onemode):
+    """ Save onemode edge list in a csv file """
     df = pd.DataFrame(edgelist, columns=[onemode + "_node_1", onemode + "_node_2", "weight"])
     df.to_csv("csv/" + classname + "." + onemode + ".csv", index=False)
 
@@ -84,6 +87,7 @@ for superclass in module.config["classes"]:
 
     G_U_edgelist = list(G_U.edges.data("weight"))
     G_V_edgelist = list(G_V.edges.data("weight"))
+
     write_edgelist(superclass, G_U_edgelist, "u")
     write_edgelist(superclass, G_V_edgelist, "v")
 

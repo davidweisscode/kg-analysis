@@ -1,30 +1,35 @@
+"""
+This is a docstring. Contained in a module.
+"""
+
 #!/usr/bin/python3
 
 import sys
-import csv
 import time
+from importlib import import_module
 import pandas as pd
 import networkx as nx
 from tqdm import tqdm
-from hdt import HDTDocument
-from rdflib import Graph, RDFS
-from importlib import import_module
 
 def read_edgelist(superclass, onemode):
+    """ Read edge list from csv file """
     df = pd.read_csv("csv/" + superclass + "." + onemode + ".csv")
     return list(df.itertuples(index=False, name=None))
 
 def get_k_max(onemode_graph): # TODO: Add error handling
+    """ Compute the maximum k value for a given onemode graph """
     if onemode_graph == G_U:
         return int(G_V.number_of_nodes())
     if onemode_graph == G_V:
         return int(G_U.number_of_nodes())
 
 def get_result(superclass, feature):
+    """ Get the superclasses value in a feature column """
     df = pd.read_csv("csv/_results.csv")
     return df.loc[df.index[df["superclass"] == superclass][0], feature]
 
 def compute_knc(onemode_graph, k_max):
+    """ Compute points of an KNC plot """
     # TODO: Add other connectivity measures
     # TODO: Break if connectivity measure reached zero
     knc_list = []
@@ -36,6 +41,7 @@ def compute_knc(onemode_graph, k_max):
     return knc_list
 
 def write_knc(superclass, knc_U, knc_V):
+    """ Save KNC plot points to a csv file """
     df_U = pd.DataFrame(knc_U, columns=["k", "density"])
     df_V = pd.DataFrame(knc_V, columns=["k", "density"])
     knc = df_U.append(df_V, ignore_index=True)

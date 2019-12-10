@@ -1,17 +1,21 @@
+"""
+This is a docstring. Contained in a module.
+"""
+
 #!/usr/bin/python3
 
-# TODO: Python style guide http://google.github.io/styleguide/pyguide.html#3164-guidelines-derived-from-guidos-recommendations
+# TODO: Check Googles Python style guide
+# TODO: Check pylint
 # TODO: Save named log file
 
 import os
 import sys
-import csv
 import time
-import pandas as pd
+from importlib import import_module
 from tqdm import tqdm
 from hdt import HDTDocument
 from rdflib import Graph, RDFS
-from importlib import import_module
+import pandas as pd
 
 RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 DBO = "http://dbpedia.org/ontology/"
@@ -19,8 +23,8 @@ DBR = "http://dbpedia.org/resource/"
 
 # DBpedia classes: http://mappings.dbpedia.org/server/ontology/classes/
 
-# Query ontology for subclass rdfs-entailment
 def query_subclasses(superclass):
+    """ Query ontology for subclass rdfs-entailment """
     # Option 1: Mappings from dataset.join()
     # Option 2: Sequential querying with pyHDT
     # Option 3: https://github.com/comunica/comunica-actor-init-sparql-hdt
@@ -38,28 +42,30 @@ def query_subclasses(superclass):
     #TODO: Remove "dpbedia URL" from subclass names ?
     return subclasses
 
-# Get edgelist for a superclass and all its subclasses
 def get_subject_predicate_tuples(subclasses, subject_limit, predicate_limit):
+    """ Get edgelist for a superclass and all its subclasses """
     subjects = []
     edgelist = []
     print("Query subjects for each subclass")
     for subclass in tqdm(subclasses):
-        (triples, card) = dataset.search_triples("", RDF + "type", subclass, limit=subject_limit)
+        triples = dataset.search_triples("", RDF + "type", subclass, limit=subject_limit)[0]
         for triple in triples:
             subjects.append(triple[0])
     print("Query predicates for each subject")
     for subject in tqdm(subjects):
-        (triples, card) = dataset.search_triples(subject, "", "", limit=predicate_limit)
+        triples = dataset.search_triples(subject, "", "", limit=predicate_limit)[0]
         for triple in triples:
             if not triple[1] in BLACKLIST:
                 edgelist.append((triple[0], triple[1]))
     return edgelist
 
 def write_edgelist(classname, edgelist):
+    """ Write edge list to csv file """
     df = pd.DataFrame(edgelist, columns=["u", "v"])
     df.to_csv("csv/" + classname + ".g.csv", index=False)
 
 def append_result_rows(superclass, subclasses, number_of_edges):
+    """ Append result rows for each superclass """
     df = pd.read_csv("csv/_results.csv")
     df.loc[len(df)] = (superclass, subclasses, number_of_edges)
     df.to_csv("csv/_results.csv", index=False)
