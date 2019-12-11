@@ -20,16 +20,17 @@ def fold_bipartite_graph(bipgraph, U, V):
     """ Fold a bipartite graph to its onemode representations using its biadjacency matrix """
     # TODO: Save row and column name order for later name lookup in G_U for e.g. heatmap analysis
     # TODO: Fold the onemodes one at a time to reduce RAM
-    print("Compute biadjacency matrix A")
+    t_start = time.time()
     A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=U, column_order=V)
-    print("A shape", A.shape)
-    print("Compute G_U")
+    print("[Runtime] comp-biadj-matrix %.3f sec" % (time.time() - t_start), superclass)
+    print("[Info]    A shape", A.shape)
+    t_start = time.time()
     G_U = np.dot(A, A.T)
-    print("G_U shape", G_U.shape)
-    # del G_U # Free up memory
-    print("Compute G_V")
+    print("[Runtime] onemode-dot-product U %.3f sec" % (time.time() - t_start), superclass)
+    # del G_U # Free up memory, Divide into two method calls?
+    t_start = time.time()
     G_V = np.dot(A.T, A)
-    print("G_V shape", G_V.shape)
+    print("[Runtime] onemode-dot-product V %.3f sec" % (time.time() - t_start), superclass)
     return G_U, G_V
 
 def append_result_columns(superclass, k_max_U, k_max_V, connected, bipartite):
@@ -65,7 +66,7 @@ config_file = sys.argv[1]
 module = import_module(config_file)
 
 for superclass in module.config["classes"]:
-    print("\n[Fold graph]", superclass)
+    print("\n[Fold]   ", superclass)
 
     G = nx.Graph()
     edgelist = read_edgelist(superclass)
@@ -75,11 +76,12 @@ for superclass in module.config["classes"]:
     is_bipartite = True
     if not nx.is_connected(G):
         is_connected = False
-        print("[Info] Input graph is not connected", superclass)
+        print("[Info]    Input graph is not connected", superclass)
     if not nx.bipartite.is_bipartite(G):
         is_bipartite = False
         sys.exit("[Error] Input graph is not bipartite", superclass)
 
+    t_start = time.time()
     U = []
     V = []
     for edge in edgelist:
@@ -87,17 +89,15 @@ for superclass in module.config["classes"]:
         V.append(edge[1])
     U = list(set(U))
     V = list(set(V))
+    print("[Runtime] get-onemode-sides %.3f sec" % (time.time() - t_start), superclass)
 
     G_U, G_V = fold_bipartite_graph(G, U, V)
+    # Diagonal values of G_U represent to how much V nodes the U node is affiliated with, Save in .u.csv?
 
     k_max_U = G_V.shape[0]
     k_max_V = G_U.shape[0]
-    print("k_max_U", k_max_U)
-    print("k_max_V", k_max_V)
-
-    print(G_U)
-    #TODO: Build G_U_edgelist [(art1, art2, w), (art1, art3, w), ...] from ndarray G_U
-    # Diagonal values of G_U represent to how much V nodes the U node is affiliated with
+    print("[Info]    k_max_U", k_max_U)
+    print("[Info]    k_max_V", k_max_V)
 
     G_U_edgelist = get_onemode_edgelist(G_U)
     G_V_edgelist = get_onemode_edgelist(G_V)
