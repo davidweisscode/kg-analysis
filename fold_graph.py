@@ -46,6 +46,20 @@ def write_edgelist(classname, edgelist, onemode):
     df = pd.DataFrame(edgelist, columns=[onemode + "_node_1", onemode + "_node_2", "weight"])
     df.to_csv("csv/" + classname + "." + onemode + ".csv", index=False)
 
+def get_onemode_edgelist(weight_matrix):
+    """ Build [(u1, u2, w), (u1, u3, w), ...] from ndarray G_U """
+    #TODO: Optimize runtime for changing data structures (nested for loops, append, builtin functions, triu, ...)
+    t_start = time.time()
+    onemode_edgelist = []
+    size = weight_matrix.shape[0]
+    for row in range(1, size):
+        for col in range(0, row):
+            weight = weight_matrix[row, col]
+            if weight > 0:
+                onemode_edgelist.append((row, col, weight))
+    print("[Runtime] get-onemode-edgelist %.3f sec" % (time.time() - t_start))
+    return onemode_edgelist
+
 t_fold = time.time()
 config_file = sys.argv[1]
 module = import_module(config_file)
@@ -85,8 +99,8 @@ for superclass in module.config["classes"]:
     #TODO: Build G_U_edgelist [(art1, art2, w), (art1, art3, w), ...] from ndarray G_U
     # Diagonal values of G_U represent to how much V nodes the U node is affiliated with
 
-    G_U_edgelist = list(G_U.edges.data("weight"))
-    G_V_edgelist = list(G_V.edges.data("weight"))
+    G_U_edgelist = get_onemode_edgelist(G_U)
+    G_V_edgelist = get_onemode_edgelist(G_V)
 
     write_edgelist(superclass, G_U_edgelist, "u")
     write_edgelist(superclass, G_V_edgelist, "v")
