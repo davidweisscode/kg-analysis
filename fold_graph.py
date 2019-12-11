@@ -48,16 +48,21 @@ def write_edgelist(classname, edgelist, onemode):
     df.to_csv("csv/" + classname + "." + onemode + ".csv", index=False)
 
 def get_onemode_edgelist(weight_matrix):
-    """ Build [(u1, u2, w), (u1, u3, w), ...] from ndarray G_U """
+    """ Build onemode edgelist from non-zero G_U values """
     #TODO: Optimize runtime for changing data structures (nested for loops, append, builtin functions, triu, ...)
     t_start = time.time()
-    onemode_edgelist = []
-    size = weight_matrix.shape[0]
-    for row in range(1, size):
-        for col in range(0, row):
-            weight = weight_matrix[row, col]
-            if weight > 0:
-                onemode_edgelist.append((row, col, weight))
+    # Old solution
+    # onemode_edgelist = []
+    # size = weight_matrix.shape[0]
+    # for row in range(1, size):
+    #     for col in range(0, row):
+    #         weight = weight_matrix[row, col]
+    #         if weight > 0:
+    #             onemode_edgelist.append((row, col, weight))
+
+    # New solution
+    
+
     print("[Runtime] get-onemode-edgelist %.3f sec" % (time.time() - t_start))
     return onemode_edgelist
 
