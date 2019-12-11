@@ -1,5 +1,5 @@
 """
-This is a docstring. Contained in a module.
+Analyze various metrics of a KNC plot.
 """
 
 #!/usr/bin/python3

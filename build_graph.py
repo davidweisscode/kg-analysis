@@ -1,5 +1,5 @@
 """
-This is a docstring. Contained in a module.
+Build a bipartite graph from an n-triples Knowledge Graph representation.
 """
 
 #!/usr/bin/python3

@@ -1,5 +1,5 @@
 """
-This is a docstring. Contained in a module.
+Fold a bipartite Knowledge Graph into its two onemode representations.
 """
 
 #!/usr/bin/python3
