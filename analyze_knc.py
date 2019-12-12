@@ -56,4 +56,4 @@ for superclass in module.config["classes"]:
     #TODO: Append: RC_U_c1, RC_V_c1, RC_U_c2, RC_V_c2, lower_quartile, median, upper_quartile, slope
     append_result_columns(superclass, RC_U, RC_V)
 
-print("\n[Runtime analyze-knc] %.3f sec" % (time.time() - start_time))
+print("\n[Time] analyze-knc %.3f sec" % (time.time() - start_time))

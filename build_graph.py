@@ -7,6 +7,7 @@ Build a bipartite graph from an n-triples Knowledge Graph representation.
 # TODO: Check Googles Python style guide
 # TODO: Check pylint
 # TODO: Save named log file
+# TODO: Optimize Time when changing data structures (nested for loops, DataFrame, ndarray, builtin functions)
 
 import os
 import sys
@@ -41,7 +42,7 @@ def query_subclasses(superclass):
     for result in results:
         subclasses.append(str(result['subclass']))
     #TODO: Remove "dpbedia URL" from subclass names ?
-    print("[Runtime] query-subclasses %.3f sec" % (time.time() - t_start), superclass)
+    print("[Time] query-subclasses %.3f sec" % (time.time() - t_start), superclass)
     return subclasses
 
 def get_subject_predicate_tuples(subclasses, subject_limit, predicate_limit):
@@ -49,18 +50,18 @@ def get_subject_predicate_tuples(subclasses, subject_limit, predicate_limit):
     t_start = time.time()
     subjects = []
     edgelist = []
-    print("[Info]    Query subjects for each subclass")
+    print("[Info] Query subjects for each subclass")
     for subclass in tqdm(subclasses):
         triples = dataset.search_triples("", RDF + "type", subclass, limit=subject_limit)[0]
         for triple in triples:
             subjects.append(triple[0])
-    print("[Info]    Query predicates for each subject")
+    print("[Info] Query predicates for each subject")
     for subject in tqdm(subjects):
         triples = dataset.search_triples(subject, "", "", limit=predicate_limit)[0]
         for triple in triples:
             if not triple[1] in BLACKLIST:
                 edgelist.append((triple[0], triple[1]))
-    print("[Runtime] get-subj-pred-tuples %.3f sec" % (time.time() - t_start))
+    print("[Time] get-subj-pred-tuples %.3f sec" % (time.time() - t_start))
     return edgelist
 
 def write_edgelist(classname, edgelist):
@@ -83,11 +84,11 @@ config_module = import_module(config_file)
 dataset = HDTDocument(config_module.config["kg_source"])
 t_ontology = time.time()
 ontology = Graph().parse(config_module.config["kg_ontology"])
-print("[Runtime] load-ontology %.3f sec" % (time.time() - t_ontology))
+print("[Time] load-ontology %.3f sec" % (time.time() - t_ontology))
 subject_limit = config_module.config["subject_limit"]
 predicate_limit = config_module.config["predicate_limit"]
 if os.path.exists("csv/_results.csv"):
-    print("[Info]    Remove old results file")
+    print("[Info] Remove old results file")
     os.remove("csv/_results.csv")
 results = pd.DataFrame(columns=["superclass", "subclasses", "num_edges"])
 results.to_csv("csv/_results.csv", index=False)
@@ -95,10 +96,10 @@ results.to_csv("csv/_results.csv", index=False)
 t_build = time.time()
 
 for superclass in config_module.config["classes"]:
-    print("\n[Build]  ", superclass)
+    print("\n[Build] ", superclass)
     subclasses = query_subclasses(superclass)
     edgelist = get_subject_predicate_tuples(subclasses, subject_limit, predicate_limit)
     write_edgelist(superclass, edgelist)
     append_result_rows(superclass, subclasses, len(edgelist))
 
-print("\n[Runtime] build-edgelist %.3f sec" % (time.time() - t_build))
+print("\n[Time] build-edgelist %.3f sec" % (time.time() - t_build))

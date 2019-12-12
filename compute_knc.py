@@ -69,4 +69,4 @@ for superclass in module.config["classes"]:
 
     write_knc(superclass, knc_U, knc_V)
 
-print("\n[Runtime compute-knc] %.3f sec" % (time.time() - start_time))
+print("\n[Time] compute-knc %.3f sec" % (time.time() - start_time))
