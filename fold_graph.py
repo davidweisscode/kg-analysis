@@ -44,6 +44,7 @@ def append_result_columns(superclass, k_max_U, k_max_V, connected, bipartite):
 
 def write_edgelist(classname, edgelist, onemode):
     """ Save onemode edge list in a csv file """
+    #TODO: Most time intensive, Improve
     t_start = time.time()
     # Old solution
     # df = pd.DataFrame(edgelist, columns=[onemode + "_a", onemode + "_b", "weight"])
@@ -67,7 +68,30 @@ def get_onemode_edgelist(weight_matrix):
     #             onemode_edgelist.append((row, col, weight))
 
     # New solution, Use nonzero elements & indices in triu with k = -1
-    #TODO: toarray() only once
+    #TODO: toarray() only once, time vs space?
+    # toarray() to transform sparse matrix to ndarray
+
+    print(weight_matrix)
+    print(type(weight_matrix))
+    nonzero_indices = np.nonzero(weight_matrix) # Has nonzero() an effect when dealing with sparse matrices?
+    elements = weight_matrix[nonzero_indices][0,:]# https://stackoverflow.com/questions/4455076/how-to-access-the-ith-column-of-a-numpy-multidimensional-array
+    
+    print(elements)
+    print(type(elements))
+    print(elements.shape)
+
+    print(elements[0])
+
+    # print(len(nonzero_indices[0]), len(nonzero_indices[1]), len(list(elements)))
+    onemode_edgelist = np.stack((nonzero_indices[0], nonzero_indices[1], elements), axis=-1)
+
+    print(onemode_edgelist)
+
+
+    sys.exit()
+
+
+
     indices = np.nonzero(np.tril(weight_matrix.toarray(), -1))
     elements = weight_matrix.toarray()[indices]
     # Combine indices and corresponding elements # dstack, column_stack, vstack
@@ -85,6 +109,8 @@ for superclass in module.config["classes"]:
     G = nx.Graph()
     edgelist = read_edgelist(superclass)
     G.add_edges_from(edgelist)
+
+    #TODO: Print info about graph size, nodes, edges
 
     #TODO: Own method
     t_start = time.time()
