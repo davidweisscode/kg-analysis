@@ -1,0 +1,266 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Summary
+
+Time: dot_product < get_onemode < write_onemode
+
+Artist (11k, 11k)
+- ok
+
+Artist (34k, 2k)
+- ok
+
+WrittenWork (36k, 2,7k)
+- dot_product ok
+- get_onemode_edgelist --> MemoryError: Unable to allocate array with shape (36170, 36170)
+
+Athlete (120k, 5k)
+- dot_product --> MemoryError: Unable to allocate array with shape (13614549083,)
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// get_onemode_edgelist runtime improvement, shape 700x700
+
+david@DAVIDTOP04:~/dev/kg-analysis$ python3 fold_graph.py config
+
+[Fold] Artist
+[Info] Input graph is not connected Artist
+[Time] check-con-bip 0.002 sec
+[Time] get-onemode-sides 0.001 sec Artist
+[Time] comp-biadj-matrix 0.019 sec Artist
+[Info] A shape (698, 285)
+[Time] onemode-dot-product U 0.005 sec Artist
+[Time] onemode-dot-product V 0.001 sec Artist
+[Time] get-onemode-edgelist 3.593 sec          <--
+[Time] get-onemode-edgelist 0.554 sec
+[Time] write-onemode 0.207 sec
+[Time] write-onemode 0.006 sec
+
+[Time] fold-graph 4.413 sec
+david@DAVIDTOP04:~/dev/kg-analysis$ python3 fold_graph.py config
+
+[Fold] Artist
+[Info] Input graph is not connected Artist
+[Time] check-con-bip 0.002 sec
+[Time] get-onemode-sides 0.001 sec Artist
+[Time] comp-biadj-matrix 0.018 sec Artist
+[Info] A shape (698, 285)
+[Time] onemode-dot-product U 0.005 sec Artist
+[Time] onemode-dot-product V 0.001 sec Artist
+[Time] get-onemode-edgelist 0.010 sec          <--
+[Time] get-onemode-edgelist 0.001 sec
+[Time] write-onemode 0.175 sec
+[Time] write-onemode 0.005 sec
+
+[Time] fold-graph 0.242 sec
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// write_edgelist time, np.savetxt() vs. df.to_csv(), (Artist, 50, 50) mit shape (700, 300)
+
+np.savetxt("csv/" + classname + "." + onemode + ".csv", edgelist, fmt="%i,%i,%i")
+--> 0,6sec, 0,03sec
+
+df = pd.DataFrame(edgelist, columns=[onemode + "_a", onemode + "_b", "weight"])
+df.to_csv("csv/" + classname + "." + onemode + ".csv", index=False)
+--> 0,86sec, 0,04sec
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// log.txt 7_5000_1000 Unable to allocate array with shape (13614549083,)
+
+Artist:
+.g 662k lines
+.u 502m lines
+.v 57k lines
+#Gedges 207k
+#Unodes 11k
+#Vnodes 1k
+
+Athlete:
+.g 3m lines --> Should have much more than e.g. Artist --> Early break because MemoryError?
+
+[Time] load-ontology 8.979 sec
+
+[Build]  Artist
+[Time] query-subclasses 3.398 sec Artist
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 146.745 sec
+
+[Build]  Athlete
+[Time] query-subclasses 0.018 sec Athlete
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 184.355 sec
+
+[Build]  WrittenWork
+[Time] query-subclasses 0.011 sec WrittenWork
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 81.275 sec
+
+[Build]  Company
+[Time] query-subclasses 0.007 sec Company
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 37.167 sec
+
+[Build]  Criminal
+[Time] query-subclasses 0.006 sec Criminal
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 3.301 sec
+
+[Build]  Coach
+[Time] query-subclasses 0.006 sec Coach
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 6.738 sec
+
+[Build]  Writer
+[Time] query-subclasses 0.007 sec Writer
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 8.290 sec
+
+[Time] build-edgelist 505.676 sec
+
+[Fold] Artist
+[Info] Input graph is not connected Artist
+[Time] check-con-bip 0.556 sec
+[Time] get-onemode-sides 0.354 sec Artist
+[Time] comp-biadj-matrix 2.555 sec Artist
+[Info] A shape (33932, 1820)
+[Time] onemode-dot-product U 51.966 sec Artist
+[Time] onemode-dot-product V 0.083 sec Artist
+[Time] get-onemode-edgelist 388.707 sec
+[Time] get-onemode-edgelist 0.990 sec
+[Time] write-onemode 2459.569 sec
+[Time] write-onemode 0.290 sec
+
+[Fold] Athlete
+[Time] check-con-bip 2.928 sec
+[Time] get-onemode-sides 1.945 sec Athlete
+[Time] comp-biadj-matrix 16.950 sec Athlete
+[Info] A shape (120459, 5185)
+
+Traceback (most recent call last):
+File "fold_graph.py", line 114, in <module>
+G_U, G_V = fold_bipartite_graph(G, U, V)
+File "fold_graph.py", line 28, in fold_bipartite_graph
+G_U = np.dot(A, A.T)
+File "<__array_function__ internals>", line 6, in dot
+File "/usr/local/lib/python3.7/site-packages/scipy/sparse/base.py", line 481, in __mul__ return self._mul_sparse_matrix(other)
+File "/usr/local/lib/python3.7/site-packages/scipy/sparse/compressed.py", line 516, in _mul_sparse_matrix
+indices = np.empty(nnz, dtype=idx_dtype)
+MemoryError: Unable to allocate array with shape (13614549083,) and data type int64
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// log.txt 6_5000_1000 (no athlete) Unable to allocate array with shape (36170, 36170)
+
+[Time] load-ontology 8.959 sec
+
+[Build]  Artist
+[Time] query-subclasses 3.353 sec Artist
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 351.489 sec
+
+[Build]  WrittenWork
+[Time] query-subclasses 0.010 sec WrittenWork
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 94.033 sec
+
+[Build]  Company
+[Time] query-subclasses 0.007 sec Company
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 37.510 sec
+
+[Build]  Criminal
+[Time] query-subclasses 0.006 sec Criminal
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 3.967 sec
+
+[Build]  Coach
+[Time] query-subclasses 0.006 sec Coach
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 7.346 sec
+
+[Build]  Writer
+[Time] query-subclasses 0.007 sec Writer
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 7.903 sec
+
+[Time] build-edgelist 519.978 sec
+
+[Fold] Artist
+[Info] Input graph is not connected Artist
+[Time] check-con-bip 0.559 sec
+[Time] get-onemode-sides 0.349 sec Artist
+[Time] comp-biadj-matrix 2.597 sec Artist
+[Info] A shape (33932, 1820)
+[Time] onemode-dot-product U 50.700 sec Artist
+[Time] onemode-dot-product V 0.083 sec Artist
+[Time] get-onemode-edgelist 405.594 sec
+[Time] get-onemode-edgelist 0.220 sec
+[Time] write-onemode 2589.130 sec
+[Time] write-onemode 0.308 sec
+
+[Fold] WrittenWork
+[Time] check-con-bip 0.627 sec
+[Time] get-onemode-sides 0.439 sec WrittenWork
+[Time] comp-biadj-matrix 2.923 sec WrittenWork
+[Info] A shape (36170, 2743)
+[Time] onemode-dot-product U 68.546 sec WrittenWork
+[Time] onemode-dot-product V 0.562 sec WrittenWork
+
+Traceback (most recent call last):                                                             │
+  File "fold_graph.py", line 119, in <module>                                                  │
+    G_U_edgelist = get_onemode_edgelist(G_U)                                                   │
+  File "fold_graph.py", line 71, in get_onemode_edgelist                                       │
+    indices = np.nonzero(np.tril(weight_matrix.toarray(), -1))                                 │
+  File "<__array_function__ internals>", line 6, in tril                                       │
+  File "/usr/local/lib/python3.7/site-packages/numpy/lib/twodim_base.py", line 438, in tril    │
+    return where(mask, m, zeros(1, m.dtype))                                                   │
+  File "<__array_function__ internals>", line 6, in where                                      │
+MemoryError: Unable to allocate array with shape (36170, 36170) and data type int64
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// log.txt 1_1000_100 (only artist) OK
+
+.g 207k lines
+.u 54m lines
+.v 33k lines
+#Gedges 207k
+#Unodes 11k
+#Vnodes 1k
+
+[Time] load-ontology 9.048 sec
+
+[Build]  Artist
+[Time] query-subclasses 3.343 sec Artist
+[Info] Query subjects for each subclass
+[Info] Query predicates for each subject
+[Time] get-subj-pred-tuples 85.825 sec
+
+[Time] build-edgelist 90.386 sec
+
+[Fold] Artist
+[Time] check-con-bip 0.154 sec
+[Time] get-onemode-sides 0.110 sec Artist
+[Time] comp-biadj-matrix 0.690 sec Artist
+[Info] A shape (11272, 1137)
+[Time] onemode-dot-product U 4.891 sec Artist
+[Time] onemode-dot-product V 0.025 sec Artist
+[Time] get-onemode-edgelist 7.697 sec
+[Time] get-onemode-edgelist 0.059 sec
+[Time] write-onemode 271.699 sec
+[Time] write-onemode 0.172 sec
+
+[Time] fold-graph 286.524 sec
