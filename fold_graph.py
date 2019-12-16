@@ -87,31 +87,50 @@ def write_edgelist(classname, edgelist, onemode):
     np.savetxt("csv/" + classname + "." + onemode + ".csv", edgelist, fmt="%i,%i,%i")
     print("[Time] write-onemode %.3f sec" % (time.time() - t_start))
 
+def get_tril_start(indexarray):
+    # indexarray pairs not ordered
+    tril_start = 0#indexarray[0].shape[0] / 2
+    for i in range(0, indexarray[0].shape[0]):
+        rowindex = indexarray[0][i]
+        colindex = indexarray[1][i]
+        print(rowindex, colindex)
 
 def get_onemode_edgelist(wmatrix):
     """ Build onemode edgelist [(n1, n2, w), ...] from non-zero onemode weight matrix values """
     t_start = time.time()
-    # New solution, Use nonzero elements & indices in triu with k = -1
-    #TODO: toarray() only once, time vs space?
-    # toarray() to transform sparse matrix to ndarray
-    print(wmatrix)
-    print(type(wmatrix))
-    nonzero_indices = np.nonzero(wmatrix) # Has nonzero() an effect when dealing with sparse matrices?
-    elements = wmatrix[nonzero_indices][0,:]# https://stackoverflow.com/questions/4455076/how-to-access-the-ith-column-of-a-numpy-multidimensional-array
-    
-    print(elements)
-    print(type(elements))
-    print(elements.shape)
 
-    print(elements[0])
+    print("wmatrix type", type(wmatrix)) # scipy.sparse.csr.csr_matrix
+    print("wmatrix shape", wmatrix.shape) # (700, 700) --> 487204 elements
+
+    nonzero_indices = np.nonzero(wmatrix) # Has nonzero() an effect when dealing with sparse matrices?
+    #TODO: Get tril indices (rowindex > colindex)
+
+    elements = wmatrix[nonzero_indices][0,:]# https://stackoverflow.com/questions/4455076/how-to-access-the-ith-column-of-a-numpy-multidimensional-array
+
+    print("elements", elements)
+    print("elements type", type(elements)) # numpy matrix
+    print("elements shape", elements.shape) # (1, 283368)
+    print("elements [0]", elements[0]) # same as elements
+    print("elements [0] shape", elements[0].shape) # (1, 283368)
+
+    # Convert numpy.matrix to ndarray
+    print("squeeze", np.squeeze(np.asarray(elements)))
+    print("squeeze shape", np.squeeze(np.asarray(elements)).shape)
+
+    print("nzi", nonzero_indices)
+    print("nzi type", type(nonzero_indices)) # tuple
+    print("nzi [0]", nonzero_indices[0])
+    print("nzi [0] type", type(nonzero_indices[0])) # ndarray
+    print("nzi [0] shape", nonzero_indices[0].shape) # (283368,)
 
     # print(len(nonzero_indices[0]), len(nonzero_indices[1]), len(list(elements)))
-    onemode_edgelist = np.stack((nonzero_indices[0], nonzero_indices[1], elements), axis=-1)
-
+    print(nonzero_indices[0].shape, nonzero_indices[1].shape, np.squeeze(np.asarray(elements)).shape)
+    onemode_edgelist = np.stack((nonzero_indices[0], nonzero_indices[1], np.squeeze(np.asarray(elements))), axis=-1)
     print(onemode_edgelist)
 
     sys.exit()
 
+    # toarray() only once, time vs space, to transform sparse matrix to ndarray
     indices = np.nonzero(np.tril(weight_matrix.toarray(), -1))
     elements = weight_matrix.toarray()[indices]
     # Combine indices and corresponding elements # dstack, column_stack, vstack
@@ -130,12 +149,11 @@ for superclass in module.config["classes"]:
     edgelist = read_edgelist(superclass)
     bipgraph.add_edges_from(edgelist)
 
-    #TODO: Print info about graph size, nodes, edges
     is_connected = check_connected(bipgraph)
     is_bipartite = check_bipartite(bipgraph)
-    side_u, side_v = split_edgelist(edgelist)
     print("[Info] Number of nodes", bipgraph.number_of_nodes())
     print("[Info] Number of edges", bipgraph.number_of_edges())
+    side_u, side_v = split_edgelist(edgelist)
 
     # Diagonal values of G_U represent to how much v's the u is affiliated with
     #TODO: Save diagonal values in .csv for analysis of extensively described entities
