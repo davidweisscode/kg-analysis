@@ -16,28 +16,61 @@ def read_edgelist(superclass):
     df = pd.read_csv("csv/" + superclass + ".g.csv")
     return list(df.itertuples(index=False, name=None))
 
-def fold_bipartite_graph(bipgraph, U, V):
-    """ Fold a bipartite graph to its onemode representations using its biadjacency matrix """
-    # TODO: Save row and column name order for later name lookup in G_U for e.g. heatmap analysis
-    # TODO: Fold the onemodes one at a time to reduce RAM
+def check_connected(bipgraph):
+    """ Check whether input graph is connected """
     t_start = time.time()
-    A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=U, column_order=V)
-    print("[Time] comp-biadj-matrix %.3f sec" % (time.time() - t_start), superclass)
+    connected = True
+    if not nx.is_connected(bipgraph):
+        connected = False
+        print("[Info] Input graph is not connected")
+    print("[Time] check-con %.3f sec" % (time.time() - t_start))
+    return connected
+
+def check_bipartite(bipgraph):
+    """ Check whether input graph is bipartite """
+    t_start = time.time()
+    bipartite = True
+    if not nx.bipartite.is_bipartite(bipgraph):
+        bipartite = False
+        sys.exit("[Error] Input graph is not bipartite")
+    print("[Time] check-bip %.3f sec" % (time.time() - t_start))
+    return bipartite
+
+def split_edgelist(edges):
+    """ Split the input edgelist into left and right side """
+    t_start = time.time()
+    side_u = []
+    side_v = []
+    for edge in edges:
+        side_u.append(edge[0])
+        side_v.append(edge[1])
+    side_u = list(set(side_u))
+    side_v = list(set(side_v))
+    print("[Time] split-onemode-edges %.3f sec" % (time.time() - t_start))
+    return side_u, side_v
+
+def fold_bipgraph(bipgraph, u, v):
+    """ Fold a bipartite graph to its onemode representations using its biadjacency matrix """
+    # TODO: Save row and column name order for later name lookup in wmatrix_u for e.g. heatmap analysis
+    # TODO: Fold the onemodes one at a time to reduce RAM
+    # del wmatrix_u # Free up memory, Divide into two method calls?
+    t_start = time.time()
+    A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=u, column_order=v)
+    print("[Time] comp-biadj-matrix %.3f sec" % (time.time() - t_start))
     print("[Info] A shape", A.shape)
     t_start = time.time()
-    G_U = np.dot(A, A.T)
-    print("[Time] onemode-dot-product U %.3f sec" % (time.time() - t_start), superclass)
-    # del G_U # Free up memory, Divide into two method calls?
+    wmatrix_u = np.dot(A, A.T)
+    print("[Time] onemode-dot-product U %.3f sec" % (time.time() - t_start))
     t_start = time.time()
-    G_V = np.dot(A.T, A)
-    print("[Time] onemode-dot-product V %.3f sec" % (time.time() - t_start), superclass)
-    return G_U, G_V
+    wmatrix_v = np.dot(A.T, A)
+    print("[Time] onemode-dot-product V %.3f sec" % (time.time() - t_start))
+    return wmatrix_u, wmatrix_v
 
-def append_result_columns(superclass, k_max_U, k_max_V, connected, bipartite):
+def append_result_columns(superclass, k_max_u, k_max_v, connected, bipartite):
     """ Save more properties for each superclass in the result csv file """
     df = pd.read_csv("csv/_results.csv")
-    df.loc[df.index[df["superclass"] == superclass], "k_max_U"] = k_max_U
-    df.loc[df.index[df["superclass"] == superclass], "k_max_V"] = k_max_V
+    df.loc[df.index[df["superclass"] == superclass], "k_max_u"] = k_max_u
+    df.loc[df.index[df["superclass"] == superclass], "k_max_v"] = k_max_v
     df.loc[df.index[df["superclass"] == superclass], "connected"] = connected
     df.loc[df.index[df["superclass"] == superclass], "bipartite"] = bipartite
     df.to_csv("csv/_results.csv", index=False)
@@ -55,26 +88,16 @@ def write_edgelist(classname, edgelist, onemode):
     print("[Time] write-onemode %.3f sec" % (time.time() - t_start))
 
 
-def get_onemode_edgelist(weight_matrix):
-    """ Build onemode edgelist from non-zero G_U values """
+def get_onemode_edgelist(wmatrix):
+    """ Build onemode edgelist [(n1, n2, w), ...] from non-zero onemode weight matrix values """
     t_start = time.time()
-    # Old solution (for comparing runtime difference)
-    # onemode_edgelist = []
-    # size = weight_matrix.shape[0]
-    # for row in range(1, size):
-    #     for col in range(0, row):
-    #         weight = weight_matrix[row, col]
-    #         if weight > 0:
-    #             onemode_edgelist.append((row, col, weight))
-
     # New solution, Use nonzero elements & indices in triu with k = -1
     #TODO: toarray() only once, time vs space?
     # toarray() to transform sparse matrix to ndarray
-
-    print(weight_matrix)
-    print(type(weight_matrix))
-    nonzero_indices = np.nonzero(weight_matrix) # Has nonzero() an effect when dealing with sparse matrices?
-    elements = weight_matrix[nonzero_indices][0,:]# https://stackoverflow.com/questions/4455076/how-to-access-the-ith-column-of-a-numpy-multidimensional-array
+    print(wmatrix)
+    print(type(wmatrix))
+    nonzero_indices = np.nonzero(wmatrix) # Has nonzero() an effect when dealing with sparse matrices?
+    elements = wmatrix[nonzero_indices][0,:]# https://stackoverflow.com/questions/4455076/how-to-access-the-ith-column-of-a-numpy-multidimensional-array
     
     print(elements)
     print(type(elements))
@@ -87,10 +110,7 @@ def get_onemode_edgelist(weight_matrix):
 
     print(onemode_edgelist)
 
-
     sys.exit()
-
-
 
     indices = np.nonzero(np.tril(weight_matrix.toarray(), -1))
     elements = weight_matrix.toarray()[indices]
@@ -106,49 +126,33 @@ module = import_module(config_file)
 for superclass in module.config["classes"]:
     print("\n[Fold]", superclass)
 
-    G = nx.Graph()
+    bipgraph = nx.Graph()
     edgelist = read_edgelist(superclass)
-    G.add_edges_from(edgelist)
+    bipgraph.add_edges_from(edgelist)
 
     #TODO: Print info about graph size, nodes, edges
-
-    #TODO: Own method
-    t_start = time.time()
-    is_connected = True
-    is_bipartite = True
-    if not nx.is_connected(G):
-        is_connected = False
-        print("[Info] Input graph is not connected", superclass)
-    if not nx.bipartite.is_bipartite(G):
-        is_bipartite = False
-        sys.exit("[Error] Input graph is not bipartite", superclass)
-    print("[Time] check-con-bip %.3f sec" % (time.time() - t_start))
-
-    #TODO: Own method
-    t_start = time.time()
-    U = []
-    V = []
-    for edge in edgelist:
-        U.append(edge[0])
-        V.append(edge[1])
-    U = list(set(U))
-    V = list(set(V))
-    print("[Time] get-onemode-sides %.3f sec" % (time.time() - t_start), superclass)
+    is_connected = check_connected(bipgraph)
+    is_bipartite = check_bipartite(bipgraph)
+    side_u, side_v = split_edgelist(edgelist)
+    print("[Info] Number of nodes", bipgraph.number_of_nodes())
+    print("[Info] Number of edges", bipgraph.number_of_edges())
 
     # Diagonal values of G_U represent to how much v's the u is affiliated with
-    #TODO: Save diagonal values in .u.csv for analysis of extensively described entities
-    G_U, G_V = fold_bipartite_graph(G, U, V)
+    #TODO: Save diagonal values in .csv for analysis of extensively described entities
+    wmatrix_u, wmatrix_v = fold_bipgraph(bipgraph, side_u, side_v)
 
-    k_max_U = G_V.shape[0]
-    k_max_V = G_U.shape[0]
+    k_max_u = wmatrix_u.shape[0]
+    k_max_v = wmatrix_v.shape[0]
 
-    G_U_edgelist = get_onemode_edgelist(G_U)
-    G_V_edgelist = get_onemode_edgelist(G_V)
+    edgelist_u = get_onemode_edgelist(wmatrix_u)
+    edgelist_v = get_onemode_edgelist(wmatrix_v)
 
-    write_edgelist(superclass, G_U_edgelist, "u")
-    write_edgelist(superclass, G_V_edgelist, "v")
+    write_edgelist(superclass, edgelist_u, "u")
+    write_edgelist(superclass, edgelist_v, "v")
 
     # In onemode network edgelists, data about disconnected nodes gets lost
-    append_result_columns(superclass, k_max_U, k_max_V, is_connected, is_bipartite)
+    append_result_columns(superclass, k_max_u, k_max_v, is_connected, is_bipartite)
+
+    # TODO: Delete objects (G, edgelist, U, V, ...) to free up RAM?
 
 print("\n[Time] fold-graph %.3f sec" % (time.time() - t_fold))

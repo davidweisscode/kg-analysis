@@ -18,9 +18,9 @@ from hdt import HDTDocument
 from rdflib import Graph, RDFS
 import pandas as pd
 
-RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-DBO = "http://dbpedia.org/ontology/"
-DBR = "http://dbpedia.org/resource/"
+rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+dbo = "http://dbpedia.org/ontology/"
+dbr = "http://dbpedia.org/resource/"
 
 # DBpedia classes: http://mappings.dbpedia.org/server/ontology/classes/
 
@@ -34,7 +34,7 @@ def query_subclasses(superclass):
     SELECT ?subclass
     WHERE 
     {{
-        ?subclass <{str(RDFS['subClassOf'])}>* <{DBO + superclass}> .
+        ?subclass <{str(RDFS['subClassOf'])}>* <{dbo + superclass}> .
     }}
     """
     subclasses = []
@@ -52,14 +52,14 @@ def get_subject_predicate_tuples(subclasses, subject_limit, predicate_limit):
     edgelist = []
     print("[Info] Query subjects for each subclass")
     for subclass in tqdm(subclasses):
-        triples = dataset.search_triples("", RDF + "type", subclass, limit=subject_limit)[0]
+        triples = dataset.search_triples("", rdf + "type", subclass, limit=subject_limit)[0]
         for triple in triples:
             subjects.append(triple[0])
     print("[Info] Query predicates for each subject")
     for subject in tqdm(subjects):
         triples = dataset.search_triples(subject, "", "", limit=predicate_limit)[0]
         for triple in triples:
-            if not triple[1] in BLACKLIST:
+            if not triple[1] in blacklist:
                 edgelist.append((triple[0], triple[1]))
     print("[Time] get-subj-pred-tuples %.3f sec" % (time.time() - t_start))
     return edgelist
@@ -78,7 +78,7 @@ def append_result_rows(superclass, subclasses, number_of_edges):
 #TODO: Setup: Check, create and reset any missing dirs or files
 #             (csv, kg, _results.csv, csv/*.csv, config, log.txt)
 with open("blacklist.txt", "r") as file:
-    BLACKLIST = file.read().splitlines()
+    blacklist = file.read().splitlines()
 config_file = sys.argv[1]
 config_module = import_module(config_file)
 dataset = HDTDocument(config_module.config["kg_source"])
