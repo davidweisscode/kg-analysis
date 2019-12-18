@@ -6,6 +6,7 @@ Compute points for a KNC plot.
 
 import sys
 import time
+from scipy import sparse
 from importlib import import_module
 import pandas as pd
 import networkx as nx
@@ -56,19 +57,18 @@ module = import_module(config_file)
 for superclass in module.config["classes"]:
     print("\n[Compute knc]", superclass)
 
-    G_U = nx.Graph()
-    G_U_edges = read_edgelist(superclass, "u")
-    G_U.add_weighted_edges_from(G_U_edges)
+    #TODO: Delete objects to free up space?
+    wmatrix_u = sparse.load_npz("out/" + superclass + ".u.npz")
+    omgraph_u = nx.from_scipy_sparse_matrix(wmatrix_u)
+    wmatrix_v = sparse.load_npz("out/" + superclass + ".v.npz")
+    omgraph_v = nx.from_scipy_sparse_matrix(wmatrix_v)
 
-    G_V = nx.Graph()
-    G_V_edges = read_edgelist(superclass, "v")
-    G_V.add_weighted_edges_from(G_V_edges)
+    k_max_u = int(get_result(superclass, "k_max_u"))
+    k_max_v = int(get_result(superclass, "k_max_v"))
 
-    k_max_U = int(get_result(superclass, "k_max_U"))
-    k_max_V = int(get_result(superclass, "k_max_V"))
-    knc_U = compute_knc(G_U, k_max_U)
-    knc_V = compute_knc(G_V, k_max_V)
+    knc_u = compute_knc(omgraph_u, k_max_u)
+    knc_v = compute_knc(omgraph_v, k_max_v)
 
-    write_knc(superclass, knc_U, knc_V)
+    write_knc(superclass, knc_u, knc_v)
 
 print("\n[Time] compute-knc %.3f sec" % (time.time() - start_time))
