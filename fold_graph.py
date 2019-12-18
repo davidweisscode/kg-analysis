@@ -99,8 +99,16 @@ for superclass in module.config["classes"]:
 
     # Diagonal values of wmatrix_u represent to how much v's the u is affiliated with
     #TODO: Save diagonal values in .csv for analysis of extensively described entities
-    #TODO: Delete objects to free up RAM?
     wmatrix_u, wmatrix_v = fold_bipgraph(bipgraph, side_u, side_v)
+    print("wmatrix_u type", type(wmatrix_u)) # scipy.sparse.csr.csr_matrix
+    print("wmatrix_u dtype", wmatrix_u.dtype) # int64
+    print("wmatrix_u nbytes", (wmatrix_u.data.nbytes + wmatrix_u.indptr.nbytes + wmatrix_u.indices.nbytes))
+
+    # Fails here for large matrices
+    #TODO: Delete objects to free up RAM, Garbage collection: Use gc.collect()
+    #TODO: Change datatype of matrix elements from int64 to something else https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.astype.html
+    #TODO: Change overcommit memory https://stackoverflow.com/questions/57507832/unable-to-allocate-array-with-shape-and-data-type
+    #TODO: Options https://www.quora.com/How-can-I-deal-with-the-memory-error-generated-by-large-Numpy-Python-arrays
     wmatrix_u, wmatrix_v = tril_wmatrices(wmatrix_u, wmatrix_v)
 
     t_start = time.time()
