@@ -1,4 +1,4 @@
-*.pyc
 /kg/*
-/csv
+/out/*
+*.pyc
 .vscode/

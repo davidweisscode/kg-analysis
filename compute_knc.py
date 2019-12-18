@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 def read_edgelist(superclass, onemode):
     """ Read edge list from csv file """
-    df = pd.read_csv("csv/" + superclass + "." + onemode + ".csv")
+    df = pd.read_csv("out/" + superclass + "." + onemode + ".csv")
     return list(df.itertuples(index=False, name=None))
 
 def get_k_max(onemode_graph): # TODO: Add error handling
@@ -26,13 +26,12 @@ def get_k_max(onemode_graph): # TODO: Add error handling
 
 def get_result(superclass, feature):
     """ Get the superclasses value in a feature column """
-    df = pd.read_csv("csv/_results.csv")
+    df = pd.read_csv("out/_results.csv")
     return df.loc[df.index[df["superclass"] == superclass][0], feature]
 
 def compute_knc(onemode_graph, k_max):
     """ Compute points of an KNC plot """
     # TODO: Build a graph here? Density can be computed manually
-
     # TODO: Add other connectivity measures
     # TODO: Break if connectivity measure reached zero
     knc_list = []
@@ -48,7 +47,7 @@ def write_knc(superclass, knc_U, knc_V):
     df_U = pd.DataFrame(knc_U, columns=["k", "density"])
     df_V = pd.DataFrame(knc_V, columns=["k", "density"])
     knc = df_U.append(df_V, ignore_index=True)
-    knc.to_csv("csv/" + superclass + ".k.csv", index=False)
+    knc.to_csv("out/" + superclass + ".k.csv", index=False)
 
 start_time = time.time()
 config_file = sys.argv[1]

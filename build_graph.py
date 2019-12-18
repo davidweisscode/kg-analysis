@@ -67,13 +67,13 @@ def get_subject_predicate_tuples(subclasses, subject_limit, predicate_limit):
 def write_edgelist(classname, edgelist):
     """ Write edge list to csv file """
     df = pd.DataFrame(edgelist, columns=["u", "v"])
-    df.to_csv("csv/" + classname + ".g.csv", index=False)
+    df.to_csv("out/" + classname + ".g.csv", index=False)
 
 def append_result_rows(superclass, subclasses, number_of_edges):
     """ Append result rows for each superclass """
-    df = pd.read_csv("csv/_results.csv")
+    df = pd.read_csv("out/_results.csv")
     df.loc[len(df)] = (superclass, subclasses, number_of_edges)
-    df.to_csv("csv/_results.csv", index=False)
+    df.to_csv("out/_results.csv", index=False)
 
 #TODO: Setup: Check, create and reset any missing dirs or files
 #             (csv, kg, _results.csv, csv/*.csv, config, log.txt)
@@ -87,11 +87,11 @@ ontology = Graph().parse(config_module.config["kg_ontology"])
 print("[Time] load-ontology %.3f sec" % (time.time() - t_ontology))
 subject_limit = config_module.config["subject_limit"]
 predicate_limit = config_module.config["predicate_limit"]
-if os.path.exists("csv/_results.csv"):
+if os.path.exists("out/_results.csv"):
     print("[Info] Remove old results file")
-    os.remove("csv/_results.csv")
+    os.remove("out/_results.csv")
 results = pd.DataFrame(columns=["superclass", "subclasses", "num_edges"])
-results.to_csv("csv/_results.csv", index=False)
+results.to_csv("out/_results.csv", index=False)
 
 t_build = time.time()
 
