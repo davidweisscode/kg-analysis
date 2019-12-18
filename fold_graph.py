@@ -55,11 +55,13 @@ def fold_bipgraph(bipgraph, u, v):
     # TODO: Fold the onemodes one at a time to reduce RAM
     # del wmatrix_u # Free up memory, Divide into two method calls?
     t_start = time.time()
-    A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=u, column_order=v)
+    A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=u, column_order=v) # Sparse matrix
     print("[Time] comp-biadj-matrix %.3f sec" % (time.time() - t_start))
     print("[Info] A shape", A.shape)
+    print("[Info] A type", type(A))
     t_start = time.time()
     wmatrix_u = np.dot(A, A.T)
+    print("[Info] wmatrix_u type", type(wmatrix_u))
     print("[Time] onemode-dot-product U %.3f sec" % (time.time() - t_start))
     t_start = time.time()
     wmatrix_v = np.dot(A.T, A)
@@ -77,13 +79,10 @@ def append_result_columns(superclass, k_max_u, k_max_v, connected, bipartite):
 
 def write_edgelist(classname, edgelist, onemode):
     """ Save onemode edge list in a csv file """
-    #TODO: Most time intensive, Improve
+    #TODO: Most time intensive
     t_start = time.time()
-    # Old solution
     # df = pd.DataFrame(edgelist, columns=[onemode + "_a", onemode + "_b", "weight"])
     # df.to_csv("csv/" + classname + "." + onemode + ".csv", index=False)
-
-    # New solution
     np.savetxt("csv/" + classname + "." + onemode + ".csv", edgelist, fmt="%i,%i,%i")
     print("[Time] write-onemode %.3f sec" % (time.time() - t_start))
 
@@ -101,6 +100,13 @@ def get_onemode_edgelist(wmatrix):
 
     print("wmatrix type", type(wmatrix)) # scipy.sparse.csr.csr_matrix
     print("wmatrix shape", wmatrix.shape) # (700, 700) --> 487204 elements
+    print("wmatrix\n", wmatrix)
+    print("wmatrix todense\n", wmatrix.todense())
+    print("wmatrix tril\n", tril(wmatrix))#TODO
+
+    #TODO: Save sparse matrix to .npz file, load it, create edgelist from it?
+    # https://stackoverflow.com/questions/8955448/save-load-scipy-sparse-csr-matrix-in-portable-data-format
+    np.savetxt("test-sparse.csv", wmatrix)
 
     nonzero_indices = np.nonzero(wmatrix) # Has nonzero() an effect when dealing with sparse matrices?
     #TODO: Get tril indices (rowindex > colindex)
@@ -126,7 +132,7 @@ def get_onemode_edgelist(wmatrix):
     # print(len(nonzero_indices[0]), len(nonzero_indices[1]), len(list(elements)))
     print(nonzero_indices[0].shape, nonzero_indices[1].shape, np.squeeze(np.asarray(elements)).shape)
     onemode_edgelist = np.stack((nonzero_indices[0], nonzero_indices[1], np.squeeze(np.asarray(elements))), axis=-1)
-    print(onemode_edgelist)
+    # print(onemode_edgelist)
 
     sys.exit()
 
@@ -162,6 +168,7 @@ for superclass in module.config["classes"]:
     k_max_u = wmatrix_u.shape[0]
     k_max_v = wmatrix_v.shape[0]
 
+    #TODO: Directly write each edgelist to .csv, then deleting the object to free up space?
     edgelist_u = get_onemode_edgelist(wmatrix_u)
     edgelist_v = get_onemode_edgelist(wmatrix_v)
 

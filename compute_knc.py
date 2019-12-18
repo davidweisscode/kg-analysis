@@ -30,6 +30,8 @@ def get_result(superclass, feature):
 
 def compute_knc(onemode_graph, k_max):
     """ Compute points of an KNC plot """
+    # TODO: Build a graph here? Density can be computed manually
+
     # TODO: Add other connectivity measures
     # TODO: Break if connectivity measure reached zero
     knc_list = []
