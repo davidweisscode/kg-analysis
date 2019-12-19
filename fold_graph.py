@@ -54,6 +54,7 @@ def fold_bipgraph(bipgraph, u, v):
     """ Fold a bipartite graph to its onemode representations using its biadjacency matrix """
     # TODO: Save row and column name order for later name lookup in wmatrix_u for e.g. heatmap analysis
     # TODO: Fold the onemodes one at a time to reduce space (increases time)
+    # TODO: Delete objects to free up RAM, Garbage collection
     # del wmatrix_u # Free up memory, Divide into two method calls?
     t_start = time.time()
     A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=u, column_order=v, dtype="uint16")
@@ -62,10 +63,10 @@ def fold_bipgraph(bipgraph, u, v):
     print("[Info] A dtype", A.dtype)
     t_start = time.time()
     wmatrix_u = np.dot(A, A.T)
-    print("[Time] onemode-dot-product U %.3f sec" % (time.time() - t_start))
+    print("[Time] onemode-dot-product u %.3f sec" % (time.time() - t_start))
     t_start = time.time()
     wmatrix_v = np.dot(A.T, A)
-    print("[Time] onemode-dot-product V %.3f sec" % (time.time() - t_start))
+    print("[Time] onemode-dot-product v %.3f sec\n" % (time.time() - t_start))
     return wmatrix_u, wmatrix_v
 
 def append_result_columns(superclass, k_max_u, k_max_v, connected, bipartite):
@@ -99,11 +100,17 @@ for superclass in module.config["classes"]:
     wmatrix_u, wmatrix_v = fold_bipgraph(bipgraph, side_u, side_v)
     print("[Info] wmatrix_u type", type(wmatrix_u))
     print("[Info] wmatrix_u dtype", wmatrix_u.dtype)
-    print("[Info] wmatrix_u nbytes in G", (wmatrix_u.data.nbytes + wmatrix_u.indptr.nbytes + wmatrix_u.indices.nbytes) / (1024 ** 3))
-
-    #TODO: Use dynamic dtypes (int16, uint16, ...) depending on wmatrix max values
-    print("[Info] wmatrix_u max", wmatrix_u.max())
-    print("[Info] wmatrix_v max", wmatrix_v.max())
+    print("[Info] wmatrix_u nbytes in GB", (wmatrix_u.data.nbytes + wmatrix_u.indptr.nbytes + wmatrix_u.indices.nbytes) / (1024 ** 3))
+    print("[Info] wmatrix_u nbytes data in GB", (wmatrix_u.data.nbytes) / (1024 ** 3))
+    print("[Info] wmatrix_u shape", wmatrix_u.shape)
+    print("[Info] wmatrix_u maxelement", wmatrix_u.max())
+    print("[Info] wmatrix_v shape", wmatrix_v.shape)
+    print("[Info] wmatrix_v maxelement", wmatrix_v.max())
+    count_nonzeroes = wmatrix_u.nnz
+    max_nonzeroes = wmatrix_u.shape[0] * (wmatrix_u.shape[0] - 1)
+    matrix_density = count_nonzeroes / max_nonzeroes
+    print(f"[Info] wmatrix_u nnz {count_nonzeroes}")
+    print(f"[Info] wmatrix_u density {matrix_density}")
 
     # In onemode network edgelists, data about disconnected nodes gets lost
     k_max_u = wmatrix_v.shape[0]
@@ -111,17 +118,32 @@ for superclass in module.config["classes"]:
     append_result_columns(superclass, k_max_u, k_max_v, is_connected, is_bipartite)
 
     # Fails here for large matrices
-    #TODO: Delete objects to free up RAM, Garbage collection
-    #TODO: Change overcommit memory https://stackoverflow.com/questions/57507832/unable-to-allocate-array-with-shape-and-data-type
-    #TODO: Change datatype of matrix elements from int64 to something else https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.astype.html
-    wmatrix_u = sparse.tril(wmatrix_u, k=-1)
     t_start = time.time()
-    sparse.save_npz("out/" + superclass + ".u.npz", wmatrix_u)
-    print("[Time] save-npz-u %.3f sec" % (time.time() - t_start))
+    wmatrix_u = sparse.tril(wmatrix_u, k=-1) # high time, high space
+    print("[Time] wmatrix_u tril %.3f sec" % (time.time() - t_start))
 
+    t_start = time.time()
+    wmatrix_u = wmatrix_u.tocsr()
+    print("[Time] tocsr %.3f sec" % (time.time() - t_start))
+
+    count_nonzeroes = wmatrix_u.nnz
+    max_nonzeroes = 0.5 * wmatrix_u.shape[0] * (wmatrix_u.shape[0] - 1)
+    matrix_density = count_nonzeroes / max_nonzeroes
+    print(f"[Info] wmatrix_u tril nnz {count_nonzeroes}")
+    print(f"[Info] wmatrix_u tril density {matrix_density}")
+    print("[Info] wmatrix_u tril type", type(wmatrix_u))
+    print("[Info] wmatrix_u tril nbytes data in GB", (wmatrix_u.data.nbytes) / (1024 ** 3))
+    print("[Info] wmatrix_u tril nnz", wmatrix_u.nnz)
+
+    t_start = time.time()
+    sparse.save_npz("out/" + superclass + ".u.npz", wmatrix_u) # high time, low space
+    print("[Time] savenpz u %.3f sec" % (time.time() - t_start))
+
+    t_start = time.time()
     wmatrix_v = sparse.tril(wmatrix_v, k=-1)
+    print("[Time] wmatrix_v tril %.3f sec" % (time.time() - t_start))
     t_start = time.time()
     sparse.save_npz("out/" + superclass + ".v.npz", wmatrix_v)
-    print("[Time] save-npz-v %.3f sec" % (time.time() - t_start))
+    print("[Time] savenpz v %.3f sec" % (time.time() - t_start))
 
 print("\n[Time] fold-graph %.3f sec" % (time.time() - t_fold))

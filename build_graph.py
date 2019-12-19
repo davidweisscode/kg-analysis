@@ -7,7 +7,7 @@ Build a bipartite graph from an n-triples Knowledge Graph representation.
 # TODO: Check Googles Python style guide
 # TODO: Check pylint
 # TODO: Save named log file
-# TODO: Optimize Time when changing data structures (nested for loops, DataFrame, ndarray, builtin functions)
+# TODO: Optimize changing data structures (nested for loops, DataFrame, ndarray, builtin functions)
 
 import os
 import sys
@@ -26,8 +26,8 @@ dbr = "http://dbpedia.org/resource/"
 
 def query_subclasses(superclass):
     """ Query ontology for subclass rdfs-entailment """
-    # Option 1: Mappings from dataset.join()
-    # Option 2: Sequential querying with pyHDT
+    # Option 1: Sequential querying with pyHDT
+    # Option 2: Mappings from dataset.join()
     # Option 3: https://github.com/comunica/comunica-actor-init-sparql-hdt
     t_start = time.time()
     subclass_query = f"""

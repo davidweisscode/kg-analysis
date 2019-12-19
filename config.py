@@ -1,7 +1,7 @@
 config = {#TODO: Name for config file same as results file
-    "classes": ["Artist", "Athlete", "WrittenWork", "Company", "Criminal", "Coach", "Writer"],
-    "subject_limit": 10,
-    "predicate_limit": 10,
+    "classes": ["Athlete"],
+    "subject_limit": 1000,
+    "predicate_limit": 500,
     "kg_source": "kg/dbpedia2016-04en.hdt",
     "kg_ontology": "kg/dbpedia.owl",
     "entail_subclasses": True,#TODO
