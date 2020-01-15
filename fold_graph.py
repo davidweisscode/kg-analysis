@@ -113,9 +113,8 @@ def fold_dot_onemode(superclass, biadjmatrix, onemode):
     matrix_density = count_nonzeroes / max_nonzeroes
     print(f"[Info] wmatrix {onemode} nnz {count_nonzeroes}")
     print(f"[Info] wmatrix {onemode} density {matrix_density:.4f}")
-    # Fails here for large matrices
     t_start = time.time()
-    wmatrix = sparse.tril(wmatrix, k=-1) # high time, high space
+    wmatrix = sparse.tril(wmatrix, k=-1) # Fails here for large matrices with high time, high space
     print(f"[Time] wmatrix {onemode} tril {time.time() - t_start:.3f} sec")
     t_start = time.time()
     wmatrix = wmatrix.tocsr()
@@ -129,7 +128,7 @@ def fold_dot_onemode(superclass, biadjmatrix, onemode):
     print(f"[Info] wmatrix {onemode} tril nbytes data in GB {(wmatrix.data.nbytes) / (1024 ** 3):.6f}")
     print(f"[Info] wmatrix {onemode} tril nnz {wmatrix.nnz}")
     t_start = time.time()
-    sparse.save_npz(f"out/{superclass}.{onemode}.npz", wmatrix) # high time, low space
+    sparse.save_npz(f"out/{superclass}.{onemode}.npz", wmatrix)
     print(f"[Time] save-npz {onemode} {time.time() - t_start:.3f} sec")
 
 def main():

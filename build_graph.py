@@ -49,12 +49,12 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
     t_start = time.time()
     subjects = []
     edgelist = []
-    print("[Info] Query subjects for each subclass")
+    print("[Info] query subjects for each subclass")
     for subclass in tqdm(subclasses):
         triples = dataset.search_triples("", rdf + "type", subclass, limit=subject_limit)[0]
         for triple in triples:
             subjects.append(triple[0])
-    print("[Info] Query predicates for each subject")
+    print("[Info] query predicates for each subject")
     for subject in tqdm(subjects):
         triples = dataset.search_triples(subject, "", "", limit=predicate_limit)[0]
         for triple in triples:

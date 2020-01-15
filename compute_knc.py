@@ -55,11 +55,13 @@ def compute_knc_onemode(onemode_graph, k_max):
     # TODO: Build a graph here? Density can be computed manually
     t_start = time.time()
     knc_list = []
+    graph_density = nx.classes.function.density
+    print("[Info] compute connectivity measures")
     for k in tqdm(range(1, k_max + 1)):
         for edge in list(onemode_graph.edges.data("weight")):
             if edge[2] < k:
                 onemode_graph.remove_edge(edge[0], edge[1])
-        knc_list.append((k, nx.classes.function.density(onemode_graph)))
+        knc_list.append((k, graph_density(onemode_graph)))
     print(f"[Time] compute-knc {time.time() - t_start:.3f} sec")
     return knc_list
 
