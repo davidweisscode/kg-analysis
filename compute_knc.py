@@ -41,48 +41,51 @@ def write_knc(superclass, knc_u, knc_v):
     knc.to_csv("out/" + superclass + ".k.csv", index=False)
     print("[Time] write knc %.3f sec" % (time.time() - t_start))
 
-start_time = time.time()
-config_file = sys.argv[1]
-module = import_module(config_file)
+def main():
+    start_time = time.time()
+    config_file = sys.argv[1]
+    module = import_module(config_file)
 
-for superclass in module.config["classes"]:
-    print("\n[Compute knc]", superclass)
+    for superclass in module.config["classes"]:
+        print("\n[Compute knc]", superclass)
 
-    k_max_u = int(get_result(superclass, "k_max_u"))
-    k_max_v = int(get_result(superclass, "k_max_v"))
+        k_max_u = int(get_result(superclass, "k_max_u"))
+        k_max_v = int(get_result(superclass, "k_max_v"))
 
-    #TODO: Delete objects to free up space?
-    t_start = time.time()
-    wmatrix_u = sparse.load_npz("out/" + superclass + ".u.npz")
-    print("[Time] load_npz u %.3f sec" % (time.time() - t_start))
-    print("[Info] wmatrix_u type", type(wmatrix_u))
-    print("[Info] wmatrix_u dtype", wmatrix_u.dtype)
-    print("[Info] wmatrix_u nbytes in GB", (wmatrix_u.data.nbytes) / (1024 ** 3))
-    count_nonzeroes = wmatrix_u.nnz
-    max_nonzeroes = 0.5 * wmatrix_u.shape[0] * (wmatrix_u.shape[0] - 1)
-    matrix_density = count_nonzeroes / max_nonzeroes
-    print(f"[Info] wmatrix_u nnz {count_nonzeroes}", f"matrix_density {matrix_density}")
-    print("[Info] wmatrix_u shape", wmatrix_u.shape)
-    print("[Info] find nonzeros\n", wmatrix_u[20,:], wmatrix_u[90,:], wmatrix_u[550,:])
-    print("[Info] wmatrix_u maxelement", wmatrix_u.max()) # high time, high space in coo; low time, low space in csr
-    t_start = time.time()
-    #TODO: Use numpy matrix .npz or pairwise edgelist .csv to construct networkx graph?
-    # Fails here, ~30gb in RAM when wmatrix 7,8gb, killed, (1000, 500)
-    omgraph_u = nx.from_scipy_sparse_matrix(wmatrix_u) # high time, high space in csr
-    print("[Time] from_sparse u %.3f sec" % (time.time() - t_start))
-    # Fails here, ~6gb in RAM when wmatrix 21mb, shape(4813, 4813)
-    knc_u = compute_knc(omgraph_u, k_max_u)
+        #TODO: Delete objects to free up space?
+        t_start = time.time()
+        wmatrix_u = sparse.load_npz("out/" + superclass + ".u.npz")
+        print("[Time] load_npz u %.3f sec" % (time.time() - t_start))
+        print("[Info] wmatrix_u type", type(wmatrix_u))
+        print("[Info] wmatrix_u dtype", wmatrix_u.dtype)
+        print("[Info] wmatrix_u nbytes in GB", (wmatrix_u.data.nbytes) / (1024 ** 3))
+        count_nonzeroes = wmatrix_u.nnz
+        max_nonzeroes = 0.5 * wmatrix_u.shape[0] * (wmatrix_u.shape[0] - 1)
+        matrix_density = count_nonzeroes / max_nonzeroes
+        print(f"[Info] wmatrix_u nnz {count_nonzeroes}", f"matrix_density {matrix_density}")
+        print("[Info] wmatrix_u shape", wmatrix_u.shape)
+        print("[Info] find nonzeros\n", wmatrix_u[20,:], wmatrix_u[90,:])
+        print("[Info] wmatrix_u maxelement", wmatrix_u.max()) # high time, high space in coo; low time, low space in csr
+        t_start = time.time()
+        #TODO: Use numpy matrix .npz or pairwise edgelist .csv to construct networkx graph?
+        # Fails here, ~30gb in RAM when wmatrix 7,8gb, killed, (1000, 500)
+        omgraph_u = nx.from_scipy_sparse_matrix(wmatrix_u) # high time, high space in csr
+        print("[Time] from_sparse u %.3f sec" % (time.time() - t_start))
+        # Fails here, ~6gb in RAM when wmatrix 21mb, shape(4813, 4813)
+        knc_u = compute_knc(omgraph_u, k_max_u)
 
-    t_start = time.time()
-    wmatrix_v = sparse.load_npz("out/" + superclass + ".v.npz")
-    print("[Time] load_npz v %.3f sec" % (time.time() - t_start))
-    print("[Info] wmatrix_v type", type(wmatrix_v))
-    print("[Info] wmatrix_v dtype", wmatrix_v.dtype)
-    t_start = time.time()
-    omgraph_v = nx.from_scipy_sparse_matrix(wmatrix_v)
-    print("[Time] from_sparse v %.3f sec" % (time.time() - t_start))
-    knc_v = compute_knc(omgraph_v, k_max_v)
+        t_start = time.time()
+        wmatrix_v = sparse.load_npz("out/" + superclass + ".v.npz")
+        print("[Time] load_npz v %.3f sec" % (time.time() - t_start))
+        print("[Info] wmatrix_v type", type(wmatrix_v))
+        print("[Info] wmatrix_v dtype", wmatrix_v.dtype)
+        t_start = time.time()
+        omgraph_v = nx.from_scipy_sparse_matrix(wmatrix_v)
+        print("[Time] from_sparse v %.3f sec" % (time.time() - t_start))
+        knc_v = compute_knc(omgraph_v, k_max_v)
 
-    write_knc(superclass, knc_u, knc_v)
+        write_knc(superclass, knc_u, knc_v)
 
-print("\n[Time] compute-knc %.3f sec" % (time.time() - start_time))
+    print("\n[Time] compute-knc %.3f sec" % (time.time() - start_time))
+
+main()
