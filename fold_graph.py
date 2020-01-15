@@ -52,21 +52,21 @@ def split_edgelist(edges):
     print(f"[Time] split-edgelist {time.time() - t_start:.3f} sec")
     return side_u, side_v
 
-def append_result_columns(superclass, k_max_u, k_max_v, connected, bipartite):
+def append_result_columns(superclass, k_max_u, k_max_v, connected, bipartite, run_name):
     """ Save more properties for superclass in the result csv file """
-    df = pd.read_csv("out/_results.csv")
+    df = pd.read_csv(f"out/_results_{run_name}.csv")
     df.loc[df.index[df["superclass"] == superclass], "k_max_u"] = k_max_u
     df.loc[df.index[df["superclass"] == superclass], "k_max_v"] = k_max_v
     df.loc[df.index[df["superclass"] == superclass], "connected"] = connected
     df.loc[df.index[df["superclass"] == superclass], "bipartite"] = bipartite
-    df.to_csv("out/_results.csv", index=False)
+    df.to_csv(f"out/_results_{run_name}.csv", index=False)
 
 def write_edgelist(classname, edgelist, onemode):
     """ Write edge list to csv file """
     df = pd.DataFrame(edgelist, columns=["a", "b", "w"])
     df.to_csv(f"out/{classname}.{onemode}.csv", index=False)
 
-def fold_graph(superclass):
+def fold_graph(superclass, run_name):
     print("\n[Fold]", superclass)
     bipgraph = nx.Graph()
     edgelist = read_edgelist(superclass)
@@ -78,7 +78,7 @@ def fold_graph(superclass):
     side_u, side_v = split_edgelist(edgelist)
     # In onemode network edgelists, data about disconnected nodes gets lost
     k_max_u, k_max_v = len(side_v), len(side_u)
-    append_result_columns(superclass, k_max_u, k_max_v, is_connected, is_bipartite)
+    append_result_columns(superclass, k_max_u, k_max_v, is_connected, is_bipartite, run_name)
     #TODO: Save diagonal values in .csv for analysis of extensively described entities
     fold_dot(superclass, bipgraph, side_u, side_v)
     #TODO: Add fold_hop() here
@@ -132,12 +132,12 @@ def fold_dot_onemode(superclass, biadjmatrix, onemode):
     print(f"[Time] save-npz {onemode} {time.time() - t_start:.3f} sec")
 
 def main():
-    config_file = sys.argv[1]
-    module = import_module(config_file)
+    run_name = sys.argv[1][:-3]
+    run = import_module(run_name)
 
     t_fold = time.time()
-    for superclass in module.config["classes"]:
-        fold_graph(superclass)
+    for superclass in run.config["classes"]:
+        fold_graph(superclass, run_name)
 
     print(f"\n[Time] fold-graphs {time.time() - t_fold:.3f} sec")
 

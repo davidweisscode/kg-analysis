@@ -12,17 +12,17 @@ import pandas as pd
 import networkx as nx
 from tqdm import tqdm
 
-def get_result(superclass, feature):
+def get_result(superclass, feature, run_name):
     """ Get the superclasses value in a feature column """
-    df = pd.read_csv("out/_results.csv")
+    df = pd.read_csv(f"out/_results_{run_name}.csv")
     return df.loc[df.index[df["superclass"] == superclass][0], feature]
 
-def compute_knc(superclass):
+def compute_knc(superclass, run_name):
     """ Compute points for a KNC plot and save them together in .k.csv """
-    k_max_u = int(get_result(superclass, "k_max_u"))
+    k_max_u = int(get_result(superclass, "k_max_u", run_name))
     omgraph_u = load_onemode_graph(superclass, "u")
     knc_u = compute_knc_onemode(omgraph_u, k_max_u)
-    k_max_v = int(get_result(superclass, "k_max_v"))
+    k_max_v = int(get_result(superclass, "k_max_v", run_name))
     omgraph_v = load_onemode_graph(superclass, "v")
     knc_v = compute_knc_onemode(omgraph_v, k_max_v)
     write_knc(superclass, knc_u, knc_v)
@@ -75,13 +75,13 @@ def write_knc(superclass, knc_u, knc_v):
     print(f"[Time] write-knc {time.time() - t_start:.3f} sec")
 
 def main():
-    config_file = sys.argv[1]
-    module = import_module(config_file)
+    run_name = sys.argv[1][:-3]
+    run = import_module(run_name)
 
     t_compute = time.time()
-    for superclass in module.config["classes"]:
+    for superclass in run.config["classes"]:
         print("\n[Compute knc]", superclass)
-        compute_knc(superclass)
+        compute_knc(superclass, run_name)
     print(f"\n[Time] compute-kncs {time.time() - t_compute:.3f} sec")
 
 main()

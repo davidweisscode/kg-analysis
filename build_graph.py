@@ -68,35 +68,36 @@ def write_edgelist(classname, edgelist):
     df = pd.DataFrame(edgelist, columns=["u", "v"])
     df.to_csv(f"out/{classname}.g.csv", index=False)
 
-def append_result_rows(superclass, subclasses, number_of_edges):
+def append_result_rows(superclass, subclasses, number_of_edges, run_name):
     """ Append result rows for each superclass """
-    df = pd.read_csv("out/_results.csv")
+    df = pd.read_csv(f"out/_results_{run_name}.csv")
     df.loc[len(df)] = (superclass, subclasses, number_of_edges)
-    df.to_csv("out/_results.csv", index=False)
+    df.to_csv(f"out/_results_{run_name}.csv", index=False)
 
 def main():
-    config_file = sys.argv[1]
-    config_module = import_module(config_file)
-    dataset = HDTDocument(config_module.config["kg_source"])
+    run_name = sys.argv[1][:-3]
+    run = import_module(run_name)
+    dataset = HDTDocument(run.config["kg_source"])
     t_ontology = time.time()
-    ontology = Graph().parse(config_module.config["kg_ontology"])
+    ontology = Graph().parse(run.config["kg_ontology"])
     print(f"[Time] load-ontology {time.time() - t_ontology:.3f} sec")
-    subject_limit = config_module.config["subject_limit"]
-    predicate_limit = config_module.config["predicate_limit"]
+    subject_limit = run.config["subject_limit"]
+    predicate_limit = run.config["predicate_limit"]
     with open("blacklist.txt", "r") as file:
         blacklist = file.read().splitlines()
-    if os.path.exists("out/_results.csv"):
+    if os.path.exists(f"out/_results_{run_name}.csv"):
         print("[Info] Remove old results file")
-        os.remove("out/_results.csv")
+        os.remove(f"out/_results_{run_name}.csv")
     results = pd.DataFrame(columns=["superclass", "subclasses", "num_edges"])
-    results.to_csv("out/_results.csv", index=False)
+    results.to_csv(f"out/_results_{run_name}.csv", index=False)
 
     t_build = time.time()
-    for superclass in config_module.config["classes"]:
+    for superclass in run.config["classes"]:
         print("\n[Build] ", superclass)
         subclasses = query_subclasses(ontology, superclass)
         edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         write_edgelist(superclass, edgelist)
-        append_result_rows(superclass, subclasses, len(edgelist))
+        append_result_rows(superclass, subclasses, len(edgelist), run_name)
         print(f"[Time] build-edgelists {time.time() - t_build:.3f} sec")
+
 main()
