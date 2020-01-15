@@ -41,8 +41,7 @@ def query_subclasses(ontology, superclass):
     results = ontology.query(subclass_query)
     for result in results:
         subclasses.append(str(result['subclass']))
-    #TODO: Remove "dpbedia URL" from subclass names ?
-    print("[Time] query-subclasses %.3f sec" % (time.time() - t_start), superclass)
+    print(f"[Time] query-subclasses {time.time() - t_start:.3f} sec")
     return subclasses
 
 def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist):
@@ -61,13 +60,13 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
         for triple in triples:
             if not triple[1] in blacklist:
                 edgelist.append((triple[0], triple[1]))
-    print("[Time] get-subj-pred-tuples %.3f sec" % (time.time() - t_start))
+    print(f"[Time] get-subj-pred-tuples {time.time() - t_start:.3f} sec")
     return edgelist
 
 def write_edgelist(classname, edgelist):
     """ Write edgelist to csv file """
     df = pd.DataFrame(edgelist, columns=["u", "v"])
-    df.to_csv("out/" + classname + ".g.csv", index=False)
+    df.to_csv(f"out/{classname}.g.csv", index=False)
 
 def append_result_rows(superclass, subclasses, number_of_edges):
     """ Append result rows for each superclass """
@@ -81,7 +80,7 @@ def main():
     dataset = HDTDocument(config_module.config["kg_source"])
     t_ontology = time.time()
     ontology = Graph().parse(config_module.config["kg_ontology"])
-    print("[Time] load-ontology %.3f sec" % (time.time() - t_ontology))
+    print(f"[Time] load-ontology {time.time() - t_ontology:.3f} sec")
     subject_limit = config_module.config["subject_limit"]
     predicate_limit = config_module.config["predicate_limit"]
     with open("blacklist.txt", "r") as file:
@@ -99,6 +98,5 @@ def main():
         edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         write_edgelist(superclass, edgelist)
         append_result_rows(superclass, subclasses, len(edgelist))
-    print("\n[Time] build-edgelist %.3f sec" % (time.time() - t_build))
-
+        print(f"[Time] build-edgelists {time.time() - t_build:.3f} sec")
 main()

@@ -16,7 +16,7 @@ import networkx as nx
 
 def read_edgelist(superclass):
     """ Read edgelist from csv file """
-    df = pd.read_csv("out/" + superclass + ".g.csv")
+    df = pd.read_csv(f"out/{superclass}.g.csv")
     return list(df.itertuples(index=False, name=None))
 
 def check_connected(bipgraph):
@@ -26,7 +26,7 @@ def check_connected(bipgraph):
     if not nx.is_connected(bipgraph):
         connected = False
         print("[Info] Input graph is not connected")
-    print("[Time] check-con %.3f sec" % (time.time() - t_start))
+    print(f"[Time] check-connected {time.time() - t_start:.3f} sec")
     return connected
 
 def check_bipartite(bipgraph):
@@ -36,7 +36,7 @@ def check_bipartite(bipgraph):
     if not nx.bipartite.is_bipartite(bipgraph):
         bipartite = False
         sys.exit("[Error] Input graph is not bipartite")
-    print("[Time] check-bip %.3f sec" % (time.time() - t_start))
+    print(f"[Time] check-bipartite {time.time() - t_start:.3f} sec")
     return bipartite
 
 def split_edgelist(edges):
@@ -49,7 +49,7 @@ def split_edgelist(edges):
         side_v.append(edge[1])
     side_u = list(set(side_u))
     side_v = list(set(side_v))
-    print("[Time] split-onemode-edges %.3f sec" % (time.time() - t_start))
+    print(f"[Time] split-edgelist {time.time() - t_start:.3f} sec")
     return side_u, side_v
 
 def append_result_columns(superclass, k_max_u, k_max_v, connected, bipartite):
@@ -64,7 +64,7 @@ def append_result_columns(superclass, k_max_u, k_max_v, connected, bipartite):
 def write_edgelist(classname, edgelist, onemode):
     """ Write edge list to csv file """
     df = pd.DataFrame(edgelist, columns=["a", "b", "w"])
-    df.to_csv("out/" + classname + "." + onemode + ".csv", index=False)
+    df.to_csv(f"out/{classname}.{onemode}.csv", index=False)
 
 def fold_graph(superclass):
     print("\n[Fold]", superclass)
@@ -89,7 +89,7 @@ def fold_dot(superclass, bipgraph, u, v):
     # TODO: Fold the onemodes one at a time to reduce space (increases time)
     t_start = time.time()
     A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=u, column_order=v, dtype="uint16")
-    print("[Time] comp-biadj-matrix %.3f sec" % (time.time() - t_start))
+    print(f"[Time] comp-biadj-matrix {time.time() - t_start:.3f} sec")
     print("[Info] A shape", A.shape)
     print("[Info] A dtype", A.dtype)
     fold_dot_onemode(superclass, A, "u")
@@ -101,36 +101,36 @@ def fold_dot_onemode(superclass, biadjmatrix, onemode):
         wmatrix = np.dot(biadjmatrix, biadjmatrix.T)
     elif onemode == "v":
         wmatrix = np.dot(biadjmatrix.T, biadjmatrix)
-    print("[Time] onemode-dot-product u %.3f sec" % (time.time() - t_start))
-    print("[Info] wmatrix_u type", type(wmatrix))
-    print("[Info] wmatrix dtype", wmatrix.dtype)
-    print("[Info] wmatrix nbytes in GB", (wmatrix.data.nbytes + wmatrix.indptr.nbytes + wmatrix.indices.nbytes) / (1024 ** 3))
-    print("[Info] wmatrix nbytes data in GB", (wmatrix.data.nbytes) / (1024 ** 3))
-    print("[Info] wmatrix shape", wmatrix.shape)
-    print("[Info] wmatrix maxelement", wmatrix.max())
+    print(f"[Time] onemode-dotproduct {onemode} {time.time() - t_start:.3f} sec")
+    print(f"[Info] wmatrix {onemode} type {type(wmatrix)}")
+    print(f"[Info] wmatrix {onemode} dtype {wmatrix.dtype}")
+    print(f"[Info] wmatrix {onemode} nbytes in GB {(wmatrix.data.nbytes + wmatrix.indptr.nbytes + wmatrix.indices.nbytes) / (1024 ** 3):.6f}")
+    print(f"[Info] wmatrix {onemode} nbytes data in GB {(wmatrix.data.nbytes) / (1024 ** 3):.6f}")
+    print(f"[Info] wmatrix {onemode} shape {wmatrix.shape}")
+    print(f"[Info] wmatrix {onemode} maxelement {wmatrix.max()}")
     count_nonzeroes = wmatrix.nnz
     max_nonzeroes = wmatrix.shape[0] * (wmatrix.shape[0] - 1)
     matrix_density = count_nonzeroes / max_nonzeroes
-    print(f"[Info] wmatrix nnz {count_nonzeroes}")
-    print(f"[Info] wmatrix density {matrix_density}")
+    print(f"[Info] wmatrix {onemode} nnz {count_nonzeroes}")
+    print(f"[Info] wmatrix {onemode} density {matrix_density:.4f}")
     # Fails here for large matrices
     t_start = time.time()
     wmatrix = sparse.tril(wmatrix, k=-1) # high time, high space
-    print("[Time] wmatrix tril %.3f sec" % (time.time() - t_start))
+    print(f"[Time] wmatrix {onemode} tril {time.time() - t_start:.3f} sec")
     t_start = time.time()
     wmatrix = wmatrix.tocsr()
-    print("[Time] tocsr %.3f sec" % (time.time() - t_start))
+    print(f"[Time] wmatrix {onemode} to-csr {time.time() - t_start:.3f} sec")
     count_nonzeroes = wmatrix.nnz
     max_nonzeroes = 0.5 * wmatrix.shape[0] * (wmatrix.shape[0] - 1)
     matrix_density = count_nonzeroes / max_nonzeroes
-    print(f"[Info] wmatrix tril nnz {count_nonzeroes}")
-    print(f"[Info] wmatrix tril density {matrix_density}")
-    print("[Info] wmatrix tril type", type(wmatrix))
-    print("[Info] wmatrix tril nbytes data in GB", (wmatrix.data.nbytes) / (1024 ** 3))
-    print("[Info] wmatrix tril nnz", wmatrix.nnz)
+    print(f"[Info] wmatrix {onemode} tril nnz {count_nonzeroes}")
+    print(f"[Info] wmatrix {onemode} tril density {matrix_density:.4f}")
+    print(f"[Info] wmatrix {onemode} tril type {type(wmatrix)}")
+    print(f"[Info] wmatrix {onemode} tril nbytes data in GB {(wmatrix.data.nbytes) / (1024 ** 3):.6f}")
+    print(f"[Info] wmatrix {onemode} tril nnz {wmatrix.nnz}")
     t_start = time.time()
-    sparse.save_npz("out/" + superclass + "." + onemode + ".npz", wmatrix) # high time, low space
-    print("[Time] savenpz %.3f sec" % (time.time() - t_start))
+    sparse.save_npz(f"out/{superclass}.{onemode}.npz", wmatrix) # high time, low space
+    print(f"[Time] save-npz {onemode} {time.time() - t_start:.3f} sec")
 
 def main():
     config_file = sys.argv[1]
@@ -140,6 +140,6 @@ def main():
     for superclass in module.config["classes"]:
         fold_graph(superclass)
 
-    print("\n[Time] fold-graph %.3f sec" % (time.time() - t_fold))
+    print(f"\n[Time] fold-graphs {time.time() - t_fold:.3f} sec")
 
 main()

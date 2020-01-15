@@ -12,7 +12,7 @@ from tqdm import tqdm
 
 def read_knc_list(superclass):
     """ Read KNC plot values from csv file """
-    df = pd.read_csv("out/" + superclass + ".k.csv")
+    df = pd.read_csv(f"out/{superclass}.k.csv")
     return list(df.itertuples(index=False, name=None))
 
 def get_result(superclass, feature):
@@ -38,7 +38,7 @@ def compute_rc(superclass, knc_list, onemode):
     for k in tqdm(range(0, k_max)):
         density_sum += knc_list[k][1]
     rc = (1 / k_max) * density_sum
-    print("rc = %.4f" % rc)
+    print(f"rc_{onemode} = {rc:.8f}")
     return rc
 
 def append_result_columns(superclass, rc_u, rc_v):
@@ -56,6 +56,6 @@ def main():
     for superclass in module.config["classes"]:
         print("\n[Analyze knc]", superclass)
         analyze_knc(superclass)
-    print("\n[Time] analyze-knc %.3f sec" % (time.time() - t_analyze))
+    print(f"\n[Time] analyze-kncs {time.time() - t_analyze:.3f} sec")
 
 main()
