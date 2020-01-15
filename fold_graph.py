@@ -68,9 +68,14 @@ def write_edgelist(classname, edgelist, onemode):
 
 def fold_graph(superclass, run_name):
     print("\n[Fold]", superclass)
-    bipgraph = nx.Graph()
+    # TODO: Save node ordering for future name lookup
+    # TODO: Save diagonal values in .csv for analysis of extensively described entities
+
+    #TODO: Buggy
+    bipgraph_labeled = nx.Graph()
     edgelist = read_edgelist(superclass)
-    bipgraph.add_edges_from(edgelist)
+    bipgraph_labeled.add_edges_from(edgelist)
+    bipgraph = nx.convert_node_labels_to_integers(bipgraph_labeled, ordering="default")# Buggy?
     is_connected = check_connected(bipgraph)
     is_bipartite = check_bipartite(bipgraph)
     print("[Info] Number of nodes", bipgraph.number_of_nodes())
@@ -79,16 +84,15 @@ def fold_graph(superclass, run_name):
     # In onemode network edgelists, data about disconnected nodes gets lost
     k_max_u, k_max_v = len(side_v), len(side_u)
     append_result_columns(superclass, k_max_u, k_max_v, is_connected, is_bipartite, run_name)
-    #TODO: Save diagonal values in .csv for analysis of extensively described entities
-    fold_dot(superclass, bipgraph, side_u, side_v)
-    #TODO: Add fold_hop() here
 
-def fold_dot(superclass, bipgraph, u, v):
+    # TODO: Buggy
+    # fold_dot(superclass, bipgraph, range(0, len(side_u)), range(0, len(side_v)))
+    fold_hop2(superclass, bipgraph, k_max_u, k_max_v) # Buggy rc_u = 0.47500000
+
+def fold_dot(superclass, bipgraph, side_u, side_v):
     """ Fold a bipartite graph to its onemode representations using its biadjacency matrix """
-    # TODO: Save row and column name order for later name lookup in wmatrix_u for e.g. heatmap analysis
-    # TODO: Fold the onemodes one at a time to reduce space (increases time)
     t_start = time.time()
-    A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=u, column_order=v, dtype="uint16")
+    A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=side_u, column_order=side_v, dtype="uint16")
     print(f"[Time] comp-biadj-matrix {time.time() - t_start:.3f} sec")
     print("[Info] A shape", A.shape)
     print("[Info] A dtype", A.dtype)
@@ -130,6 +134,29 @@ def fold_dot_onemode(superclass, biadjmatrix, onemode):
     t_start = time.time()
     sparse.save_npz(f"out/{superclass}.{onemode}.npz", wmatrix)
     print(f"[Time] save-npz {onemode} {time.time() - t_start:.3f} sec")
+
+def fold_hop2(superclass, bipgraph, k_max_u, k_max_v):
+    count_hop2(superclass, bipgraph, "u", k_max_v)
+    count_hop2(superclass, bipgraph, "v", k_max_u)
+
+def count_hop2(superclass, bipgraph, onemode, onemode_length):
+    """ Fold a bipartite graph to its onemode representation counting distinct hop2 paths """
+    # TODO: Buggy: Too many edges in .u.csv
+    t_start = time.time()
+    om_edges = []
+    all_simple_paths = nx.all_simple_paths
+    print(f"[Info] count distinct hop2 paths for each node pair in {onemode}")
+    print(onemode_length)
+    for pair in tqdm(itertools.combinations(range(0, onemode_length), 2)):
+        weight = len(list(all_simple_paths(bipgraph, source=pair[0], target=pair[1], cutoff=2)))
+        print(pair, weight)
+        if weight > 0:
+            print("Append")
+            om_edges.append((pair[0], pair[1], weight))
+    print(f"[Time] count-hop2 {onemode} {time.time() - t_start:.3f} sec")
+    t_start = time.time()
+    write_edgelist(superclass, om_edges, onemode)
+    print(f"[Time] write-hop2-edgelist {onemode} {time.time() - t_start:.3f} sec")
 
 def main():
     run_name = sys.argv[1][:-3]

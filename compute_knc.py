@@ -12,6 +12,11 @@ import pandas as pd
 import networkx as nx
 from tqdm import tqdm
 
+def read_om_edgelist(superclass, onemode):
+    """ Read onemode edgelist from csv file """
+    df = pd.read_csv(f"out/{superclass}.{onemode}.csv")
+    return list(df.itertuples(index=False, name=None))
+
 def get_result(superclass, feature, run_name):
     """ Get the superclasses value in a feature column """
     df = pd.read_csv(f"out/_results_{run_name}.csv")
@@ -29,23 +34,32 @@ def compute_knc(superclass, run_name):
 
 def load_onemode_graph(superclass, onemode):
     """ Load the onemode superclass graph from .onemode.csv """
+
+    # t_start = time.time()
+    # wmatrix = sparse.load_npz(f"out/{superclass}.{onemode}.npz")
+    # print(f"[Time] load-npz {onemode} {time.time() - t_start:.3f} sec")
+    # print(f"[Info] wmatrix {onemode} type {type(wmatrix)}")
+    # print(f"[Info] wmatrix {onemode} dtype {wmatrix.dtype}")
+    # print(f"[Info] wmatrix {onemode} nbytes in GB {(wmatrix.data.nbytes) / (1024 ** 3):.6f}")
+    # count_nonzeroes = wmatrix.nnz
+    # max_nonzeroes = 0.5 * wmatrix.shape[0] * (wmatrix.shape[0] - 1)
+    # matrix_density = count_nonzeroes / max_nonzeroes
+    # print(f"[Info] wmatrix {onemode} nnz {count_nonzeroes} --> matrix_density {matrix_density:.4f}")
+    # print(f"[Info] wmatrix {onemode} shape {wmatrix.shape}")
+    # # print(f"[Info] wmatrix {onemode} find-nonzero-examples\n", wmatrix[2,:], wmatrix[4,:], wmatrix[6,:])
+    # print(f"[Info] wmatrix {onemode} maxelement {wmatrix.max()}") # high time, high space in coo; low time, low space in csr
+    # t_start = time.time()
+    # # Fails here, ~30gb in RAM when wmatrix 7,8gb, killed, (1000, 500)
+    # omgraph = nx.from_scipy_sparse_matrix(wmatrix) # high time, high space in csr
+    # print(f"[Time] from-sparse {onemode} {time.time() - t_start:.3f} sec")
+
+    # TODO: The one or the other
     t_start = time.time()
-    wmatrix = sparse.load_npz(f"out/{superclass}.{onemode}.npz")
-    print(f"[Time] load-npz {onemode} {time.time() - t_start:.3f} sec")
-    print(f"[Info] wmatrix {onemode} type {type(wmatrix)}")
-    print(f"[Info] wmatrix {onemode} dtype {wmatrix.dtype}")
-    print(f"[Info] wmatrix {onemode} nbytes in GB {(wmatrix.data.nbytes) / (1024 ** 3):.6f}")
-    count_nonzeroes = wmatrix.nnz
-    max_nonzeroes = 0.5 * wmatrix.shape[0] * (wmatrix.shape[0] - 1)
-    matrix_density = count_nonzeroes / max_nonzeroes
-    print(f"[Info] wmatrix {onemode} nnz {count_nonzeroes} --> matrix_density {matrix_density:.4f}")
-    print(f"[Info] wmatrix {onemode} shape {wmatrix.shape}")
-    print(f"[Info] wmatrix {onemode} find-nonzero-examples\n", wmatrix[2,:], wmatrix[4,:], wmatrix[6,:])
-    print(f"[Info] wmatrix {onemode} maxelement {wmatrix.max()}") # high time, high space in coo; low time, low space in csr
-    t_start = time.time()
-    # Fails here, ~30gb in RAM when wmatrix 7,8gb, killed, (1000, 500)
-    omgraph = nx.from_scipy_sparse_matrix(wmatrix) # high time, high space in csr
-    print(f"[Time] from-sparse {onemode} {time.time() - t_start:.3f} sec")
+    omgraph = nx.Graph()
+    omedges = read_om_edgelist(superclass, onemode)
+    omgraph.add_weighted_edges_from(omedges)
+    print(f"[Time] from-weighted-edgelist {onemode} {time.time() - t_start:.3f} sec")
+
     return omgraph
 
 def compute_knc_onemode(onemode_graph, k_max):
