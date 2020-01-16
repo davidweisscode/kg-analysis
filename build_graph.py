@@ -80,7 +80,7 @@ def main():
     dataset = HDTDocument(run.config["kg_source"])
     t_ontology = time.time()
     ontology = Graph().parse(run.config["kg_ontology"])
-    print(f"[Time] load-ontology {time.time() - t_ontology:.3f} sec")
+    print(f"\n[Time] load-ontology {time.time() - t_ontology:.3f} sec")
     subject_limit = run.config["subject_limit"]
     predicate_limit = run.config["predicate_limit"]
     with open("blacklist.txt", "r") as file:

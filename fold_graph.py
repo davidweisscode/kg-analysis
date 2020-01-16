@@ -66,8 +66,8 @@ def write_edgelist(classname, edgelist, onemode):
     df = pd.DataFrame(edgelist, columns=["a", "b", "w"])
     df.to_csv(f"out/{classname}.{onemode}.csv", index=False)
 
-def fold_graph(superclass, run_name):
-    print("\n[Fold]", superclass)
+def fold_graph(superclass, run_name, fold_method):
+    """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
     # TODO: Save node ordering for future name lookup
     # TODO: Save diagonal values in .csv for analysis of extensively described entities
     # TODO: Separate onemode nodes to use integers as node labels # nx.convert_node_labels_to_integers(bipgraph_labeled, ordering="default")
@@ -84,9 +84,10 @@ def fold_graph(superclass, run_name):
     k_max_u, k_max_v = len(side_v), len(side_u)
     append_result_columns(superclass, k_max_u, k_max_v, is_connected, is_bipartite, run_name)
 
-    # TODO: Buggy
-    # fold_dot(superclass, bipgraph, range(0, len(side_u)), range(0, len(side_v)))
-    fold_hop2(superclass, bipgraph, k_max_u, k_max_v) # Buggy rc_u = 0.47500000
+    if fold_method == "dot":
+        fold_dot(superclass, bipgraph, side_u, side_v)
+    elif fold_method == "hop":
+        fold_hop(superclass, bipgraph, side_u, side_v)
 
 def fold_dot(superclass, bipgraph, side_u, side_v):
     """ Fold a bipartite graph to its onemode representations in sparse matrix format """
@@ -161,7 +162,11 @@ def main():
 
     t_fold = time.time()
     for superclass in run.config["classes"]:
-        fold_graph(superclass, run_name)
+        print("\n[Fold]", superclass)
+        try:
+            fold_graph(superclass, run_name, run.config["fold_method"])
+        except KeyError as e:
+            sys.exit("[Error] Please specify fold_method as 'dot' or 'hop' in run config\n", e)
 
     print(f"\n[Time] fold-graphs {time.time() - t_fold:.3f} sec")
 
