@@ -70,12 +70,11 @@ def fold_graph(superclass, run_name):
     print("\n[Fold]", superclass)
     # TODO: Save node ordering for future name lookup
     # TODO: Save diagonal values in .csv for analysis of extensively described entities
+    # TODO: Separate onemode nodes to use integers as node labels # nx.convert_node_labels_to_integers(bipgraph_labeled, ordering="default")
 
-    #TODO: Buggy
-    bipgraph_labeled = nx.Graph()
+    bipgraph = nx.Graph()
     edgelist = read_edgelist(superclass)
-    bipgraph_labeled.add_edges_from(edgelist)
-    bipgraph = nx.convert_node_labels_to_integers(bipgraph_labeled, ordering="default")# Buggy?
+    bipgraph.add_edges_from(edgelist)
     is_connected = check_connected(bipgraph)
     is_bipartite = check_bipartite(bipgraph)
     print("[Info] Number of nodes", bipgraph.number_of_nodes())
@@ -90,7 +89,7 @@ def fold_graph(superclass, run_name):
     fold_hop2(superclass, bipgraph, k_max_u, k_max_v) # Buggy rc_u = 0.47500000
 
 def fold_dot(superclass, bipgraph, side_u, side_v):
-    """ Fold a bipartite graph to its onemode representations using its biadjacency matrix """
+    """ Fold a bipartite graph to its onemode representations in sparse matrix format """
     t_start = time.time()
     A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=side_u, column_order=side_v, dtype="uint16")
     print(f"[Time] comp-biadj-matrix {time.time() - t_start:.3f} sec")
@@ -100,6 +99,7 @@ def fold_dot(superclass, bipgraph, side_u, side_v):
     fold_dot_onemode(superclass, A, "v")
 
 def fold_dot_onemode(superclass, biadjmatrix, onemode):
+    """ Get the weigthed adjacency matrix of the onemode graph by matrix multiplication """
     t_start = time.time()
     if onemode == "u":
         wmatrix = np.dot(biadjmatrix, biadjmatrix.T)
@@ -135,28 +135,25 @@ def fold_dot_onemode(superclass, biadjmatrix, onemode):
     sparse.save_npz(f"out/{superclass}.{onemode}.npz", wmatrix)
     print(f"[Time] save-npz {onemode} {time.time() - t_start:.3f} sec")
 
-def fold_hop2(superclass, bipgraph, k_max_u, k_max_v):
-    count_hop2(superclass, bipgraph, "u", k_max_v)
-    count_hop2(superclass, bipgraph, "v", k_max_u)
+def fold_hop(superclass, bipgraph, side_u, side_v):
+    """ Fold a bipartite graph to its onemode representations in edgelist format """
+    fold_hop_onemode(superclass, bipgraph, "u", side_u)
+    fold_hop_onemode(superclass, bipgraph, "v", side_v)
 
-def count_hop2(superclass, bipgraph, onemode, onemode_length):
-    """ Fold a bipartite graph to its onemode representation counting distinct hop2 paths """
-    # TODO: Buggy: Too many edges in .u.csv
+def fold_hop_onemode(superclass, bipgraph, onemode, onemode_nodes):
+    """ Get a weigthed edgelist of a onemode graph by counting distinct hop-2 paths for each node combination """
     t_start = time.time()
     om_edges = []
     all_simple_paths = nx.all_simple_paths
-    print(f"[Info] count distinct hop2 paths for each node pair in {onemode}")
-    print(onemode_length)
-    for pair in tqdm(itertools.combinations(range(0, onemode_length), 2)):
-        weight = len(list(all_simple_paths(bipgraph, source=pair[0], target=pair[1], cutoff=2)))
-        print(pair, weight)
+    print(f"[Info] count distinct hop-2 paths for each node pair in {onemode}")
+    for node_a, node_b in tqdm(itertools.combinations(onemode_nodes, 2)):
+        weight = len(list(all_simple_paths(bipgraph, source=node_a, target=node_b, cutoff=2)))
         if weight > 0:
-            print("Append")
-            om_edges.append((pair[0], pair[1], weight))
-    print(f"[Time] count-hop2 {onemode} {time.time() - t_start:.3f} sec")
+            om_edges.append((node_a, node_b, weight))
+    print(f"[Time] count-hop {onemode} {time.time() - t_start:.3f} sec")
     t_start = time.time()
     write_edgelist(superclass, om_edges, onemode)
-    print(f"[Time] write-hop2-edgelist {onemode} {time.time() - t_start:.3f} sec")
+    print(f"[Time] write-hop-edgelist {onemode} {time.time() - t_start:.3f} sec")
 
 def main():
     run_name = sys.argv[1][:-3]
