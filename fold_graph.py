@@ -88,6 +88,8 @@ def fold_graph(superclass, run_name, fold_method):
         fold_dot(superclass, bipgraph, side_u, side_v)
     elif fold_method == "hop":
         fold_hop(superclass, bipgraph, side_u, side_v)
+    elif fold_method == "intersect":
+        fold_intersect(superclass, bipgraph, side_u, side_v)
 
 def fold_dot(superclass, bipgraph, side_u, side_v):
     """ Fold a bipartite graph to its onemode representations in sparse matrix format """
@@ -155,6 +157,27 @@ def fold_hop_onemode(superclass, bipgraph, onemode, onemode_nodes):
     t_start = time.time()
     write_edgelist(superclass, om_edges, onemode)
     print(f"[Time] write-hop-edgelist {onemode} {time.time() - t_start:.3f} sec")
+
+def fold_intersect(superclass, bipgraph, side_u, side_v):
+    """ Fold a bipartite graph to its onemode representations in edgelist format """
+    fold_intersect_onemode(superclass, bipgraph, "u", side_u)
+    fold_intersect_onemode(superclass, bipgraph, "v", side_v)
+
+def fold_intersect_onemode(superclass, bipgraph, onemode, onemode_nodes):
+    """ Get a weigthed edgelist of a onemode graph by intersecting neighbor sets for each node combination """
+    t_start = time.time()
+    om_edges = []
+    print(f"[Info] intersect neighbor sets for each node pair in {onemode}")
+    for node_a, node_b in tqdm(itertools.combinations(onemode_nodes, 2)):
+        neighbors_a = set(bipgraph.neighbors(node_a))
+        neighbors_b = set(bipgraph.neighbors(node_b))
+        weight = len(set.intersection(neighbors_a, neighbors_b))
+        if weight > 0:
+            om_edges.append((node_a, node_b, weight))
+    print(f"[Time] intersect {onemode} {time.time() - t_start:.3f} sec")
+    t_start = time.time()
+    write_edgelist(superclass, om_edges, onemode)
+    print(f"[Time] write-intersect-edgelist {onemode} {time.time() - t_start:.3f} sec")
 
 def main():
     run_name = sys.argv[1][:-3]

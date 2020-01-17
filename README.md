@@ -41,7 +41,7 @@ config = {
     "predicate_limit": 500,                  # SPARQL query limit for predicates of each subject
     "kg_source": "kg/dbpedia2016-04en.hdt",  # Relative path to .hdt serialized Knowledge Graph
     "kg_ontology": "kg/dbpedia.owl",         # Relative path to respective Knowledge Graph ontology
-    "fold_method": "hop",                    # One out of 'hop' (slow) or 'dot' (fast, limited by RAM)
+    "fold_method": "hop",                    # Choose between 'hop', 'dot', or 'intersect'
 }
 ```
 For examples see a [test](https://github.com/davidweisscode/kg-analysis/blob/master/small_run.py) and a [resource demanding](https://github.com/davidweisscode/kg-analysis/blob/master/big_run.py) run.
@@ -54,7 +54,7 @@ Run the following four scripts in sequence together with your run configuration
 
  1. Building  
     - Query your dataset and build a bipartite Knowledge Graph for each `Superclass` specified in your config file  
-    - Run `python3 build_graph.py run_config.py` to output an edgelist in `out/Superclass.g.csv` 
+    - Run `python3 build_graph.py run_config.py` to output an edgelist in `out/Superclass.g.csv`  
 
  2. Folding  
     - Project your bipartite graph into its two onemode representations  
