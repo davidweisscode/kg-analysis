@@ -4,5 +4,5 @@ config = {
     "predicate_limit": 500,
     "kg_source": "kg/dbpedia2016-04en.hdt",
     "kg_ontology": "kg/dbpedia.owl",
-    "fold_method": "intersect",
+    "project_method": "intersect",
 }

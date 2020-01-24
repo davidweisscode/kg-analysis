@@ -33,7 +33,7 @@ wget -c http://downloads.dbpedia.org/2016-04/dbpedia_2016-04.owl
 
 ## Getting started
 ### Configuration
-Specify your runs with a custom configuration of classes, data size, and folding approach.
+Specify your runs with a custom configuration of classes, data size, and projection approach.
 ```python
 config = {
     "classes": ["Athlete", "Artist"],        # List of DBpedia class names to analyze
@@ -41,7 +41,7 @@ config = {
     "predicate_limit": 500,                  # SPARQL query limit for predicates of each subject
     "kg_source": "kg/dbpedia2016-04en.hdt",  # Relative path to .hdt serialized Knowledge Graph
     "kg_ontology": "kg/dbpedia.owl",         # Relative path to respective Knowledge Graph ontology
-    "fold_method": "hop",                    # Choose between 'hop', 'dot', or 'intersect'
+    "project_method": "hop",                    # Choose between 'hop', 'dot', or 'intersect'
 }
 ```
 For examples see a [test](https://github.com/davidweisscode/kg-analysis/blob/master/small_run.py) and a [resource demanding](https://github.com/davidweisscode/kg-analysis/blob/master/big_run.py) run.
@@ -56,9 +56,9 @@ Run the following four scripts in sequence together with your run configuration
     - Query your dataset and build a bipartite Knowledge Graph for each `Superclass` specified in your config file  
     - Run `python3 build_graph.py run_config.py` to output an edgelist in `out/Superclass.g.csv`  
 
- 2. Folding  
+ 2. Projecting  
     - Project your bipartite graph into its two onemode representations  
-    - Run `python3 fold_graph.py run_config.py` to output onemode edgelists in `out/Superclass.u` and `out/Superclass.v`  
+    - Run `python3 project_graph.py run_config.py` to output onemode edgelists in `out/Superclass.u` and `out/Superclass.v`  
 
  3. Computing  
     - Compute a KNC (k-neighborhood-connectivity) plot based on onemode graphs  
@@ -69,7 +69,7 @@ Run the following four scripts in sequence together with your run configuration
     - Run `python3 analyze_knc.py run_config.py` to save properties in your run's result file `out/_results_run_config.py`  
 
 ```
-python3 build_graph.py run_config.py >> log.txt && python3 fold_graph.py run_config.py >> log.txt && python3 compute_knc.py run_config.py >> log.txt && python3 analyze_knc.py run_config.py >> log.txt
+python3 build_graph.py run_config.py >> log.txt && python3 project_graph.py run_config.py >> log.txt && python3 compute_knc.py run_config.py >> log.txt && python3 analyze_knc.py run_config.py >> log.txt
 ```  
 
 ### Results

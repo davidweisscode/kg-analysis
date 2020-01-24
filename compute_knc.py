@@ -22,19 +22,19 @@ def get_result(superclass, feature, run_name):
     df = pd.read_csv(f"out/_results_{run_name}.csv")
     return df.loc[df.index[df["superclass"] == superclass][0], feature]
 
-def compute_knc(superclass, run_name, fold_method):
+def compute_knc(superclass, run_name, project_method):
     """ Compute points for a KNC plot and save them together in .k.csv """
     k_max_u = int(get_result(superclass, "k_max_u", run_name))
-    omgraph_u = load_onemode_graph(superclass, "u", fold_method)
+    omgraph_u = load_onemode_graph(superclass, "u", project_method)
     knc_u = compute_knc_onemode(omgraph_u, k_max_u)
     k_max_v = int(get_result(superclass, "k_max_v", run_name))
-    omgraph_v = load_onemode_graph(superclass, "v", fold_method)
+    omgraph_v = load_onemode_graph(superclass, "v", project_method)
     knc_v = compute_knc_onemode(omgraph_v, k_max_v)
     write_knc(superclass, knc_u, knc_v)
 
-def load_onemode_graph(superclass, onemode, fold_method):
+def load_onemode_graph(superclass, onemode, project_method):
     """ Load the onemode superclass graph from .onemode.csv """
-    if fold_method == "dot":
+    if project_method == "dot":
         t_start = time.time()
         wmatrix = sparse.load_npz(f"out/{superclass}.{onemode}.npz")
         print(f"[Time] load-npz {onemode} {time.time() - t_start:.3f} sec")
@@ -52,7 +52,7 @@ def load_onemode_graph(superclass, onemode, fold_method):
         # Fails here, ~30gb in RAM when wmatrix 7,8gb, killed, (1000, 500)
         omgraph = nx.from_scipy_sparse_matrix(wmatrix) # high time, high space in csr
         print(f"[Time] from-sparse {onemode} {time.time() - t_start:.3f} sec")
-    elif fold_method == "hop" or fold_method == "intersect":
+    elif project_method == "hop" or project_method == "intersect":
         t_start = time.time()
         omgraph = nx.Graph()
         omedges = read_om_edgelist(superclass, onemode)
@@ -94,9 +94,9 @@ def main():
     for superclass in run.config["classes"]:
         print("\n[Compute knc]", superclass)
         try:
-            compute_knc(superclass, run_name, run.config["fold_method"])
+            compute_knc(superclass, run_name, run.config["project_method"])
         except KeyError as e:
-            sys.exit("[Error] Please specify fold_method as 'dot' or 'hop' in run config\n", e)
+            sys.exit("[Error] Please specify project_method as 'dot' or 'hop' in run config\n", e)
     print(f"\n[Time] compute-kncs {time.time() - t_compute:.3f} sec")
 
 main()

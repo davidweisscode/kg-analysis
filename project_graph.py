@@ -1,5 +1,5 @@
 """
-Fold a bipartite Knowledge Graph into its two onemode representations.
+Project a bipartite graph into its two onemode representations.
 """
 
 #!/usr/bin/python3
@@ -40,7 +40,7 @@ def check_bipartite(bipgraph):
     return bipartite
 
 def split_edgelist(edges):
-    """ Split the input edgelist into left and right side """
+    """ Split the input edgelist into left (u) and right (v) side """
     t_start = time.time()
     side_u = []
     side_v = []
@@ -66,12 +66,11 @@ def write_edgelist(classname, edgelist, onemode):
     df = pd.DataFrame(edgelist, columns=["a", "b", "w"])
     df.to_csv(f"out/{classname}.{onemode}.csv", index=False)
 
-def fold_graph(superclass, run_name, fold_method):
+def project_graph(superclass, run_name, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
     # TODO: Save node ordering for future name lookup
     # TODO: Save diagonal values in .csv for analysis of extensively described entities
     # TODO: Separate onemode nodes to use integers as node labels # nx.convert_node_labels_to_integers(bipgraph_labeled, ordering="default")
-
     bipgraph = nx.Graph()
     edgelist = read_edgelist(superclass)
     bipgraph.add_edges_from(edgelist)
@@ -84,24 +83,24 @@ def fold_graph(superclass, run_name, fold_method):
     k_max_u, k_max_v = len(side_v), len(side_u)
     append_result_columns(superclass, k_max_u, k_max_v, is_connected, is_bipartite, run_name)
 
-    if fold_method == "dot":
-        fold_dot(superclass, bipgraph, side_u, side_v)
-    elif fold_method == "hop":
-        fold_hop(superclass, bipgraph, side_u, side_v)
-    elif fold_method == "intersect":
-        fold_intersect(superclass, bipgraph, side_u, side_v)
+    if project_method == "dot":
+        project_dot(superclass, bipgraph, side_u, side_v)
+    elif project_method == "hop":
+        project_hop(superclass, bipgraph, side_u, side_v)
+    elif project_method == "intersect":
+        project_intersect(superclass, bipgraph, side_u, side_v)
 
-def fold_dot(superclass, bipgraph, side_u, side_v):
-    """ Fold a bipartite graph to its onemode representations in sparse matrix format """
+def project_dot(superclass, bipgraph, side_u, side_v):
+    """ project a bipartite graph to its onemode representations in sparse matrix format """
     t_start = time.time()
     A = nx.bipartite.biadjacency_matrix(bipgraph, row_order=side_u, column_order=side_v, dtype="uint16")
     print(f"[Time] comp-biadj-matrix {time.time() - t_start:.3f} sec")
     print("[Info] A shape", A.shape)
     print("[Info] A dtype", A.dtype)
-    fold_dot_onemode(superclass, A, "u")
-    fold_dot_onemode(superclass, A, "v")
+    project_dot_onemode(superclass, A, "u")
+    project_dot_onemode(superclass, A, "v")
 
-def fold_dot_onemode(superclass, biadjmatrix, onemode):
+def project_dot_onemode(superclass, biadjmatrix, onemode):
     """ Get the weigthed adjacency matrix of the onemode graph by matrix multiplication """
     t_start = time.time()
     if onemode == "u":
@@ -138,12 +137,12 @@ def fold_dot_onemode(superclass, biadjmatrix, onemode):
     sparse.save_npz(f"out/{superclass}.{onemode}.npz", wmatrix)
     print(f"[Time] save-npz {onemode} {time.time() - t_start:.3f} sec")
 
-def fold_hop(superclass, bipgraph, side_u, side_v):
-    """ Fold a bipartite graph to its onemode representations in edgelist format """
-    fold_hop_onemode(superclass, bipgraph, "u", side_u)
-    fold_hop_onemode(superclass, bipgraph, "v", side_v)
+def project_hop(superclass, bipgraph, side_u, side_v):
+    """ project a bipartite graph to its onemode representations in edgelist format """
+    project_hop_onemode(superclass, bipgraph, "u", side_u)
+    project_hop_onemode(superclass, bipgraph, "v", side_v)
 
-def fold_hop_onemode(superclass, bipgraph, onemode, onemode_nodes):
+def project_hop_onemode(superclass, bipgraph, onemode, onemode_nodes):
     """ Get a weigthed edgelist of a onemode graph by counting distinct hop-2 paths for each node combination """
     t_start = time.time()
     om_edges = []
@@ -158,12 +157,12 @@ def fold_hop_onemode(superclass, bipgraph, onemode, onemode_nodes):
     write_edgelist(superclass, om_edges, onemode)
     print(f"[Time] write-hop-edgelist {onemode} {time.time() - t_start:.3f} sec")
 
-def fold_intersect(superclass, bipgraph, side_u, side_v):
-    """ Fold a bipartite graph to its onemode representations in edgelist format """
-    fold_intersect_onemode(superclass, bipgraph, "u", side_u)
-    fold_intersect_onemode(superclass, bipgraph, "v", side_v)
+def project_intersect(superclass, bipgraph, side_u, side_v):
+    """ project a bipartite graph to its onemode representations in edgelist format """
+    project_intersect_onemode(superclass, bipgraph, "u", side_u)
+    project_intersect_onemode(superclass, bipgraph, "v", side_v)
 
-def fold_intersect_onemode(superclass, bipgraph, onemode, onemode_nodes):
+def project_intersect_onemode(superclass, bipgraph, onemode, onemode_nodes):
     """ Get a weigthed edgelist of a onemode graph by intersecting neighbor sets for each node combination """
     t_start = time.time()
     om_edges = []
@@ -183,14 +182,14 @@ def main():
     run_name = sys.argv[1][:-3]
     run = import_module(run_name)
 
-    t_fold = time.time()
+    t_project = time.time()
     for superclass in run.config["classes"]:
-        print("\n[Fold]", superclass)
+        print("\n[Project]", superclass)
         try:
-            fold_graph(superclass, run_name, run.config["fold_method"])
+            project_graph(superclass, run_name, run.config["project_method"])
         except KeyError as e:
-            sys.exit("[Error] Please specify fold_method as 'dot' or 'hop' in run config\n", e)
+            sys.exit("[Error] Please specify project_method as 'dot' or 'hop' in run config\n", e)
 
-    print(f"\n[Time] fold-graphs {time.time() - t_fold:.3f} sec")
+    print(f"\n[Time] project-graphs {time.time() - t_project:.3f} sec")
 
 main()
