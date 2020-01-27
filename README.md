@@ -37,11 +37,11 @@ Specify your runs with a custom configuration of classes, data size, and project
 ```python
 config = {
     "classes": ["Athlete", "Artist"],        # List of DBpedia class names to analyze
-    "subject_limit": 1000,                   # SPARQL query limit for subjects of each subclass
-    "predicate_limit": 500,                  # SPARQL query limit for predicates of each subject
+    "subject_limit": 1000,                   # SPARQL subject limit for each subclass (0 for unlimited)
+    "predicate_limit": 500,                  # SPARQL predicate limit for each subject (0 for unlimited)
     "kg_source": "kg/dbpedia2016-04en.hdt",  # Relative path to .hdt serialized Knowledge Graph
     "kg_ontology": "kg/dbpedia.owl",         # Relative path to respective Knowledge Graph ontology
-    "project_method": "hop",                    # Choose between 'hop', 'dot', or 'intersect'
+    "project_method": "intersect",           # Choose between 'dot', 'hop', 'intersect', or 'nx'
 }
 ```
 For examples see a [test](https://github.com/davidweisscode/kg-analysis/blob/master/small_run.py) and a [resource demanding](https://github.com/davidweisscode/kg-analysis/blob/master/big_run.py) run.

@@ -46,11 +46,9 @@ def load_onemode_graph(superclass, onemode, project_method):
         matrix_density = count_nonzeroes / max_nonzeroes
         print(f"[Info] wmatrix {onemode} nnz {count_nonzeroes} --> matrix_density {matrix_density:.4f}")
         print(f"[Info] wmatrix {onemode} shape {wmatrix.shape}")
-        # print(f"[Info] wmatrix {onemode} find-nonzero-examples\n", wmatrix[2,:], wmatrix[4,:], wmatrix[6,:])
-        print(f"[Info] wmatrix {onemode} maxelement {wmatrix.max()}") # high time, high space in coo; low time, low space in csr
+        print(f"[Info] wmatrix {onemode} maxelement {wmatrix.max()}")
         t_start = time.time()
-        # Fails here, ~30gb in RAM when wmatrix 7,8gb, killed, (1000, 500)
-        omgraph = nx.from_scipy_sparse_matrix(wmatrix) # high time, high space in csr
+        omgraph = nx.from_scipy_sparse_matrix(wmatrix)
         print(f"[Time] from-sparse {onemode} {time.time() - t_start:.3f} sec")
     elif project_method == "hop" or project_method == "intersect" or project_method == "nx":
         t_start = time.time()

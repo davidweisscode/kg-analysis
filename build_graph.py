@@ -6,8 +6,6 @@ Build a bipartite graph from an n-triples Knowledge Graph representation.
 
 # TODO: Check Googles Python style guide
 # TODO: Check pylint
-# TODO: Save named log file
-# TODO: Optimize changing data structures (nested for loops, DataFrame, ndarray, builtin functions)
 
 import os
 import sys
@@ -51,12 +49,18 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
     edgelist = []
     print("[Info] query subjects for each subclass")
     for subclass in tqdm(subclasses):
-        triples = dataset.search_triples("", rdf + "type", subclass, limit=subject_limit)[0]
+        if subject_limit > 0:
+            triples = dataset.search_triples("", rdf + "type", subclass, limit=subject_limit)[0]
+        else:
+            triples = dataset.search_triples("", rdf + "type", subclass)[0]
         for triple in triples:
             subjects.append(triple[0])
     print("[Info] query predicates for each subject")
     for subject in tqdm(subjects):
-        triples = dataset.search_triples(subject, "", "", limit=predicate_limit)[0]
+        if predicate_limit > 0:
+            triples = dataset.search_triples(subject, "", "", limit=predicate_limit)[0]
+        else:
+            triples = dataset.search_triples(subject, "", "")[0]
         for triple in triples:
             if not triple[1] in blacklist:
                 edgelist.append((triple[0], triple[1]))
