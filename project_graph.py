@@ -6,6 +6,7 @@ Project a bipartite graph into its two onemode representations.
 
 import sys
 import time
+import resource
 import itertools
 from tqdm import tqdm
 from scipy import sparse
@@ -209,5 +210,7 @@ def main():
             sys.exit("[Error] Please specify project_method as 'dot' or 'hop' in run config\n", e)
 
     print(f"\n[Time] project-graphs {time.time() - t_project:.3f} sec")
+    max_ram = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024 ** 2)
+    print(f"[Info] {run.config['project_method']} max RAM in GB {max_ram:.6f}")
 
 main()
