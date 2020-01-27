@@ -52,14 +52,12 @@ def split_edgelist(edges):
     print(f"[Time] split-edgelist {time.time() - t_start:.3f} sec")
     return side_u, side_v
 
-def append_result_columns(superclass, k_max_u, k_max_v, connected, bipartite, run_name):
-    """ Save more properties for superclass in the result csv file """
-    df = pd.read_csv(f"out/_results_{run_name}.csv")
-    df.loc[df.index[df["superclass"] == superclass], "k_max_u"] = k_max_u
-    df.loc[df.index[df["superclass"] == superclass], "k_max_v"] = k_max_v
-    df.loc[df.index[df["superclass"] == superclass], "connected"] = connected
-    df.loc[df.index[df["superclass"] == superclass], "bipartite"] = bipartite
-    df.to_csv(f"out/_results_{run_name}.csv", index=False)
+def add_results(run_name, superclass, **results):
+    """ Append result columns in a superclass row """
+    df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
+    for resultname, result in results.items():
+        df.loc[superclass, resultname] = result
+    df.to_csv(f"out/_results_{run_name}.csv")
 
 def write_edgelist(classname, edgelist, onemode):
     """ Write edge list to csv file """
@@ -80,8 +78,8 @@ def project_graph(superclass, run_name, project_method):
     print("[Info] Number of edges", bipgraph.number_of_edges())
     side_u, side_v = split_edgelist(edgelist)
     # In onemode network edgelists, data about disconnected nodes gets lost
-    k_max_u, k_max_v = len(side_v), len(side_u)
-    append_result_columns(superclass, k_max_u, k_max_v, is_connected, is_bipartite, run_name)
+    n_u, n_v = len(side_u), len(side_v)
+    add_results(run_name, superclass, n_u=n_u, n_v=n_v, connected=is_connected, bipartite=is_bipartite)
 
     if project_method == "dot":
         project_dot(superclass, bipgraph, side_u, side_v)
@@ -138,7 +136,7 @@ def project_dot_onemode(superclass, biadjmatrix, onemode):
     print(f"[Time] save-npz {onemode} {time.time() - t_start:.3f} sec")
 
 def project_hop(superclass, bipgraph, side_u, side_v):
-    """ project a bipartite graph to its onemode representations in edgelist format """
+    """ Project a bipartite graph to its onemode representations in edgelist format """
     project_hop_onemode(superclass, bipgraph, "u", side_u)
     project_hop_onemode(superclass, bipgraph, "v", side_v)
 
@@ -158,7 +156,7 @@ def project_hop_onemode(superclass, bipgraph, onemode, onemode_nodes):
     print(f"[Time] write-hop-edgelist {onemode} {time.time() - t_start:.3f} sec")
 
 def project_intersect(superclass, bipgraph, side_u, side_v):
-    """ project a bipartite graph to its onemode representations in edgelist format """
+    """ Project a bipartite graph to its onemode representations in edgelist format """
     project_intersect_onemode(superclass, bipgraph, "u", side_u)
     project_intersect_onemode(superclass, bipgraph, "v", side_v)
 

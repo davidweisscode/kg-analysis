@@ -17,19 +17,19 @@ def read_om_edgelist(superclass, onemode):
     df = pd.read_csv(f"out/{superclass}.{onemode}.csv")
     return list(df.itertuples(index=False, name=None))
 
-def get_result(superclass, feature, run_name):
-    """ Get the superclasses value in a feature column """
-    df = pd.read_csv(f"out/_results_{run_name}.csv")
-    return df.loc[df.index[df["superclass"] == superclass][0], feature]
+def get_result(run_name, superclass, result):
+    """ Get the result value of a superclass """
+    df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
+    return df.loc[superclass, result]
 
-def compute_knc(superclass, run_name, project_method):
+def compute_knc(run_name, superclass, project_method):
     """ Compute points for a KNC plot and save them together in .k.csv """
-    k_max_u = int(get_result(superclass, "k_max_u", run_name))
+    n_v = int(get_result(run_name, superclass, "n_v"))
     omgraph_u = load_onemode_graph(superclass, "u", project_method)
-    knc_u = compute_knc_onemode(omgraph_u, k_max_u)
-    k_max_v = int(get_result(superclass, "k_max_v", run_name))
+    knc_u = compute_knc_onemode(omgraph_u, n_v)
+    n_u = int(get_result(run_name, superclass, "n_u"))
     omgraph_v = load_onemode_graph(superclass, "v", project_method)
-    knc_v = compute_knc_onemode(omgraph_v, k_max_v)
+    knc_v = compute_knc_onemode(omgraph_v, n_u)
     write_knc(superclass, knc_u, knc_v)
 
 def load_onemode_graph(superclass, onemode, project_method):
@@ -94,7 +94,7 @@ def main():
     for superclass in run.config["classes"]:
         print("\n[Compute knc]", superclass)
         try:
-            compute_knc(superclass, run_name, run.config["project_method"])
+            compute_knc(run_name, superclass, run.config["project_method"])
         except KeyError as e:
             sys.exit("[Error] Please specify project_method as 'dot' or 'hop' in run config\n", e)
     print(f"\n[Time] compute-kncs {time.time() - t_compute:.3f} sec")

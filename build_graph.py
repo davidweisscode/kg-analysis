@@ -68,11 +68,12 @@ def write_edgelist(classname, edgelist):
     df = pd.DataFrame(edgelist, columns=["u", "v"])
     df.to_csv(f"out/{classname}.g.csv", index=False)
 
-def append_result_rows(superclass, subclasses, number_of_edges, run_name):
-    """ Append result rows for each superclass """
+def add_results(run_name, superclass, **results):
+    """ Append result columns in a superclass row """
     df = pd.read_csv(f"out/_results_{run_name}.csv")
-    df.loc[len(df)] = (superclass, subclasses, number_of_edges)
-    df.to_csv(f"out/_results_{run_name}.csv", index=False)
+    for resultname, result in results.items():
+        df.loc[superclass, resultname] = result
+    df.to_csv(f"out/_results_{run_name}.csv")
 
 def main():
     run_name = sys.argv[1][:-3]
@@ -88,7 +89,7 @@ def main():
     if os.path.exists(f"out/_results_{run_name}.csv"):
         print("[Info] Remove old results file")
         os.remove(f"out/_results_{run_name}.csv")
-    results = pd.DataFrame(columns=["superclass", "subclasses", "num_edges"])
+    results = pd.DataFrame(columns=["subclasses", "m"])
     results.to_csv(f"out/_results_{run_name}.csv", index=False)
 
     t_build = time.time()
@@ -97,7 +98,7 @@ def main():
         subclasses = query_subclasses(ontology, superclass)
         edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         write_edgelist(superclass, edgelist)
-        append_result_rows(superclass, subclasses, len(edgelist), run_name)
+        add_results(run_name, superclass, subclasses=subclasses, m=len(edgelist))
         print(f"[Time] build-edgelists {time.time() - t_build:.3f} sec")
 
 main()
