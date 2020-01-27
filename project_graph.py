@@ -87,6 +87,8 @@ def project_graph(superclass, run_name, project_method):
         project_hop(superclass, bipgraph, side_u, side_v)
     elif project_method == "intersect":
         project_intersect(superclass, bipgraph, side_u, side_v)
+    elif project_method == "nx":
+        project_nx(superclass, bipgraph, side_u, side_v)
 
 def project_dot(superclass, bipgraph, side_u, side_v):
     """ project a bipartite graph to its onemode representations in sparse matrix format """
@@ -175,6 +177,24 @@ def project_intersect_onemode(superclass, bipgraph, onemode, onemode_nodes):
     t_start = time.time()
     write_edgelist(superclass, om_edges, onemode)
     print(f"[Time] write-intersect-edgelist {onemode} {time.time() - t_start:.3f} sec")
+
+def project_nx(superclass, bipgraph, side_u, side_v):
+    """ Project a bipartite graph to its onemode representations """
+    project_nx_onemode(superclass, bipgraph, "u", side_u)
+    project_nx_onemode(superclass, bipgraph, "v", side_v)
+
+def project_nx_onemode(superclass, bipgraph, onemode, onemode_nodes):
+    """ Get a weigthed edgelist of a onemode graph """
+    t_start = time.time()
+    print(f"[Info] nx weighted projection {onemode}")
+    omgraph = nx.algorithms.bipartite.weighted_projected_graph(bipgraph, onemode_nodes)
+    print(f"[Time] nx {onemode} {time.time() - t_start:.3f} sec")
+    t_start = time.time()
+    om_edges = []
+    for edge in omgraph.edges(data=True):
+        om_edges.append((edge[0], edge[1], edge[2]["weight"]))
+    write_edgelist(superclass, om_edges, onemode)
+    print(f"[Time] convert-write-edgelist {onemode} {time.time() - t_start:.3f} sec")
 
 def main():
     run_name = sys.argv[1][:-3]

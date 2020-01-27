@@ -44,7 +44,6 @@ def compute_rc(run_name, superclass, knc_list, onemode):
 def add_results(run_name, superclass, **results):
     """ Append result columns in a superclass row """
     df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
-    print(df)
     for resultname, result in results.items():
         df.loc[superclass, resultname] = result
     df.to_csv(f"out/_results_{run_name}.csv")

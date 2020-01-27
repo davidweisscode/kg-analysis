@@ -52,7 +52,7 @@ def load_onemode_graph(superclass, onemode, project_method):
         # Fails here, ~30gb in RAM when wmatrix 7,8gb, killed, (1000, 500)
         omgraph = nx.from_scipy_sparse_matrix(wmatrix) # high time, high space in csr
         print(f"[Time] from-sparse {onemode} {time.time() - t_start:.3f} sec")
-    elif project_method == "hop" or project_method == "intersect":
+    elif project_method == "hop" or project_method == "intersect" or project_method == "nx":
         t_start = time.time()
         omgraph = nx.Graph()
         omedges = read_om_edgelist(superclass, onemode)
