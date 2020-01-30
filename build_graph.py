@@ -74,9 +74,9 @@ def write_edgelist(classname, edgelist):
 
 def add_results(run_name, superclass, **results):
     """ Append result columns in a superclass row """
-    df = pd.read_csv(f"out/_results_{run_name}.csv")
+    df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
     for resultname, result in results.items():
-        df.loc[superclass, resultname] = result
+        df.at[superclass, resultname] = result
     df.to_csv(f"out/_results_{run_name}.csv")
 
 def main():
@@ -93,8 +93,8 @@ def main():
     if os.path.exists(f"out/_results_{run_name}.csv"):
         print("[Info] Remove old results file")
         os.remove(f"out/_results_{run_name}.csv")
-    results = pd.DataFrame(columns=["subclasses", "m"])
-    results.to_csv(f"out/_results_{run_name}.csv", index=False)
+    df = pd.DataFrame(columns=["m"])
+    df.to_csv(f"out/_results_{run_name}.csv")
 
     t_build = time.time()
     for superclass in run.config["classes"]:
@@ -102,7 +102,7 @@ def main():
         subclasses = query_subclasses(ontology, superclass)
         edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         write_edgelist(superclass, edgelist)
-        add_results(run_name, superclass, subclasses=subclasses, m=len(edgelist))
+        add_results(run_name, superclass, m=len(edgelist))
         print(f"[Time] build-edgelists {time.time() - t_build:.3f} sec")
 
 main()
