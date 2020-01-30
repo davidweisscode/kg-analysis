@@ -1,7 +1,7 @@
 # kg-analysis
 Knowledge Graph and Linked Data uniformity analysis with affiliation networks  
 
-<img src="https://github.com/davidweisscode/kg-analysis/blob/master/bipgraph.png" alt="Bipartite graph" width="500px">
+<img src="https://github.com/davidweisscode/kg-analysis/blob/master/bigraph.png" alt="Bipartite graph" width="500px">
 
 ---
 ## Setup
@@ -37,14 +37,13 @@ Specify your runs with a custom configuration of classes, data size, and project
 ```python
 config = {
     "classes": ["Athlete", "Artist"],        # List of DBpedia class names to analyze
-    "subject_limit": 1000,                   # SPARQL subject limit for each subclass (0 for unlimited)
-    "predicate_limit": 500,                  # SPARQL predicate limit for each subject (0 for unlimited)
+    "project_method": "intersect",           # Choose between 'dot', 'hop', 'intersect', or 'nx'
     "kg_source": "kg/dbpedia2016-04en.hdt",  # Relative path to .hdt serialized Knowledge Graph
     "kg_ontology": "kg/dbpedia.owl",         # Relative path to respective Knowledge Graph ontology
-    "project_method": "intersect",           # Choose between 'dot', 'hop', 'intersect', or 'nx'
+    "subject_limit": 0,                      # SPARQL subject limit for each subclass (0 for unlimited)
+    "predicate_limit": 0,                    # SPARQL predicate limit for each subject (0 for unlimited)
 }
 ```
-For examples see a [test](https://github.com/davidweisscode/kg-analysis/blob/master/small_run.py) and a [resource demanding](https://github.com/davidweisscode/kg-analysis/blob/master/big_run.py) run.
 
 ### DBpedia classes
 Analyze classes and its subclasses from the DBpedia [class mappings](http://mappings.dbpedia.org/server/ontology/classes/).
@@ -58,7 +57,7 @@ Run the following four scripts in sequence together with your run configuration
 
  2. Projecting  
     - Project your bipartite graph into its two onemode representations  
-    - Run `python3 project_graph.py run_config.py` to output onemode edgelists in `out/Superclass.u` and `out/Superclass.v`  
+    - Run `python3 project_graph.py run_config.py` to output onemode edgelists in `out/Superclass.t` and `out/Superclass.b`  
 
  3. Computing  
     - Compute a KNC (k-neighborhood-connectivity) plot based on onemode graphs  

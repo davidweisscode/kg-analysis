@@ -24,13 +24,13 @@ def get_result(run_name, superclass, result):
 
 def compute_knc(run_name, superclass, project_method):
     """ Compute points for a KNC plot and save them together in .k.csv """
-    n_v = int(get_result(run_name, superclass, "n_v"))
-    omgraph_u = load_onemode_graph(superclass, "u", project_method)
-    knc_u = compute_knc_onemode(omgraph_u, n_v)
-    n_u = int(get_result(run_name, superclass, "n_u"))
-    omgraph_v = load_onemode_graph(superclass, "v", project_method)
-    knc_v = compute_knc_onemode(omgraph_v, n_u)
-    write_knc(superclass, knc_u, knc_v)
+    n_b = int(get_result(run_name, superclass, "n_b"))
+    omgraph_t = load_onemode_graph(superclass, "t", project_method)
+    knc_t = compute_knc_onemode(omgraph_t, n_b)
+    n_t = int(get_result(run_name, superclass, "n_t"))
+    omgraph_b = load_onemode_graph(superclass, "b", project_method)
+    knc_b = compute_knc_onemode(omgraph_b, n_t)
+    write_knc(superclass, knc_t, knc_b)
 
 def load_onemode_graph(superclass, onemode, project_method):
     """ Load the onemode superclass graph from .onemode.csv """
@@ -75,12 +75,12 @@ def compute_knc_onemode(onemode_graph, k_max):
     print(f"[Time] compute-knc {time.time() - t_start:.3f} sec")
     return knc_list
 
-def write_knc(superclass, knc_u, knc_v):
+def write_knc(superclass, knc_t, knc_b):
     """ Save KNC plot points to a csv file """
     t_start = time.time()
-    df_u = pd.DataFrame(knc_u, columns=["k", "density"])
-    df_v = pd.DataFrame(knc_v, columns=["k", "density"])
-    knc = df_u.append(df_v, ignore_index=True)
+    df_t = pd.DataFrame(knc_t, columns=["k", "density"])
+    df_b = pd.DataFrame(knc_b, columns=["k", "density"])
+    knc = df_t.append(df_b, ignore_index=True)
     knc.to_csv(f"out/{superclass}.k.csv", index=False)
     print(f"[Time] write-knc {time.time() - t_start:.3f} sec")
 

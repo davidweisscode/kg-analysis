@@ -69,7 +69,7 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
 
 def write_edgelist(classname, edgelist):
     """ Write edgelist to csv file """
-    df = pd.DataFrame(edgelist, columns=["u", "v"])
+    df = pd.DataFrame(edgelist, columns=["t", "b"])
     df.to_csv(f"out/{classname}.g.csv", index=False)
 
 def add_results(run_name, superclass, **results):

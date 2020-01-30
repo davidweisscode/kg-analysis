@@ -23,10 +23,10 @@ def get_result(run_name, superclass, result):
 def analyze_knc(run_name, superclass):
     #TODO: rc_u_c2, rc_v_c2, lower_quartile, median, upper_quartile, slope
     knc_list = read_knc_list(superclass)
-    k_max_u = int(get_result(run_name, superclass, "n_v"))
-    results_u = analyze_knc_onemode(run_name, superclass, knc_list[:k_max_u], "v")
-    results_v = analyze_knc_onemode(run_name, superclass, knc_list[k_max_u:], "u")
-    add_results(run_name, superclass, rc_u=results_u, rc_v=results_v)
+    k_max_t = int(get_result(run_name, superclass, "n_b"))
+    results_t = analyze_knc_onemode(run_name, superclass, knc_list[:k_max_t], "b")
+    results_b = analyze_knc_onemode(run_name, superclass, knc_list[k_max_t:], "t")
+    add_results(run_name, superclass, rc_t=results_t, rc_b=results_b)
 
 def analyze_knc_onemode(run_name, superclass, knc_list, onemode):
     return compute_rc(run_name, superclass, knc_list, onemode)
