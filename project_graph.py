@@ -21,6 +21,11 @@ def read_edgelist(superclass):
     df = pd.read_csv(f"out/{superclass}.g.csv")
     return list(df.itertuples(index=False, name=None))
 
+def read_integer_edgelist(superclass):
+    """ Read integer edgelist from csv file """
+    df = pd.read_csv(f"out/{superclass}.i.csv")
+    return list(df.itertuples(index=False, name=None))
+
 @get_time
 def check_connected(bigraph):
     """ Check whether input graph is connected """
@@ -71,13 +76,12 @@ def project_graph(run_name, superclass, project_method):
     bigraph = nx.Graph()
     edgelist = read_edgelist(superclass)
     bigraph.add_edges_from(edgelist)
+    nodes_top, nodes_bot = split_edgelist(edgelist)
+    n_t, n_b = len(nodes_top), len(nodes_bot)
+    print(f"[Info] n {bigraph.number_of_nodes()}, m {bigraph.number_of_edges()}, t {n_t}, b {n_b}")
     is_connected = check_connected(bigraph)
     is_bipartite = check_bipartite(bigraph)
-    print("[Info] n", bigraph.number_of_nodes())
-    print("[Info] m", bigraph.number_of_edges())
-    nodes_top, nodes_bot = split_edgelist(edgelist)
     # In onemode network edgelists, data about disconnected nodes gets lost
-    n_t, n_b = len(nodes_top), len(nodes_bot)
     add_results(run_name, superclass, n_t=n_t, n_b=n_b, connected=is_connected, bipartite=is_bipartite)
 
     if project_method == "dot":
@@ -110,28 +114,18 @@ def project_dot_onemode(superclass, biadjmatrix, onemode):
     print(f"[Info] wmatrix {onemode} type {type(wmatrix)}")
     print(f"[Info] wmatrix {onemode} dtype {wmatrix.dtype}")
     print(f"[Info] wmatrix {onemode} nbytes in GB {(wmatrix.data.nbytes + wmatrix.indptr.nbytes + wmatrix.indices.nbytes) / (1024 ** 3):.6f}")
-    print(f"[Info] wmatrix {onemode} nbytes data in GB {(wmatrix.data.nbytes) / (1024 ** 3):.6f}")
     print(f"[Info] wmatrix {onemode} shape {wmatrix.shape}")
     print(f"[Info] wmatrix {onemode} maxelement {wmatrix.max()}")
     count_nonzeroes = wmatrix.nnz
     max_nonzeroes = wmatrix.shape[0] * (wmatrix.shape[0] - 1)
     matrix_density = count_nonzeroes / max_nonzeroes
-    print(f"[Info] wmatrix {onemode} nnz {count_nonzeroes}")
     print(f"[Info] wmatrix {onemode} density {matrix_density:.4f}")
     t_start = time.time()
     wmatrix = sparse.tril(wmatrix, k=-1) # Fails here for large matrices with high time, high space
     print(f"[Time] wmatrix {onemode} tril {time.time() - t_start:.3f} sec")
-    t_start = time.time()
     wmatrix = wmatrix.tocsr()
-    print(f"[Time] wmatrix {onemode} to-csr {time.time() - t_start:.3f} sec")
-    count_nonzeroes = wmatrix.nnz
-    max_nonzeroes = 0.5 * wmatrix.shape[0] * (wmatrix.shape[0] - 1)
-    matrix_density = count_nonzeroes / max_nonzeroes
-    print(f"[Info] wmatrix {onemode} tril nnz {count_nonzeroes}")
-    print(f"[Info] wmatrix {onemode} tril density {matrix_density:.4f}")
     print(f"[Info] wmatrix {onemode} tril type {type(wmatrix)}")
     print(f"[Info] wmatrix {onemode} tril nbytes data in GB {(wmatrix.data.nbytes) / (1024 ** 3):.6f}")
-    print(f"[Info] wmatrix {onemode} tril nnz {wmatrix.nnz}")
     t_start = time.time()
     sparse.save_npz(f"out/{superclass}.{onemode}.npz", wmatrix)
     print(f"[Time] save-npz {onemode} {time.time() - t_start:.3f} sec")

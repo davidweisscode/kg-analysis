@@ -71,6 +71,16 @@ def write_edgelist(classname, edgelist):
     df = pd.DataFrame(edgelist, columns=["t", "b"])
     df.to_csv(f"out/{classname}.g.csv", index=False)
 
+@get_time
+def write_integer_edgelist(classname, edgelist):
+    """ Write edgelist to csv file with node labels converted to unique integers """
+    df = pd.DataFrame(edgelist, columns=["t", "b"])
+    df["t"] = pd.Categorical(df["t"])
+    df["b"] = pd.Categorical(df["b"])
+    df["t"] = df["t"].cat.codes
+    df["b"] = df["b"].cat.codes + len(df)
+    df.to_csv(f"out/{classname}.i.csv", index=False)
+
 def add_results(run_name, superclass, **results):
     """ Append result columns in a superclass row """
     df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
@@ -101,6 +111,7 @@ def main():
         subclasses = query_subclasses(ontology, superclass)
         edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         write_edgelist(superclass, edgelist)
+        write_integer_edgelist(superclass, edgelist)
         add_results(run_name, superclass, m=len(edgelist))
 
 main()
