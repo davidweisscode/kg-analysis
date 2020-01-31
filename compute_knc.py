@@ -8,6 +8,7 @@ import sys
 import time
 from scipy import sparse
 from importlib import import_module
+from logger import get_time, get_ram
 import pandas as pd
 import networkx as nx
 from tqdm import tqdm
@@ -58,12 +59,12 @@ def load_onemode_graph(superclass, onemode, project_method):
         print(f"[Time] from-weighted-edgelist {onemode} {time.time() - t_start:.3f} sec")
     return omgraph
 
+@get_time
 def compute_knc_onemode(onemode_graph, k_max):
     """ Compute points of an KNC plot """
     # TODO: Break if connectivity measure reached zero
     # TODO: Add other connectivity measures
     # TODO: Build a graph here? Density can be computed manually
-    t_start = time.time()
     knc_list = []
     graph_density = nx.classes.function.density
     print("[Info] compute connectivity measures")
@@ -72,29 +73,27 @@ def compute_knc_onemode(onemode_graph, k_max):
             if edge[2] < k:
                 onemode_graph.remove_edge(edge[0], edge[1])
         knc_list.append((k, graph_density(onemode_graph)))
-    print(f"[Time] compute-knc {time.time() - t_start:.3f} sec")
     return knc_list
 
+@get_time
 def write_knc(superclass, knc_t, knc_b):
     """ Save KNC plot points to a csv file """
-    t_start = time.time()
     df_t = pd.DataFrame(knc_t, columns=["k", "density"])
     df_b = pd.DataFrame(knc_b, columns=["k", "density"])
     knc = df_t.append(df_b, ignore_index=True)
     knc.to_csv(f"out/{superclass}.k.csv", index=False)
-    print(f"[Time] write-knc {time.time() - t_start:.3f} sec")
 
+@get_time
+@get_ram
 def main():
     run_name = sys.argv[1][:-3]
     run = import_module(run_name)
 
-    t_compute = time.time()
     for superclass in run.config["classes"]:
         print("\n[Compute knc]", superclass)
         try:
             compute_knc(run_name, superclass, run.config["project_method"])
         except KeyError as e:
             sys.exit("[Error] Please specify project_method as 'dot' or 'hop' in run config\n", e)
-    print(f"\n[Time] compute-kncs {time.time() - t_compute:.3f} sec")
 
 main()

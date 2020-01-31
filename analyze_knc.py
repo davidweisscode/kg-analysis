@@ -5,7 +5,7 @@ Analyze various metrics of a KNC plot.
 #!/usr/bin/python3
 
 import sys
-import time
+from logger import get_time
 from importlib import import_module
 import pandas as pd
 from tqdm import tqdm
@@ -48,14 +48,13 @@ def add_results(run_name, superclass, **results):
         df.loc[superclass, resultname] = result
     df.to_csv(f"out/_results_{run_name}.csv")
 
+@get_time
 def main():
     run_name = sys.argv[1][:-3]
     run = import_module(run_name)
 
-    t_analyze = time.time()
     for superclass in run.config["classes"]:
         print("\n[Analyze knc]", superclass)
         analyze_knc(run_name, superclass)
-    print(f"\n[Time] analyze-kncs {time.time() - t_analyze:.3f} sec")
 
 main()

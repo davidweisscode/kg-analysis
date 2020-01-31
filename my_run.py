@@ -1,5 +1,5 @@
 config = {
-    "classes": ["Athlete", "Artist", "WrittenWork"],
+    "classes": ["Artist", "WrittenWork", "Athlete"],
     "project_method": "intersect",
     "kg_source": "kg/dbpedia2016-04en.hdt",
     "kg_ontology": "kg/dbpedia.owl",

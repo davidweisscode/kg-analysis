@@ -14,6 +14,7 @@ from importlib import import_module
 from tqdm import tqdm
 from hdt import HDTDocument
 from rdflib import Graph, RDFS
+from logger import get_time
 import pandas as pd
 
 rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -22,12 +23,12 @@ dbr = "http://dbpedia.org/resource/"
 
 # DBpedia classes: http://mappings.dbpedia.org/server/ontology/classes/
 
+@get_time
 def query_subclasses(ontology, superclass):
     """ Query ontology for subclass rdfs-entailment """
     # Option 1: Sequential querying with pyHDT
     # Option 2: Mappings from dataset.join()
     # Option 3: https://github.com/comunica/comunica-actor-init-sparql-hdt
-    t_start = time.time()
     subclass_query = f"""
     SELECT ?subclass
     WHERE 
@@ -39,12 +40,11 @@ def query_subclasses(ontology, superclass):
     results = ontology.query(subclass_query)
     for result in results:
         subclasses.append(str(result['subclass']))
-    print(f"[Time] query-subclasses {time.time() - t_start:.3f} sec")
     return subclasses
 
+@get_time
 def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist):
     """ Get edgelist for a superclass and all its subclasses """
-    t_start = time.time()
     subjects = []
     edgelist = []
     print("[Info] query subjects for each subclass")
@@ -64,7 +64,6 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
         for triple in triples:
             if not triple[1] in blacklist:
                 edgelist.append((triple[0], triple[1]))
-    print(f"[Time] get-subj-pred-tuples {time.time() - t_start:.3f} sec")
     return edgelist
 
 def write_edgelist(classname, edgelist):
@@ -79,6 +78,7 @@ def add_results(run_name, superclass, **results):
         df.at[superclass, resultname] = result
     df.to_csv(f"out/_results_{run_name}.csv")
 
+@get_time
 def main():
     run_name = sys.argv[1][:-3]
     run = import_module(run_name)
@@ -96,13 +96,11 @@ def main():
     df = pd.DataFrame(columns=["m"])
     df.to_csv(f"out/_results_{run_name}.csv")
 
-    t_build = time.time()
     for superclass in run.config["classes"]:
         print("\n[Build] ", superclass)
         subclasses = query_subclasses(ontology, superclass)
         edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         write_edgelist(superclass, edgelist)
         add_results(run_name, superclass, m=len(edgelist))
-        print(f"[Time] build-edgelists {time.time() - t_build:.3f} sec")
 
 main()
