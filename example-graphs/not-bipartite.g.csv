@@ -1,8 +1,8 @@
-u,v
-u1,v1
-u1,v2
-u2,v2
-u2,v3
-u3,v2
-u3,v3
-u1,u2
+t,b
+t1,b1
+t1,b2
+t2,b2
+t2,b3
+t3,b2
+t3,b3
+t1,t2
