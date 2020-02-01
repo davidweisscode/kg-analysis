@@ -38,7 +38,10 @@ def compute_rc(run_name, superclass, knc_list, onemode):
     for k in tqdm(range(0, k_max)):
         density_sum += knc_list[k][1]
     rc = (1 / k_max) * density_sum
-    print(f"rc_{onemode} = {rc:.8f}")
+    if onemode == "t":
+        print(f"rc_b = {rc:.8f}")
+    elif onemode == "b":
+        print(f"rc_t = {rc:.8f}")
     return rc
 
 def add_results(run_name, superclass, **results):

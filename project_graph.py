@@ -71,7 +71,7 @@ def write_edgelist(classname, edgelist, onemode):
 def project_graph(run_name, superclass, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
     bigraph = nx.Graph()
-    edgelist = read_edgelist(superclass) # Are integers as node labels better?
+    edgelist = read_integer_edgelist(superclass) # Are integers as node labels better?
     bigraph.add_edges_from(edgelist)
     nodes_top, nodes_bot = split_edgelist(edgelist)
     n_t, n_b = len(nodes_top), len(nodes_bot)

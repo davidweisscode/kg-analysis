@@ -77,8 +77,9 @@ def write_integer_edgelist(classname, edgelist):
     df = pd.DataFrame(edgelist, columns=["t", "b"])
     df["t"] = pd.Categorical(df["t"])
     df["b"] = pd.Categorical(df["b"])
+    b_offset = df["t"].nunique()
     df["t"] = df["t"].cat.codes
-    df["b"] = df["b"].cat.codes + len(df)
+    df["b"] = df["b"].cat.codes + b_offset
     df.to_csv(f"out/{classname}.i.csv", index=False)
 
 def add_results(run_name, superclass, **results):
