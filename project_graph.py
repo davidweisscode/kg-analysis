@@ -126,7 +126,9 @@ def project_intersect_al_onemode(superclass, onemode, onemode_al):
     # TODO: Total tqdm
     om_edges = []
     print(f"[Info] project_intersect_al {onemode}")
-    for node_a, node_b in tqdm(itertools.combinations(onemode_al, 2)):
+    n = len(onemode_al)
+    n_iterations = int(n * (n - 1) * 0.5)
+    for node_a, node_b in tqdm(itertools.combinations(onemode_al, 2), total=n_iterations):
         neighbors_a = node_a[1]
         neighbors_b = node_b[1]
         weight = len(set.intersection(neighbors_a, neighbors_b))
