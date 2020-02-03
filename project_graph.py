@@ -26,7 +26,6 @@ def read_integer_edgelist(superclass):
     df = pd.read_csv(f"out/{superclass}.i.csv")
     return list(df.itertuples(index=False, name=None))
 
-@get_time
 def check_connected(bigraph):
     """ Check whether input graph is connected """
     connected = True
@@ -34,7 +33,6 @@ def check_connected(bigraph):
         connected = False
     return connected
 
-@get_time
 def check_bipartite(bigraph):
     """ Check whether input graph is bipartite """
     bipartite = True
@@ -71,7 +69,7 @@ def write_edgelist(classname, edgelist, onemode):
 def project_graph(run_name, superclass, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
     bigraph = nx.Graph()
-    edgelist = read_integer_edgelist(superclass) # Are integers as node labels better?
+    edgelist = read_integer_edgelist(superclass) # Are integer node labels better?
     bigraph.add_edges_from(edgelist)
     nodes_top, nodes_bot = split_edgelist(edgelist)
     n_t, n_b = len(nodes_top), len(nodes_bot)
@@ -101,6 +99,22 @@ def project_intersect_al(superclass, edgelist):
     project_intersect_al_onemode(superclass, "b", al_bot)
 
 @get_time
+def project_intersect_al_onemode(superclass, onemode, onemode_al):
+    """ Get a weigthed edgelist of a onemode graph by intersecting neighbor sets for each node combination """
+    # TODO: Multiprocessing, divide combinations into k parts
+    om_edges = []
+    n = len(onemode_al)
+    n_iterations = int(n * (n - 1) * 0.5)
+    print(f"[Info] project_intersect_al {onemode}")
+    for node_a, node_b in tqdm(itertools.combinations(onemode_al, 2), total=n_iterations):
+        neighbors_a = node_a[1]
+        neighbors_b = node_b[1]
+        weight = len(set.intersection(neighbors_a, neighbors_b))
+        if weight > 0:
+            om_edges.append((int(node_a[0]), int(node_b[0]), weight))
+    write_edgelist(superclass, om_edges, onemode)
+
+@get_time
 def get_adjacencylist(edgelist, onemode):
     """ Build onemode adjacency list from edgelist """
     al = {}
@@ -120,22 +134,6 @@ def get_adjacencylist(edgelist, onemode):
     al = list(al.items())
     return al
 
-@get_time
-def project_intersect_al_onemode(superclass, onemode, onemode_al):
-    """ Get a weigthed edgelist of a onemode graph by intersecting neighbor sets for each node combination """
-    # TODO: Multiprocessing, divide combinations into k parts
-    om_edges = []
-    n = len(onemode_al)
-    n_iterations = int(n * (n - 1) * 0.5)
-    print(f"[Info] project_intersect_al {onemode}")
-    for node_a, node_b in tqdm(itertools.combinations(onemode_al, 2), total=n_iterations):
-        neighbors_a = node_a[1]
-        neighbors_b = node_b[1]
-        weight = len(set.intersection(neighbors_a, neighbors_b))
-        if weight > 0:
-            om_edges.append((int(node_a[0]), int(node_b[0]), weight))
-    write_edgelist(superclass, om_edges, onemode)
-
 @get_ram
 def project_intersect(superclass, bigraph, nodes_top, nodes_bot):
     """ Project a bipartite graph to its onemode representations in edgelist format """
@@ -146,8 +144,10 @@ def project_intersect(superclass, bigraph, nodes_top, nodes_bot):
 def project_intersect_onemode(superclass, bigraph, onemode, onemode_nodes):
     """ Get a weigthed edgelist of a onemode graph by intersecting neighbor sets for each node combination """
     om_edges = []
+    n = len(onemode_nodes)
+    n_iterations = int(n * (n - 1) * 0.5)
     print(f"[Info] project_intersect {onemode}")
-    for node_a, node_b in tqdm(itertools.combinations(onemode_nodes, 2)):
+    for node_a, node_b in tqdm(itertools.combinations(onemode_nodes, 2), total=n_iterations):
         neighbors_a = set(bigraph.neighbors(node_a))
         neighbors_b = set(bigraph.neighbors(node_b))
         weight = len(set.intersection(neighbors_a, neighbors_b))
