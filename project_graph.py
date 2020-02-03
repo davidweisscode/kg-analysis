@@ -94,9 +94,11 @@ def project_graph(run_name, superclass, project_method):
 def project_intersect_al(superclass, edgelist):
     """ Project a bipartite graph to its onemode representations in edgelist format """
     al_top = get_adjacencylist(edgelist, "t")
-    project_intersect_al_onemode(superclass, "t", al_top)
+    om_edges_top = project_intersect_al_onemode(superclass, "t", al_top)
+    write_edgelist(superclass, om_edges_top, "t")
     al_bot = get_adjacencylist(edgelist, "b")
-    project_intersect_al_onemode(superclass, "b", al_bot)
+    om_edges_bot = project_intersect_al_onemode(superclass, "b", al_bot)
+    write_edgelist(superclass, om_edges_bot, "b")
 
 @get_time
 def project_intersect_al_onemode(superclass, onemode, onemode_al):
@@ -112,7 +114,7 @@ def project_intersect_al_onemode(superclass, onemode, onemode_al):
         weight = len(set.intersection(neighbors_a, neighbors_b))
         if weight > 0:
             om_edges.append((int(node_a[0]), int(node_b[0]), weight))
-    write_edgelist(superclass, om_edges, onemode)
+    return om_edges
 
 @get_time
 def get_adjacencylist(edgelist, onemode):
@@ -137,8 +139,10 @@ def get_adjacencylist(edgelist, onemode):
 @get_ram
 def project_intersect(superclass, bigraph, nodes_top, nodes_bot):
     """ Project a bipartite graph to its onemode representations in edgelist format """
-    project_intersect_onemode(superclass, bigraph, "t", nodes_top)
-    project_intersect_onemode(superclass, bigraph, "b", nodes_bot)
+    om_edges_top = project_intersect_onemode(superclass, bigraph, "t", nodes_top)
+    write_edgelist(superclass, om_edges_top, "t")
+    om_edges_bot = project_intersect_onemode(superclass, bigraph, "b", nodes_bot)
+    write_edgelist(superclass, om_edges_bot, "b")
 
 @get_time
 def project_intersect_onemode(superclass, bigraph, onemode, onemode_nodes):
@@ -153,7 +157,7 @@ def project_intersect_onemode(superclass, bigraph, onemode, onemode_nodes):
         weight = len(set.intersection(neighbors_a, neighbors_b))
         if weight > 0:
             om_edges.append((node_a, node_b, weight))
-    write_edgelist(superclass, om_edges, onemode)
+    return om_edges
 
 def project_dot(superclass, bigraph, nodes_top, nodes_bot):
     """ project a bipartite graph to its onemode representations in sparse matrix format """
