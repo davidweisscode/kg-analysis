@@ -104,13 +104,15 @@ def project_intersect_al(superclass, edgelist):
 def get_adjacencylist(edgelist, onemode):
     """ Build onemode adjacency list from edgelist """
     al = {}
+    if onemode == "t":
+        base_node_index = 0
+        neighbor_index = 1
+    elif onemode == "b":
+        base_node_index = 1
+        neighbor_index = 0
     for edge in edgelist:
-        if onemode == "t":
-            base_node = str(edge[0])
-            neighbor = edge[1]
-        elif onemode == "b":
-            base_node = str(edge[1])
-            neighbor = edge[0]
+        base_node = str(edge[base_node_index]) # Use integers as keys?
+        neighbor = edge[neighbor_index]
         if base_node in al:
             al[base_node].add(neighbor)
         else:
@@ -121,13 +123,11 @@ def get_adjacencylist(edgelist, onemode):
 @get_time
 def project_intersect_al_onemode(superclass, onemode, onemode_al):
     """ Get a weigthed edgelist of a onemode graph by intersecting neighbor sets for each node combination """
-    # TODO: for pairwise intersect, divide combinations into k parts
-    # TODO: Multiprocessing
-    # TODO: Total tqdm
+    # TODO: Multiprocessing, divide combinations into k parts
     om_edges = []
-    print(f"[Info] project_intersect_al {onemode}")
     n = len(onemode_al)
     n_iterations = int(n * (n - 1) * 0.5)
+    print(f"[Info] project_intersect_al {onemode}")
     for node_a, node_b in tqdm(itertools.combinations(onemode_al, 2), total=n_iterations):
         neighbors_a = node_a[1]
         neighbors_b = node_b[1]
