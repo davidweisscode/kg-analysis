@@ -1,5 +1,8 @@
-from multiprocessing import Pool
+import os
+from multiprocessing import Pool, current_process
 from logger import get_time, get_ram
+from itertools import combinations, islice
+from math import ceil
 
 def my_func(x):
     return x * x
@@ -24,8 +27,39 @@ def hyper(n):
         with Pool() as pool:
             pool.map(single, [n, n, n])
 
-n = 300000000
+n = 30000000
 
 # single_3(n)
 
-hyper(n)
+# hyper(n)
+
+my_list = ["a", "b", "c", "d"]
+my_al = [('0', {28, 30, 31}), ('1', {32, 33, 35, 29, 30, 31}), ('11', {33, 35, 36, 38, 40}), ('17', {34, 35, 50, 51, 54}), ('6', {55}), ('7', {55}), ('13', {33, 34, 35, 46, 53}), ('15', {33, 35, 44, 46, 47}), ('2', {32, 33, 35, 51}), ('4', {37, 42, 43, 44, 49}), ('5', {27, 28, 29, 30, 31}), ('19', {28, 30, 31}), ('21', {50}), ('20', {48}), ('22', {33, 36, 38, 40, 48}), ('8', {33, 35, 36, 38, 40}), ('12', {33, 34, 35, 36, 52, 55, 56}), ('10', {33, 36, 37, 38, 40}), ('18', {33, 36}), ('3', {33, 34, 35, 36, 38, 39, 40, 51, 27, 28}), ('9', {33, 35, 41, 45, 25, 26}), ('16', {33, 35, 45, 25, 26, 57}), ('23', {33, 35, 36, 51, 28}), ('24', {33, 35, 36, 51, 53, 28}), ('14', {33, 35, 36, 38, 40})]
+
+def project_gen(al_gen):
+    """ Get a weigthed edgelist of an adjacency list by intersecting neighbor sets """
+    om_edges = []
+    for node_a, node_b in al_gen:
+        neighbors_a = node_a[1]
+        neighbors_b = node_b[1]
+        weight = len(set.intersection(neighbors_a, neighbors_b))
+        if weight > 0:
+            om_edges.append((int(node_a[0]), int(node_b[0]), weight))
+    my_process = current_process()
+    print(my_process, my_process.name, my_process._identity)
+    print(om_edges, "\n")
+    # TODO: Write batchwise into file
+
+def hyper_project(gen, gen_len, k):
+    size = ceil(gen_len / k)
+    if __name__ == "__main__":
+        with Pool() as pool:
+            gen_slices = [islice(gen, size * i, size * (i + 1)) for i in range(0, k)]
+            pool.map(project_gen, gen_slices)
+
+pairs = combinations(my_al, 2)
+n = len(my_al)
+pairs_len = n * (n - 1) * 0.5
+k = os.cpu_count()
+
+hyper_project(pairs, pairs_len, k)

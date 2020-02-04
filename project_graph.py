@@ -7,10 +7,10 @@ Project a bipartite graph into its two onemode representations.
 import sys
 import time
 import resource
-import itertools
 from tqdm import tqdm
 from scipy import sparse
 from logger import get_time, get_ram
+from itertools import combinations
 from importlib import import_module
 import numpy as np
 import pandas as pd
@@ -94,21 +94,20 @@ def project_graph(run_name, superclass, project_method):
 def project_intersect_al(superclass, edgelist):
     """ Project a bipartite graph to its onemode representations in edgelist format """
     al_top = get_adjacencylist(edgelist, "t")
-    om_edges_top = project_intersect_al_onemode(superclass, "t", al_top)
+    om_edges_top = project_intersect_al_onemode(al_top)
     write_edgelist(superclass, om_edges_top, "t")
     al_bot = get_adjacencylist(edgelist, "b")
-    om_edges_bot = project_intersect_al_onemode(superclass, "b", al_bot)
+    om_edges_bot = project_intersect_al_onemode(al_bot)
     write_edgelist(superclass, om_edges_bot, "b")
 
 @get_time
-def project_intersect_al_onemode(superclass, onemode, onemode_al):
+def project_intersect_al_onemode(onemode_al):
     """ Get a weigthed edgelist of a onemode graph by intersecting neighbor sets for each node combination """
     # TODO: Multiprocessing, divide combinations into k parts
     om_edges = []
     n = len(onemode_al)
     n_iterations = int(n * (n - 1) * 0.5)
-    print(f"[Info] project_intersect_al {onemode}")
-    for node_a, node_b in tqdm(itertools.combinations(onemode_al, 2), total=n_iterations):
+    for node_a, node_b in tqdm(combinations(onemode_al, 2), total=n_iterations):
         neighbors_a = node_a[1]
         neighbors_b = node_b[1]
         weight = len(set.intersection(neighbors_a, neighbors_b))
@@ -151,7 +150,7 @@ def project_intersect_onemode(superclass, bigraph, onemode, onemode_nodes):
     n = len(onemode_nodes)
     n_iterations = int(n * (n - 1) * 0.5)
     print(f"[Info] project_intersect {onemode}")
-    for node_a, node_b in tqdm(itertools.combinations(onemode_nodes, 2), total=n_iterations):
+    for node_a, node_b in tqdm(combinations(onemode_nodes, 2), total=n_iterations):
         neighbors_a = set(bigraph.neighbors(node_a))
         neighbors_b = set(bigraph.neighbors(node_b))
         weight = len(set.intersection(neighbors_a, neighbors_b))
@@ -207,7 +206,7 @@ def project_hop_onemode(superclass, bigraph, onemode, onemode_nodes):
     om_edges = []
     all_simple_paths = nx.all_simple_paths
     print(f"[Info] count distinct hop-2 paths for each node pair in {onemode}")
-    for node_a, node_b in tqdm(itertools.combinations(onemode_nodes, 2)):
+    for node_a, node_b in tqdm(combinations(onemode_nodes, 2)):
         weight = len(list(all_simple_paths(bigraph, source=node_a, target=node_b, cutoff=2)))
         if weight > 0:
             om_edges.append((node_a, node_b, weight))
