@@ -32,7 +32,7 @@ def add_results(run_name, superclass, **results):
     df.to_csv(f"out/_results_{run_name}.csv")
 
 @get_time
-def write_edgelist(classname, edgelist, onemode):
+def write_edgelist(classname, onemode, edgelist):
     """ Write edge list to csv file """
     df = pd.DataFrame(edgelist, columns=["node_a", "node_b", "w"])
     df.to_csv(f"out/{classname}.{onemode}.csv", index=False)
@@ -57,59 +57,48 @@ def project_graph(run_name, superclass, project_method):
 @get_ram
 def project_hyper(superclass, edgelist):
     al_top = get_adjacencylist(edgelist, "t")
-    om_edges_top = project_hyper_onemode(al_top)
-    print("[Info] hyper done top", len(om_edges_top))
-    # for i in range(0, len(om_edges_top)):
-    #     print(f"{len(om_edges_top[i])} edges in list {i}")
-    om_edges_top = list(chain(*om_edges_top))
-    print(f"[Info] edgelist top length {len(om_edges_top)}")
-    write_edgelist(superclass, om_edges_top, "t")
+    project_hyper_onemode(superclass, "t", al_top)
 
     al_bot = get_adjacencylist(edgelist, "b")
-    om_edges_bot = project_hyper_onemode(al_bot)
-    print("[Info] hyper done bot", len(om_edges_bot))
-    om_edges_bot = list(chain(*om_edges_bot))
-    write_edgelist(superclass, om_edges_bot, "b")
+    project_hyper_onemode(superclass, "b", al_bot)
 
 @get_time
 @get_ram
-def project_hyper_onemode(adj_list):
+def project_hyper_onemode(superclass, onemode, adj_list):
     gen_pairs = combinations(adj_list, 2)
     n = len(adj_list)
     pairs_len = n * (n - 1) * 0.5
     ncores = os.cpu_count()
     size = ceil(pairs_len / ncores)
-    print(f"[Info] {ncores} slices of length {size}")
+    print(f"[Info] Start {ncores} processes with input length {size}")
     with Pool() as pool:
-        gen_slices = [islice(gen_pairs, size * i, size * (i + 1)) for i in range(0, ncores)]
-        om_edges = list(pool.map(project_gen, gen_slices))
-        return om_edges
+        gen_slices = [(superclass, onemode, islice(gen_pairs, size * i, size * (i + 1))) for i in range(0, ncores)]
+        pool.map(project_gen, gen_slices)
+    # TODO: Combine k process files to one single .t.csv
 
 @get_time
 @get_ram
 def project_gen(al_gen):
     """ Get a weigthed edgelist by intersecting pairs from adjacency list generator slices """
-    # TODO: Write batchwise into file
-    om_edges = []
-    for node_a, node_b in al_gen:
-        neighbors_a = node_a[1]
-        neighbors_b = node_b[1]
-        weight = len(set.intersection(neighbors_a, neighbors_b))
-        if weight > 0:
-            om_edges.append((int(node_a[0]), int(node_b[0]), weight))
-    my_process = current_process()
-    print(my_process._identity[0])
-    return om_edges
+    pid = current_process()._identity[0]
+    print(f"[Info] PID {pid:02}")
+    with open(f"./out/{al_gen[0]}.{pid:02}.{al_gen[1]}.csv", "a") as output_file:
+        for node_a, node_b in al_gen[2]:
+            neighbors_a = node_a[1]
+            neighbors_b = node_b[1]
+            weight = len(set.intersection(neighbors_a, neighbors_b))
+            if weight > 0:
+                output_file.write(f"{int(node_a[0])}, {int(node_b[0])}, {weight}\n")
 
 @get_ram
 def project_intersect_al(superclass, edgelist):
     """ Project a bipartite graph to its onemode representations in edgelist format """
     al_top = get_adjacencylist(edgelist, "t")
     om_edges_top = project_intersect_al_onemode(al_top)
-    write_edgelist(superclass, om_edges_top, "t")
+    write_edgelist(superclass, "t", om_edges_top)
     al_bot = get_adjacencylist(edgelist, "b")
     om_edges_bot = project_intersect_al_onemode(al_bot)
-    write_edgelist(superclass, om_edges_bot, "b")
+    write_edgelist(superclass, "b", om_edges_bot)
 
 @get_time
 def project_intersect_al_onemode(onemode_al):
@@ -150,9 +139,9 @@ def get_adjacencylist(edgelist, onemode):
 def project_intersect(superclass, bigraph, nodes_top, nodes_bot):
     """ Project a bipartite graph to its onemode representations in edgelist format """
     om_edges_top = project_intersect_onemode(superclass, bigraph, "t", nodes_top)
-    write_edgelist(superclass, om_edges_top, "t")
+    write_edgelist(superclass, "t", om_edges_top)
     om_edges_bot = project_intersect_onemode(superclass, bigraph, "b", nodes_bot)
-    write_edgelist(superclass, om_edges_bot, "b")
+    write_edgelist(superclass, "b", om_edges_bot)
 
 @get_time
 def project_intersect_onemode(superclass, bigraph, onemode, onemode_nodes):
@@ -221,7 +210,7 @@ def project_hop_onemode(superclass, bigraph, onemode, onemode_nodes):
         weight = len(list(all_simple_paths(bigraph, source=node_a, target=node_b, cutoff=2)))
         if weight > 0:
             om_edges.append((node_a, node_b, weight))
-    write_edgelist(superclass, om_edges, onemode)
+    write_edgelist(superclass, onemode, om_edges)
 
 def project_nx(superclass, bigraph, nodes_top, nodes_bot):
     """ Project a bipartite graph to its onemode representations """
@@ -238,7 +227,7 @@ def project_nx_onemode(superclass, bigraph, onemode, onemode_nodes):
     om_edges = []
     for edge in omgraph.edges(data=True):
         om_edges.append((edge[0], edge[1], edge[2]["weight"]))
-    write_edgelist(superclass, om_edges, onemode)
+    write_edgelist(superclass, onemode, om_edges)
     print(f"[Time] convert-write-edgelist {onemode} {time.time() - t_start:.3f} sec")
 
 @get_time
