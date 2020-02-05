@@ -4,54 +4,25 @@ Project a bipartite graph into its two onemode representations.
 
 #!/usr/bin/python3
 
+import os
 import sys
 import time
 import resource
+from math import ceil
 from tqdm import tqdm
 from scipy import sparse
 from logger import get_time, get_ram
-from itertools import combinations
+from itertools import combinations, islice, chain
 from importlib import import_module
+from multiprocessing import Pool, current_process
 import numpy as np
 import pandas as pd
 import networkx as nx
 
-def read_edgelist(superclass):
+def read_edgelist(superclass, label):
     """ Read edgelist from csv file """
-    df = pd.read_csv(f"out/{superclass}.g.csv")
+    df = pd.read_csv(f"out/{superclass}.{label}.csv")
     return list(df.itertuples(index=False, name=None))
-
-def read_integer_edgelist(superclass):
-    """ Read integer edgelist from csv file """
-    df = pd.read_csv(f"out/{superclass}.i.csv")
-    return list(df.itertuples(index=False, name=None))
-
-def check_connected(bigraph):
-    """ Check whether input graph is connected """
-    connected = True
-    if not nx.is_connected(bigraph):
-        connected = False
-    return connected
-
-def check_bipartite(bigraph):
-    """ Check whether input graph is bipartite """
-    bipartite = True
-    if not nx.bipartite.is_bipartite(bigraph):
-        bipartite = False
-        sys.exit("[Error] Input graph is not bipartite")
-    return bipartite
-
-@get_time
-def split_edgelist(edges):
-    """ Split the input edgelist into top (t) and bottom (b) nodes """
-    nodes_top = []
-    nodes_bot = []
-    for edge in edges:
-        nodes_top.append(edge[0])
-        nodes_bot.append(edge[1])
-    nodes_top = list(set(nodes_top))
-    nodes_bot = list(set(nodes_bot))
-    return nodes_top, nodes_bot
 
 def add_results(run_name, superclass, **results):
     """ Append result columns in a superclass row """
@@ -68,27 +39,67 @@ def write_edgelist(classname, edgelist, onemode):
 
 def project_graph(run_name, superclass, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
-    bigraph = nx.Graph()
-    edgelist = read_integer_edgelist(superclass) # Are integer node labels better?
-    bigraph.add_edges_from(edgelist)
-    nodes_top, nodes_bot = split_edgelist(edgelist)
-    n_t, n_b = len(nodes_top), len(nodes_bot)
-    print(f"[Info] n {bigraph.number_of_nodes()}, m {bigraph.number_of_edges()}, t {n_t}, b {n_b}")
-    is_connected = check_connected(bigraph)
-    is_bipartite = check_bipartite(bigraph)
-    # In onemode network edgelists, information about disconnected nodes gets lost
-    add_results(run_name, superclass, n_t=n_t, n_b=n_b, connected=is_connected, bipartite=is_bipartite)
-
-    if project_method == "intersect_al":
+    edgelist = read_edgelist(superclass, "i") # Are integer node labels better?
+    if project_method == "hyper":
+        project_hyper(superclass, edgelist)
+    elif project_method == "intersect_al":
         project_intersect_al(superclass, edgelist)
-    elif project_method == "intersect":
-        project_intersect(superclass, bigraph, nodes_top, nodes_bot)
-    elif project_method == "dot":
-        project_dot(superclass, bigraph, nodes_top, nodes_bot)
-    elif project_method == "hop":
-        project_hop(superclass, bigraph, nodes_top, nodes_bot)
-    elif project_method == "nx":
-        project_nx(superclass, bigraph, nodes_top, nodes_bot)
+    # elif project_method == "intersect":
+    #     project_intersect(superclass, bigraph, nodes_top, nodes_bot)
+    # elif project_method == "dot":
+    #     project_dot(superclass, bigraph, nodes_top, nodes_bot)
+    # elif project_method == "hop":
+    #     project_hop(superclass, bigraph, nodes_top, nodes_bot)
+    # elif project_method == "nx":
+    #     project_nx(superclass, bigraph, nodes_top, nodes_bot)
+
+@get_time
+@get_ram
+def project_hyper(superclass, edgelist):
+    al_top = get_adjacencylist(edgelist, "t")
+    om_edges_top = project_hyper_onemode(al_top)
+    print("[Info] hyper done top", len(om_edges_top))
+    # for i in range(0, len(om_edges_top)):
+    #     print(f"{len(om_edges_top[i])} edges in list {i}")
+    om_edges_top = list(chain(*om_edges_top))
+    print(f"[Info] edgelist top length {len(om_edges_top)}")
+    write_edgelist(superclass, om_edges_top, "t")
+
+    al_bot = get_adjacencylist(edgelist, "b")
+    om_edges_bot = project_hyper_onemode(al_bot)
+    print("[Info] hyper done bot", len(om_edges_bot))
+    om_edges_bot = list(chain(*om_edges_bot))
+    write_edgelist(superclass, om_edges_bot, "b")
+
+@get_time
+@get_ram
+def project_hyper_onemode(adj_list):
+    gen_pairs = combinations(adj_list, 2)
+    n = len(adj_list)
+    pairs_len = n * (n - 1) * 0.5
+    ncores = os.cpu_count()
+    size = ceil(pairs_len / ncores)
+    print(f"[Info] {ncores} slices of length {size}")
+    with Pool() as pool:
+        gen_slices = [islice(gen_pairs, size * i, size * (i + 1)) for i in range(0, ncores)]
+        om_edges = list(pool.map(project_gen, gen_slices))
+        return om_edges
+
+@get_time
+@get_ram
+def project_gen(al_gen):
+    """ Get a weigthed edgelist by intersecting pairs from adjacency list generator slices """
+    # TODO: Write batchwise into file
+    om_edges = []
+    for node_a, node_b in al_gen:
+        neighbors_a = node_a[1]
+        neighbors_b = node_b[1]
+        weight = len(set.intersection(neighbors_a, neighbors_b))
+        if weight > 0:
+            om_edges.append((int(node_a[0]), int(node_b[0]), weight))
+    my_process = current_process()
+    print(my_process._identity[0])
+    return om_edges
 
 @get_ram
 def project_intersect_al(superclass, edgelist):
@@ -126,7 +137,7 @@ def get_adjacencylist(edgelist, onemode):
         base_node_index = 1
         neighbor_index = 0
     for edge in edgelist:
-        base_node = str(edge[base_node_index]) # Use integers as keys?
+        base_node = str(edge[base_node_index]) # Use integers as dict keys?
         neighbor = edge[neighbor_index]
         if base_node in al:
             al[base_node].add(neighbor)
@@ -233,14 +244,15 @@ def project_nx_onemode(superclass, bigraph, onemode, onemode_nodes):
 @get_time
 @get_ram
 def main():
-    run_name = sys.argv[1][:-3]
-    run = import_module(run_name)
-
-    for superclass in run.config["classes"]:
-        print("\n[Project]", superclass)
-        try:
-            project_graph(run_name, superclass, run.config["project_method"])
-        except KeyError as e:
-            sys.exit("[Error] Please specify project_method as 'dot' or 'hop' in run config\n", e)
+    if __name__ == "__main__":
+        run_name = sys.argv[1][:-3]
+        run = import_module(run_name)
+        
+        for superclass in run.config["classes"]:
+            print("\n[Project]", superclass)
+            try:
+                project_graph(run_name, superclass, run.config["project_method"])
+            except KeyError as e:
+                sys.exit("[Error] Please specify project_method as 'dot' or 'hop' in run config\n", e)
 
 main()
