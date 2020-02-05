@@ -16,6 +16,7 @@ from hdt import HDTDocument
 from rdflib import Graph, RDFS
 from logger import get_time
 import pandas as pd
+import networkx as nx
 
 rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 dbo = "http://dbpedia.org/ontology/"
@@ -82,6 +83,33 @@ def write_integer_edgelist(classname, edgelist):
     df["b"] = df["b"].cat.codes + b_offset
     df.to_csv(f"out/{classname}.i.csv", index=False)
 
+def check_connected(bigraph):
+    """ Check whether input graph is connected """
+    connected = True
+    if not nx.is_connected(bigraph):
+        connected = False
+    return connected
+
+def check_bipartite(bigraph):
+    """ Check whether input graph is bipartite """
+    bipartite = True
+    if not nx.bipartite.is_bipartite(bigraph):
+        bipartite = False
+        sys.exit("[Error] Input graph is not bipartite")
+    return bipartite
+
+@get_time
+def split_edgelist(edges):
+    """ Split the input edgelist into top (t) and bottom (b) nodes """
+    nodes_top = []
+    nodes_bot = []
+    for edge in edges:
+        nodes_top.append(edge[0])
+        nodes_bot.append(edge[1])
+    nodes_top = list(set(nodes_top))
+    nodes_bot = list(set(nodes_bot))
+    return nodes_top, nodes_bot
+
 def add_results(run_name, superclass, **results):
     """ Append result columns in a superclass row """
     df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
@@ -113,6 +141,15 @@ def main():
         edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         write_edgelist(superclass, edgelist)
         write_integer_edgelist(superclass, edgelist)
-        add_results(run_name, superclass, m=len(edgelist))
+
+        bigraph = nx.Graph()
+        bigraph.add_edges_from(edgelist)
+        is_connected = check_connected(bigraph)
+        is_bipartite = check_bipartite(bigraph)
+        nodes_top, nodes_bot = split_edgelist(edgelist)
+        n_t, n_b = len(nodes_top), len(nodes_bot)
+        print(f"[Info] n {bigraph.number_of_nodes()}, m {bigraph.number_of_edges()}, t {n_t}, b {n_b}")
+        # In onemode network edgelists, information about disconnected nodes gets lost
+        add_results(run_name, superclass, m=len(edgelist), n_t=n_t, n_b=n_b, connected=is_connected, bipartite=is_bipartite)
 
 main()
