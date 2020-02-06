@@ -14,10 +14,10 @@ from scipy import sparse
 from logger import get_time, get_ram
 from itertools import combinations, islice, chain
 from importlib import import_module
-from multiprocessing import Pool, current_process
 import numpy as np
 import pandas as pd
 import networkx as nx
+import multiprocessing as mp
 
 def read_edgelist(superclass, label):
     """ Read edgelist from csv file """
@@ -39,7 +39,7 @@ def write_edgelist(classname, onemode, edgelist):
 
 def project_graph(run_name, superclass, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
-    edgelist = read_edgelist(superclass, "i") # Are integer node labels better?
+    edgelist = read_edgelist(superclass, "i") # Are integer node labels faster/smaller?
     if project_method == "hyper":
         project_hyper(superclass, edgelist)
     elif project_method == "intersect_al":
@@ -56,39 +56,49 @@ def project_graph(run_name, superclass, project_method):
 @get_time
 @get_ram
 def project_hyper(superclass, edgelist):
+    """ Get both top and bot onemode graph of superclass using multiprocessing """
     al_top = get_adjacencylist(edgelist, "t")
     project_hyper_onemode(superclass, "t", al_top)
-
     al_bot = get_adjacencylist(edgelist, "b")
     project_hyper_onemode(superclass, "b", al_bot)
 
 @get_time
 @get_ram
 def project_hyper_onemode(superclass, onemode, adj_list):
+    """ Start multiple processes with split up adjacency list """
     gen_pairs = combinations(adj_list, 2)
     n = len(adj_list)
     pairs_len = n * (n - 1) * 0.5
     ncores = os.cpu_count()
     size = ceil(pairs_len / ncores)
     print(f"[Info] Start {ncores} processes with input length {size}")
-    with Pool() as pool:
-        gen_slices = [(superclass, onemode, islice(gen_pairs, size * i, size * (i + 1))) for i in range(0, ncores)]
-        pool.map(project_gen, gen_slices)
+    with mp.Pool() as pool:
+        gen_slices = [islice(gen_pairs, size * i, size * (i + 1)) for i in range(0, ncores)]
+        gen_slices = [(superclass, onemode, size, ncores, gen_slice) for gen_slice in gen_slices]
+        pool.starmap(project_gen, gen_slices)
     # TODO: Combine k process files to one single .t.csv
 
 @get_time
 @get_ram
-def project_gen(al_gen):
+def project_gen(classname, onemode, size, ncores, al_gen):
     """ Get a weigthed edgelist by intersecting pairs from adjacency list generator slices """
-    pid = current_process()._identity[0]
+    pid = mp.current_process()._identity[0]
     print(f"[Info] PID {pid:02}")
-    with open(f"./out/{al_gen[0]}.{pid:02}.{al_gen[1]}.csv", "a") as output_file:
-        for node_a, node_b in al_gen[2]:
-            neighbors_a = node_a[1]
-            neighbors_b = node_b[1]
-            weight = len(set.intersection(neighbors_a, neighbors_b))
-            if weight > 0:
-                output_file.write(f"{int(node_a[0])}, {int(node_b[0])}, {weight}\n")
+    with open(f"./out/{classname}.{pid:02}.{onemode}.csv", "a") as output_file:
+        if pid == ncores or pid == 2 * ncores:
+            for node_a, node_b in tqdm(al_gen, total=size):
+                neighbors_a = node_a[1]
+                neighbors_b = node_b[1]
+                weight = len(set.intersection(neighbors_a, neighbors_b))
+                if weight > 0:
+                    output_file.write(f"{node_a[0]}, {node_b[0]}, {weight}\n")
+        else:
+            for node_a, node_b in al_gen:
+                neighbors_a = node_a[1]
+                neighbors_b = node_b[1]
+                weight = len(set.intersection(neighbors_a, neighbors_b))
+                if weight > 0:
+                    output_file.write(f"{node_a[0]}, {node_b[0]}, {weight}\n")
 
 @get_ram
 def project_intersect_al(superclass, edgelist):
@@ -103,7 +113,6 @@ def project_intersect_al(superclass, edgelist):
 @get_time
 def project_intersect_al_onemode(onemode_al):
     """ Get a weigthed edgelist of a onemode graph by intersecting neighbor sets for each node combination """
-    # TODO: Multiprocessing, divide combinations into k parts
     om_edges = []
     n = len(onemode_al)
     n_iterations = int(n * (n - 1) * 0.5)
@@ -126,7 +135,7 @@ def get_adjacencylist(edgelist, onemode):
         base_node_index = 1
         neighbor_index = 0
     for edge in edgelist:
-        base_node = str(edge[base_node_index]) # Use integers as dict keys?
+        base_node = str(edge[base_node_index])
         neighbor = edge[neighbor_index]
         if base_node in al:
             al[base_node].add(neighbor)
