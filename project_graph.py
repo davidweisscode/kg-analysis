@@ -76,7 +76,13 @@ def project_hyper_onemode(superclass, onemode, adj_list):
         gen_slices = [islice(gen_pairs, size * i, size * (i + 1)) for i in range(0, ncores)]
         gen_slices = [(superclass, onemode, size, ncores, gen_slice) for gen_slice in gen_slices]
         pool.starmap(project_gen, gen_slices)
-    # TODO: Combine k process files to one single .t.csv
+    concatenate_onemode(superclass, onemode)
+
+def concatenate_onemode(classname, onemode):
+    """ Combine all multiprocessing output files to single onemode edgelist file in shell """
+    os.system(f"cd out/; echo {onemode}1, {onemode}2, w >> {classname}.{onemode}.csv")
+    os.system(f"cd out/; ls | grep {classname}\...\.[{onemode}] | xargs cat >> {classname}.{onemode}.csv")
+    os.system(f"cd out/; ls | grep {classname}\...\.[{onemode}] | xargs rm")
 
 @get_time
 @get_ram
