@@ -54,8 +54,12 @@ def load_onemode_graph(superclass, onemode, project_method):
     else:
         t_start = time.time()
         omgraph = nx.Graph()
-        omedges = read_om_edgelist(superclass, onemode)
-        omgraph.add_weighted_edges_from(omedges)
+        # omedges = read_om_edgelist(superclass, onemode)
+        # omgraph.add_weighted_edges_from(omedges)
+        df = pd.read_csv(f"out/{superclass}.{onemode}.csv")
+        print("[Info] read edgelist finished")
+        omgraph.add_weighted_edges_from([tuple(edge) for edge in df.values])
+        print("[Info] add edges finished")
         print(f"[Time] from-weighted-edgelist {onemode} {time.time() - t_start:.3f} sec")
     return omgraph
 
