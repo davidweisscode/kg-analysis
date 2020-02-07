@@ -6,6 +6,7 @@ Project a bipartite graph into its two onemode representations.
 
 import os
 import sys
+import json
 import time
 import resource
 from math import ceil
@@ -77,6 +78,7 @@ def project_hyper_onemode(superclass, onemode, adj_list):
         gen_slices = [(superclass, onemode, size, ncores, gen_slice) for gen_slice in gen_slices]
         pool.starmap(project_gen, gen_slices)
     concatenate_onemode(superclass, onemode)
+    # TODO: Only save onemode graphs
 
 def concatenate_onemode(classname, onemode):
     """ Combine all multiprocessing output files to single onemode edgelist file in shell """
@@ -90,12 +92,14 @@ def project_gen(classname, onemode, size, ncores, al_gen):
     """ Get a weigthed edgelist by intersecting pairs from adjacency list generator slices """
     pid = mp.current_process()._identity[0]
     print(f"[Info] PID {pid:02}")
+    om_weights = {}
     with open(f"./out/{classname}.{pid:02}.{onemode}.csv", "a") as output_file:
         if pid == ncores or pid == 2 * ncores:
             for node_a, node_b in tqdm(al_gen, total=size):
                 neighbors_a = node_a[1]
                 neighbors_b = node_b[1]
                 weight = len(set.intersection(neighbors_a, neighbors_b))
+                om_weights[weight] = om_weights.get(weight, 0) + 1
                 if weight > 0:
                     output_file.write(f"{node_a[0]}, {node_b[0]}, {weight}\n")
         else:
@@ -103,8 +107,12 @@ def project_gen(classname, onemode, size, ncores, al_gen):
                 neighbors_a = node_a[1]
                 neighbors_b = node_b[1]
                 weight = len(set.intersection(neighbors_a, neighbors_b))
+                om_weights[weight] = om_weights.get(weight, 0) + 1
                 if weight > 0:
                     output_file.write(f"{node_a[0]}, {node_b[0]}, {weight}\n")
+
+    with open(f"./out/{classname}.{pid:02}.w.json", "w") as output_file:
+        json.dump(om_weights, output_file)
 
 @get_ram
 def project_intersect_al(superclass, edgelist):
