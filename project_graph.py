@@ -41,11 +41,11 @@ def write_edgelist(classname, onemode, edgelist):
 def project_graph(run_name, superclass, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
     edgelist = read_edgelist(superclass, "i") # Are integer node labels faster/smaller?
-    if project_method == "hyper":
+    if project_method == "hyper": # TODO: Benchmark: @get_ram * ncores == htop ram ?
         project_hyper(superclass, edgelist)
     elif project_method == "intersect_al":
         project_intersect_al(superclass, edgelist)
-    # elif project_method == "intersect":
+    # elif project_method == "intersect": # TODO: Compare and benchmark approaches
     #     project_intersect(superclass, bigraph, nodes_top, nodes_bot)
     # elif project_method == "dot":
     #     project_dot(superclass, bigraph, nodes_top, nodes_bot)
@@ -73,34 +73,50 @@ def project_hyper_onemode(superclass, onemode, adj_list):
     ncores = os.cpu_count()
     size = ceil(pairs_len / ncores)
     print(f"[Info] Start {ncores} processes with input length {size}")
+    if len(adj_list) < 100000:
+        save_el = False
     with mp.Pool() as pool:
         gen_slices = [islice(gen_pairs, size * i, size * (i + 1)) for i in range(0, ncores)]
-        gen_slices = [(superclass, onemode, size, ncores, gen_slice) for gen_slice in gen_slices]
+        gen_slices = [(superclass, onemode, size, ncores, save_el, gen_slice) for gen_slice in gen_slices]
         pool.starmap(project_gen, gen_slices)
-    concatenate_onemode(superclass, onemode)
-    # TODO: Only save onemode graphs
+    if save_el:
+        concatenate_el(superclass, onemode)
+    combine_weights(superclass, onemode, ncores)
 
-def concatenate_onemode(classname, onemode):
-    """ Combine all multiprocessing output files to single onemode edgelist file in shell """
+def concatenate_el(classname, onemode):
+    """ Combine all multiprocessing edgelist files to single onemode edgelist file in shell """
     os.system(f"cd out/; echo {onemode}1, {onemode}2, w >> {classname}.{onemode}.csv")
-    os.system(f"cd out/; ls | grep {classname}\...\.[{onemode}] | xargs cat >> {classname}.{onemode}.csv")
-    os.system(f"cd out/; ls | grep {classname}\...\.[{onemode}] | xargs rm")
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\... | xargs cat >> {classname}.{onemode}.csv")
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\... | xargs rm")
+
+def combine_weights(classname, onemode, file_count):
+    om_weights = {}
+    for pid in range(1, file_count + 1):
+        with open(f"out/{classname}.{onemode}.w.{pid:02}.json", "r") as input_file:
+            om_weights_pid = json.load(input_file)
+            print(om_weights_pid)
+            for key, value in om_weights_pid.items():
+                print(key, value)
+                om_weights = om_weights.get(key, 0) + value
+    with open(f"out/{classname}.{onemode}.w.json", "w") as output_file:
+        json.dump(om_weights, output_file)
 
 @get_time
 @get_ram
-def project_gen(classname, onemode, size, ncores, al_gen):
+def project_gen(classname, onemode, size, ncores, save_el, al_gen):
     """ Get a weigthed edgelist by intersecting pairs from adjacency list generator slices """
     pid = mp.current_process()._identity[0]
     print(f"[Info] PID {pid:02}")
     om_weights = {}
-    with open(f"./out/{classname}.{pid:02}.{onemode}.csv", "a") as output_file:
+    with open(f"./out/{classname}.{onemode}.{pid:02}.csv", "a") as output_file:
         if pid == ncores or pid == 2 * ncores:
             for node_a, node_b in tqdm(al_gen, total=size):
                 neighbors_a = node_a[1]
                 neighbors_b = node_b[1]
                 weight = len(set.intersection(neighbors_a, neighbors_b))
-                om_weights[weight] = om_weights.get(weight, 0) + 1
-                if weight > 0:
+                om_weights[weight] = om_weights.get(weight, 0) + 1 # Also save if weight == 0 ?
+                # TODO: Save om_degrees
+                if weight > 0 and save_el:
                     output_file.write(f"{node_a[0]}, {node_b[0]}, {weight}\n")
         else:
             for node_a, node_b in al_gen:
@@ -108,10 +124,10 @@ def project_gen(classname, onemode, size, ncores, al_gen):
                 neighbors_b = node_b[1]
                 weight = len(set.intersection(neighbors_a, neighbors_b))
                 om_weights[weight] = om_weights.get(weight, 0) + 1
-                if weight > 0:
+                if weight > 0 and save_el:
                     output_file.write(f"{node_a[0]}, {node_b[0]}, {weight}\n")
 
-    with open(f"./out/{classname}.{pid:02}.w.json", "w") as output_file:
+    with open(f"out/{classname}.{onemode}.w.{pid:02}.json", "w") as output_file:
         json.dump(om_weights, output_file)
 
 @get_ram
@@ -209,7 +225,7 @@ def project_dot_onemode(superclass, biadjmatrix, onemode):
     matrix_density = count_nonzeroes / max_nonzeroes
     print(f"[Info] wmatrix {onemode} density {matrix_density:.4f}")
     t_start = time.time()
-    wmatrix = sparse.tril(wmatrix, k=-1) # Fails here for large matrices with high time, high space
+    wmatrix = sparse.tril(wmatrix, k=-1)
     print(f"[Time] wmatrix {onemode} tril {time.time() - t_start:.3f} sec")
     wmatrix = wmatrix.tocsr()
     print(f"[Info] wmatrix {onemode} tril type {type(wmatrix)}")
@@ -265,6 +281,6 @@ def main():
             try:
                 project_graph(run_name, superclass, run.config["project_method"])
             except KeyError as e:
-                sys.exit("[Error] Please specify project_method as 'dot' or 'hop' in run config\n", e)
+                sys.exit("[Error] Please specify project_method as <hyper;intersect_al;intersect;hop;dot;nx> in run config\n", e)
 
 main()
