@@ -74,32 +74,43 @@ def project_hyper_onemode(superclass, onemode, adj_list):
     size = ceil(pairs_len / ncores)
     print(f"[Info] Start {ncores} processes with input length {size}")
     if len(adj_list) < 100000:
+        save_el = True
+    else:
         save_el = False
+        print("[Info] Do not save om edgelists ( len(adj_list) > 100000 )")
     with mp.Pool() as pool:
         gen_slices = [islice(gen_pairs, size * i, size * (i + 1)) for i in range(0, ncores)]
         gen_slices = [(superclass, onemode, size, ncores, save_el, gen_slice) for gen_slice in gen_slices]
         pool.starmap(project_gen, gen_slices)
+    combine_weights(superclass, onemode, ncores)
     if save_el:
         concatenate_el(superclass, onemode)
-    combine_weights(superclass, onemode, ncores)
+    clean_out(superclass, onemode)
+
+def combine_weights(classname, onemode, ncores):
+    """ Combine all multiprocessing weightdict files to single file """
+    om_weights = {}
+    if onemode == "t":
+        pid_range = range(1, ncores + 1)
+    elif onemode == "b":
+        pid_range = range(ncores + 1, 2 * ncores + 1)
+    for pid in pid_range:
+        with open(f"out/{classname}.{onemode}.w.{pid:02}.json", "r") as input_file:
+            om_weights_pid = json.load(input_file)
+            for key, value in om_weights_pid.items():
+                om_weights[key] = om_weights.get(key, 0) + value
+    with open(f"out/{classname}.{onemode}.w.json", "w") as output_file:
+        json.dump(om_weights, output_file)
 
 def concatenate_el(classname, onemode):
     """ Combine all multiprocessing edgelist files to single onemode edgelist file in shell """
     os.system(f"cd out/; echo {onemode}1, {onemode}2, w >> {classname}.{onemode}.csv")
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\... | xargs cat >> {classname}.{onemode}.csv")
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\... | xargs rm")
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\...\.'csv' | xargs cat >> {classname}.{onemode}.csv")
 
-def combine_weights(classname, onemode, file_count):
-    om_weights = {}
-    for pid in range(1, file_count + 1):
-        with open(f"out/{classname}.{onemode}.w.{pid:02}.json", "r") as input_file:
-            om_weights_pid = json.load(input_file)
-            print(om_weights_pid)
-            for key, value in om_weights_pid.items():
-                print(key, value)
-                om_weights = om_weights.get(key, 0) + value
-    with open(f"out/{classname}.{onemode}.w.json", "w") as output_file:
-        json.dump(om_weights, output_file)
+def clean_out(classname, onemode):
+    """ Remove multiprocessing files """
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[w]\...\.'json' | xargs rm")
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\...\.'csv' | xargs rm")
 
 @get_time
 @get_ram
