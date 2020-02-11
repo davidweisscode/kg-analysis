@@ -42,7 +42,7 @@ def project_graph(run_name, superclass, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
     edgelist = read_edgelist(superclass, "g") # Are integer node labels faster/smaller?
     if project_method == "hyper": # TODO: Benchmark: @get_ram * ncores == htop ram ?
-        project_hyper(superclass, edgelist)
+        project_hyper(run_name, superclass, edgelist)
     elif project_method == "intersect_al":
         project_intersect_al(superclass, edgelist)
     # elif project_method == "intersect": # TODO: Compare and benchmark approaches
@@ -56,16 +56,16 @@ def project_graph(run_name, superclass, project_method):
 
 @get_time
 @get_ram
-def project_hyper(superclass, edgelist):
+def project_hyper(run_name, superclass, edgelist):
     """ Get both top and bot onemode graph of superclass using multiprocessing """
     al_top = get_adjacencylist(edgelist, "t")
-    project_hyper_onemode(superclass, "t", al_top)
+    project_hyper_onemode(run_name, superclass, "t", al_top)
     al_bot = get_adjacencylist(edgelist, "b")
-    project_hyper_onemode(superclass, "b", al_bot)
+    project_hyper_onemode(run_name, superclass, "b", al_bot)
 
 @get_time
 @get_ram
-def project_hyper_onemode(superclass, onemode, adj_list):
+def project_hyper_onemode(run_name, superclass, onemode, adj_list):
     """ Start multiple processes with split up adjacency list """
     gen_pairs = combinations(adj_list, 2)
     n = len(adj_list)
@@ -73,7 +73,7 @@ def project_hyper_onemode(superclass, onemode, adj_list):
     ncores = os.cpu_count()
     size = ceil(pairs_len / ncores)
     print(f"[Info] Start {ncores} processes with input length {size}")
-    if len(adj_list) < 100000: # Discard (top) onemode edges for large graphs
+    if len(adj_list) < 100000: # Discard large graphs (top)
         save_el = True
     else:
         save_el = False
@@ -82,13 +82,18 @@ def project_hyper_onemode(superclass, onemode, adj_list):
         gen_slices = [islice(gen_pairs, size * i, size * (i + 1)) for i in range(0, ncores)]
         gen_slices = [(superclass, onemode, size, ncores, save_el, gen_slice) for gen_slice in gen_slices]
         pool.starmap(project_gen, gen_slices)
-    combine_weights(superclass, onemode, ncores)
-    combine_degrees(superclass, onemode, ncores)
+    m = combine_weights(run_name, superclass, onemode, ncores)
+    density = 2 * m / (n * (n - 1))
+    k = combine_degrees(superclass, onemode, ncores)
+    if onemode == "t":
+        add_results(run_name, superclass, m_t=m, n_t_om=n, density_t=density, k_t_om=k) # Is n_t_om always the same as n_t ?
+    elif onemode == "b":
+        add_results(run_name, superclass, m_b=m, n_b_om=n, density_b=density, k_b_om=k)
     if save_el:
         concatenate_el(superclass, onemode)
     clean_out(superclass, onemode)
 
-def combine_weights(classname, onemode, ncores):
+def combine_weights(run_name, classname, onemode, ncores):
     """ Combine all multiprocessing weightdict files to single file """
     om_weights = {}
     if onemode == "t":
@@ -102,6 +107,11 @@ def combine_weights(classname, onemode, ncores):
                 om_weights[key] = om_weights.get(key, 0) + value
     with open(f"out/{classname}.{onemode}.w.json", "w") as output_file:
         json.dump(om_weights, output_file)
+    m = 0
+    for key, value in om_weights.items():
+        if int(key) > 0:
+            m += value
+    return m
 
 def combine_degrees(classname, onemode, ncores):
     """ Combine all multiprocessing degreedict files to single file and count occurences of values """
@@ -122,6 +132,13 @@ def combine_degrees(classname, onemode, ncores):
         json.dump(om_degrees, output_file)
     with open(f"out/{classname}.{onemode}.d.json", "w") as output_file:
         json.dump(om_degrees_count, output_file)
+    n = 0
+    for key, value in om_degrees_count.items():
+        n += value # Are disconnected nodes (degree == 0) captured?
+    k = 0
+    for key, value in om_degrees_count.items():
+        k += key * (value / n)
+    return k
 
 def concatenate_el(classname, onemode):
     """ Combine all multiprocessing edgelist files to single onemode edgelist file in shell """

@@ -148,8 +148,15 @@ def main():
         is_bipartite = check_bipartite(bigraph)
         nodes_top, nodes_bot = split_edgelist(edgelist)
         n_t, n_b = len(nodes_top), len(nodes_bot)
+        m = len(edgelist)
+        density = m / (n_t * n_b)
+        k_t = m / n_t
+        k_b = m / n_b
         print(f"[Info] n {bigraph.number_of_nodes()}, m {bigraph.number_of_edges()}, t {n_t}, b {n_b}")
         # In onemode network edgelists, information about disconnected nodes gets lost
-        add_results(run_name, superclass, m=len(edgelist), n_t=n_t, n_b=n_b, connected=is_connected, bipartite=is_bipartite)
+        add_results(run_name, superclass,
+                    connected=is_connected, bipartite=is_bipartite,
+                    m=m, n_t=n_t, n_b=n_b,
+                    density=density, k_t=k_t, k_b=k_b)
 
 main()
