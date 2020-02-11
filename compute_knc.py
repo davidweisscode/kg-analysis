@@ -13,11 +13,6 @@ import pandas as pd
 import networkx as nx
 from tqdm import tqdm
 
-def read_om_edgelist(superclass, onemode):
-    """ Read onemode edgelist from csv file """
-    df = pd.read_csv(f"out/{superclass}.{onemode}.csv")
-    return list(df.itertuples(index=False, name=None))
-
 def get_result(run_name, superclass, result):
     """ Get the result value of a superclass """
     df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
@@ -25,6 +20,7 @@ def get_result(run_name, superclass, result):
 
 def compute_knc(run_name, superclass, project_method):
     """ Compute points for a KNC plot and save them together in .k.csv """
+    # TODO: Handle KNC (density) when a large onemode_graph was discarded
     n_b = int(get_result(run_name, superclass, "n_b"))
     omgraph_t = load_onemode_graph(superclass, "t", project_method)
     knc_t = compute_knc_onemode(omgraph_t, n_b)
@@ -54,9 +50,7 @@ def load_onemode_graph(superclass, onemode, project_method):
     else:
         t_start = time.time()
         omgraph = nx.Graph()
-        # omedges = read_om_edgelist(superclass, onemode)
-        # omgraph.add_weighted_edges_from(omedges)
-        df = pd.read_csv(f"out/{superclass}.{onemode}.csv")
+        df = pd.read_csv(f"out/{superclass}.{onemode}.csv", delim_whitespace=True)
         print("[Info] read edgelist finished")
         omgraph.add_weighted_edges_from([tuple(edge) for edge in df.values])
         print("[Info] add edges finished")
@@ -84,7 +78,7 @@ def write_knc(superclass, knc_t, knc_b):
     """ Save KNC plot points to a csv file """
     df_t = pd.DataFrame(knc_t, columns=["k", "density"])
     df_b = pd.DataFrame(knc_b, columns=["k", "density"])
-    knc = df_t.append(df_b, ignore_index=True)
+    knc = df_t.append(df_b, ignore_index=True) # TODO: Save in two files .t.knc.csv & .b.knc.csv
     knc.to_csv(f"out/{superclass}.k.csv", index=False)
 
 @get_time

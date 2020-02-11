@@ -142,7 +142,7 @@ def combine_degrees(classname, onemode, ncores):
 
 def concatenate_el(classname, onemode):
     """ Combine all multiprocessing edgelist files to single onemode edgelist file in shell """
-    os.system(f"cd out/; echo {onemode}1, {onemode}2, w >> {classname}.{onemode}.csv")
+    os.system(f"cd out/; echo {onemode}1 {onemode}2 w >> {classname}.{onemode}.csv")
     os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\...\.'csv' | xargs cat >> {classname}.{onemode}.csv")
 
 def clean_out(classname, onemode):
@@ -170,7 +170,7 @@ def project_gen(classname, onemode, size, ncores, save_el, al_gen):
                     om_degrees[node_a[0]] = om_degrees.get(node_a[0], 0) + 1
                     om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
                     if save_el:
-                        output_file.write(f"{node_a[0]}, {node_b[0]}, {weight}\n")
+                        output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
         else:
             for node_a, node_b in al_gen:
                 neighbors_a = node_a[1]
@@ -181,7 +181,7 @@ def project_gen(classname, onemode, size, ncores, save_el, al_gen):
                     om_degrees[node_a[0]] = om_degrees.get(node_a[0], 0) + 1
                     om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
                     if save_el:
-                        output_file.write(f"{node_a[0]}, {node_b[0]}, {weight}\n")
+                        output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
 
     with open(f"out/{classname}.{onemode}.w.{pid:02}.json", "w") as output_file:
         json.dump(om_weights, output_file)
