@@ -77,7 +77,7 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
         save_el = True
     else:
         save_el = False
-        print("[Info] Do not save om edgelists ( len(adj_list) > 100000 )")
+        print(f"[Info] Discard om edgelists {superclass} {onemode}")
     with mp.Pool() as pool:
         gen_slices = [islice(gen_pairs, size * i, size * (i + 1)) for i in range(0, ncores)]
         gen_slices = [(superclass, onemode, size, ncores, save_el, gen_slice) for gen_slice in gen_slices]
@@ -230,6 +230,7 @@ def get_adjacencylist(edgelist, onemode):
         else:
             al[base_node] = {neighbor}
     al = list(al.items())
+    print(f"[Info] Length of adjacency list {onemode} {len(al)}")
     return al
 
 @get_ram

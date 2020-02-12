@@ -10,9 +10,9 @@ from importlib import import_module
 import pandas as pd
 from tqdm import tqdm
 
-def read_knc_list(superclass):
+def read_knc_list(superclass, onemode):
     """ Read KNC plot values from csv file """
-    df = pd.read_csv(f"out/{superclass}.k.csv")
+    df = pd.read_csv(f"out/{superclass}.{onemode}.knc.csv")
     return list(df.itertuples(index=False, name=None))
 
 def get_result(run_name, superclass, result):
@@ -21,28 +21,37 @@ def get_result(run_name, superclass, result):
     return df.loc[superclass, result]
 
 def analyze_knc(run_name, superclass):
-    #TODO: rc_u_c2, rc_v_c2, lower_quartile, median, upper_quartile, slope
-    knc_list = read_knc_list(superclass)
+    knc_t = read_knc_list(superclass, "t")
     k_max_t = int(get_result(run_name, superclass, "n_b"))
-    results_t = analyze_knc_onemode(run_name, superclass, knc_list[:k_max_t], "b")
-    results_b = analyze_knc_onemode(run_name, superclass, knc_list[k_max_t:], "t")
-    add_results(run_name, superclass, rc_t=results_t, rc_b=results_b)
+    rc_t_density, rc_t_ncomponents, rc_t_slcc = analyze_knc_onemode(run_name, superclass, knc_t, k_max_t)
+    knc_b = read_knc_list(superclass, "b")
+    k_max_b = int(get_result(run_name, superclass, "n_t"))
+    rc_b_density, rc_b_ncomponents, rc_b_slcc = analyze_knc_onemode(run_name, superclass, knc_b, k_max_b)
+    add_results(run_name, superclass,
+                rc_t_density=rc_t_density, rc_t_ncomponents=rc_t_ncomponents, rc_t_slcc=rc_t_slcc,
+                rc_b_density=rc_b_density, rc_b_ncomponents=rc_b_ncomponents, rc_b_slcc=rc_b_slcc)
 
-def analyze_knc_onemode(run_name, superclass, knc_list, onemode):
-    return compute_rc(run_name, superclass, knc_list, onemode)
+def analyze_knc_onemode(run_name, superclass, knc_list, k_max):
+    #TODO: lower_quartile, median, upper_quartile, slope
+    return compute_rc(run_name, superclass, knc_list, k_max)
 
-def compute_rc(run_name, superclass, knc_list, onemode):
-    """ Compute representational consistency based on a KNC plot """
-    k_max = int(get_result(run_name, superclass, "n_" + onemode))
+def compute_rc(run_name, superclass, knc_list, k_max):
+    """ Compute representational consistency (AUC of KNC) based on connectivity measure """
     density_sum = 0
+    ncomponents_sum = 0
+    slcc_sum = 0
+    n_max = knc_list[0][3]
     for k in tqdm(range(0, k_max)):
         density_sum += knc_list[k][1]
-    rc = (1 / k_max) * density_sum
-    if onemode == "t":
-        print(f"rc_b = {rc:.8f}")
-    elif onemode == "b":
-        print(f"rc_t = {rc:.8f}")
-    return rc
+        ncomponents_sum += (n_max - knc_list[k][2]) / n_max
+        slcc_sum += (knc_list[k][3] - 1) / n_max
+    rc_density = (1 / k_max) * density_sum
+    rc_ncomponents = (1 / k_max) * ncomponents_sum
+    rc_slcc = (1 / k_max) * slcc_sum
+    print(f"rc_density {rc_density:.8f}")
+    print(f"rc_ncomponents {rc_ncomponents:.8f}")
+    print(f"rc_slcc {rc_slcc:.8f}")
+    return rc_density, rc_ncomponents, rc_slcc
 
 def add_results(run_name, superclass, **results):
     """ Append result columns in a superclass row """
