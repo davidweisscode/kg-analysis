@@ -104,8 +104,9 @@ def combine_weights(run_name, classname, onemode):
             mp_om_weights = json.load(input_file)
             for key, value in mp_om_weights.items():
                 om_weights[key] = om_weights.get(key, 0) + value
+    om_weights = {int(key):om_weights[key] for key in om_weights.keys()}
     with open(f"out/{classname}.{onemode}.w.json", "w") as output_file:
-        json.dump(om_weights, output_file)
+        json.dump(om_weights, output_file, indent=4, sort_keys=True)
     m = 0
     for key, value in om_weights.items():
         if int(key) > 0:
@@ -126,9 +127,10 @@ def combine_degrees(classname, onemode, ncores):
     for key, value in om_degrees.items():
         om_degrees_count[value] = om_degrees_count.get(value, 0) + 1 # Are disconnected nodes (degree == 0) captured?
     with open(f"out/{classname}.{onemode}.nk.json", "w") as output_file:
-        json.dump(om_degrees, output_file)
+        json.dump(om_degrees, output_file, indent=4)
+    om_degrees_count = {int(key):om_degrees_count[key] for key in om_degrees_count.keys()}
     with open(f"out/{classname}.{onemode}.k.json", "w") as output_file:
-        json.dump(om_degrees_count, output_file)
+        json.dump(om_degrees_count, output_file, indent=4, sort_keys=True)
     n = 0
     for key, value in om_degrees_count.items():
         n += value # Are disconnected nodes (degree == 0) captured?
