@@ -5,6 +5,7 @@ Project a bipartite graph into its two onemode representations.
 #!/usr/bin/python3
 
 import os
+import re
 import sys
 import json
 import time
@@ -82,7 +83,7 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
         gen_slices = [islice(gen_pairs, size * i, size * (i + 1)) for i in range(0, ncores)]
         gen_slices = [(superclass, onemode, size, ncores, save_el, gen_slice) for gen_slice in gen_slices]
         pool.starmap(project_gen, gen_slices)
-    m = combine_weights(run_name, superclass, onemode, ncores)
+    m = combine_weights(run_name, superclass, onemode)
     density = 2 * m / (n * (n - 1))
     k = combine_degrees(superclass, onemode, ncores)
     if onemode == "t":
@@ -93,18 +94,15 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
         concatenate_el(superclass, onemode)
     clean_out(superclass, onemode)
 
-def combine_weights(run_name, classname, onemode, ncores):
+def combine_weights(run_name, classname, onemode):
     """ Combine all multiprocessing weightdict files to single file """
     om_weights = {}
-    if onemode == "t":
-        pid_range = range(1, ncores + 1) # TODO: Bug: pid is not resetting to 1 for multiple classes
-    elif onemode == "b":
-        pid_range = range(ncores + 1, 2 * ncores + 1)
-    # TODO: Get all filenames "out/classname.onemode.w.[dd].json"
-    for pid in pid_range:
-        with open(f"out/{classname}.{onemode}.w.{pid:02}.json", "r") as input_file:
-            om_weights_pid = json.load(input_file)
-            for key, value in om_weights_pid.items():
+    regex = f"{classname}.{onemode}.w.[0-9][0-9].json"
+    mp_files = [mp_file for mp_file in os.listdir('out/') if re.match(regex, mp_file)]
+    for mp_file in mp_files:
+        with open("out/" + mp_file, "r") as input_file:
+            mp_om_weights = json.load(input_file)
+            for key, value in mp_om_weights.items():
                 om_weights[key] = om_weights.get(key, 0) + value
     with open(f"out/{classname}.{onemode}.w.json", "w") as output_file:
         json.dump(om_weights, output_file)
@@ -117,14 +115,12 @@ def combine_weights(run_name, classname, onemode, ncores):
 def combine_degrees(classname, onemode, ncores):
     """ Combine all multiprocessing degreedict files to single file and count occurences of values """
     om_degrees = {}
-    if onemode == "t":
-        pid_range = range(1, ncores + 1) # TODO: Bug: pid is not resetting to 1 for multiple classes
-    elif onemode == "b":
-        pid_range = range(ncores + 1, 2 * ncores + 1)
-    for pid in pid_range:
-        with open(f"out/{classname}.{onemode}.k.{pid:02}.json", "r") as input_file:
-            om_degrees_pid = json.load(input_file)
-            for key, value in om_degrees_pid.items():
+    regex = f"{classname}.{onemode}.k.[0-9][0-9].json"
+    mp_files = [mp_file for mp_file in os.listdir('out/') if re.match(regex, mp_file)]
+    for mp_file in mp_files:
+        with open("out/" + mp_file, "r") as input_file:
+            mp_om_degrees = json.load(input_file)
+            for key, value in mp_om_degrees.items():
                 om_degrees[key] = om_degrees.get(key, 0) + value
     om_degrees_count = {}
     for key, value in om_degrees.items():
