@@ -139,7 +139,7 @@ def combine_degrees(classname, onemode, ncores):
 
 def concatenate_el(classname, onemode):
     """ Combine all multiprocessing edgelist files to single onemode edgelist file in shell """
-    os.system(f"cd out/; echo {onemode}1 {onemode}2 w >> {classname}.{onemode}.csv")
+    os.system(f"cd out/; echo {onemode}1 {onemode}2 w > {classname}.{onemode}.csv")
     os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\...\.'csv' | xargs cat >> {classname}.{onemode}.csv")
 
 def clean_out(classname, onemode):
