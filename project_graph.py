@@ -97,9 +97,10 @@ def combine_weights(run_name, classname, onemode, ncores):
     """ Combine all multiprocessing weightdict files to single file """
     om_weights = {}
     if onemode == "t":
-        pid_range = range(1, ncores + 1)
+        pid_range = range(1, ncores + 1) # TODO: Bug: pid is not resetting to 1 for multiple classes
     elif onemode == "b":
         pid_range = range(ncores + 1, 2 * ncores + 1)
+    # TODO: Get all filenames "out/classname.onemode.w.[dd].json"
     for pid in pid_range:
         with open(f"out/{classname}.{onemode}.w.{pid:02}.json", "r") as input_file:
             om_weights_pid = json.load(input_file)
@@ -117,20 +118,20 @@ def combine_degrees(classname, onemode, ncores):
     """ Combine all multiprocessing degreedict files to single file and count occurences of values """
     om_degrees = {}
     if onemode == "t":
-        pid_range = range(1, ncores + 1)
+        pid_range = range(1, ncores + 1) # TODO: Bug: pid is not resetting to 1 for multiple classes
     elif onemode == "b":
         pid_range = range(ncores + 1, 2 * ncores + 1)
     for pid in pid_range:
-        with open(f"out/{classname}.{onemode}.d.{pid:02}.json", "r") as input_file:
+        with open(f"out/{classname}.{onemode}.k.{pid:02}.json", "r") as input_file:
             om_degrees_pid = json.load(input_file)
             for key, value in om_degrees_pid.items():
                 om_degrees[key] = om_degrees.get(key, 0) + value
     om_degrees_count = {}
     for key, value in om_degrees.items():
         om_degrees_count[value] = om_degrees_count.get(value, 0) + 1 # Are disconnected nodes (degree == 0) captured?
-    with open(f"out/{classname}.{onemode}.nd.json", "w") as output_file:
+    with open(f"out/{classname}.{onemode}.nk.json", "w") as output_file:
         json.dump(om_degrees, output_file)
-    with open(f"out/{classname}.{onemode}.d.json", "w") as output_file:
+    with open(f"out/{classname}.{onemode}.k.json", "w") as output_file:
         json.dump(om_degrees_count, output_file)
     n = 0
     for key, value in om_degrees_count.items():
@@ -148,7 +149,7 @@ def concatenate_el(classname, onemode):
 def clean_out(classname, onemode):
     """ Remove multiprocessing files """
     os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[w]\...\.'json' | xargs rm")
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[d]\...\.'json' | xargs rm")
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[k]\...\.'json' | xargs rm")
     os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\...\.'csv' | xargs rm")
 
 @get_time
@@ -182,10 +183,9 @@ def project_gen(classname, onemode, size, ncores, save_el, al_gen):
                     om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
                     if save_el:
                         output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
-
     with open(f"out/{classname}.{onemode}.w.{pid:02}.json", "w") as output_file:
         json.dump(om_weights, output_file)
-    with open(f"out/{classname}.{onemode}.d.{pid:02}.json", "w") as output_file:
+    with open(f"out/{classname}.{onemode}.k.{pid:02}.json", "w") as output_file:
         json.dump(om_degrees, output_file)
 
 @get_ram

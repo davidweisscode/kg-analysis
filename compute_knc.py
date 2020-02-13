@@ -6,6 +6,7 @@ Compute points for a KNC plot.
 
 import sys
 import time
+import json
 from scipy import sparse
 from importlib import import_module
 from logger import get_time, get_ram
@@ -20,14 +21,49 @@ def get_result(run_name, superclass, result):
 
 def compute_knc(run_name, superclass, project_method):
     """ Compute points for a KNC plot and save them together in .k.csv """
-    n_b = int(get_result(run_name, superclass, "n_b"))
-    omgraph_t = load_onemode_graph(superclass, "t", project_method)
-    knc_t = compute_knc_onemode(omgraph_t, n_b)
-    write_knc(superclass, knc_t, "t")
-    n_t = int(get_result(run_name, superclass, "n_t"))
-    omgraph_b = load_onemode_graph(superclass, "b", project_method)
-    knc_b = compute_knc_onemode(omgraph_b, n_t)
-    write_knc(superclass, knc_b, "b")
+    try:
+        n_b = int(get_result(run_name, superclass, "n_b"))
+        omgraph_t = load_onemode_graph(superclass, "t", project_method)
+        knc_t = compute_knc_onemode(omgraph_t, n_b)
+        write_knc(superclass, knc_t, "t")
+        n_t = int(get_result(run_name, superclass, "n_t"))
+        omgraph_b = load_onemode_graph(superclass, "b", project_method)
+        knc_b = compute_knc_onemode(omgraph_b, n_t)
+        write_knc(superclass, knc_b, "b")
+    except FileNotFoundError as e:
+        print(f"[Info] Compute {superclass} knc with weight distribution", e)
+        compute_knc_onemode_weights(run_name, superclass, "t")
+        compute_knc_onemode_weights(run_name, superclass, "b")
+
+@get_time
+def compute_knc_onemode_weights(run_name, superclass, onemode):
+    """ Compute KNC plot based on weight distribution and max edges formula """
+    knc = []
+    weight_dist = {}
+    n_max = 0
+    k_max = 0
+    n_edges = 0
+    if onemode == "t":
+        n_max = int(get_result(run_name, superclass, f"n_t"))
+        k_max = int(get_result(run_name, superclass, f"n_b"))
+    elif onemode == "b":
+        n_max = int(get_result(run_name, superclass, f"n_b"))
+        k_max = int(get_result(run_name, superclass, f"n_t"))
+    edges_max = 0.5 * n_max * (n_max - 1)
+    with open(f"out/{superclass}.{onemode}.w.json", "r") as input_file:
+        weight_dist = json.load(input_file)
+    for key, value in weight_dist.items():
+        if int(key) > 0:
+            n_edges += value
+    for k in tqdm(range(1, k_max + 1)):
+        edges_miss = 0
+        for key, value in weight_dist.items():
+            if int(key) > 0 and int(key) < k:
+                edges_miss += value
+        density = (n_edges - edges_miss) / edges_max
+        knc.append((k, density))
+    df = pd.DataFrame(knc, columns=["k", "density"])
+    df.to_csv(f"out/{superclass}.{onemode}.knc.csv", index=False)
 
 @get_time
 def load_onemode_graph(superclass, onemode, project_method):
@@ -50,12 +86,11 @@ def load_onemode_graph(superclass, onemode, project_method):
         print(f"[Time] from-sparse {onemode} {time.time() - t_start:.3f} sec")
     else:
         omgraph = nx.Graph()
-        # TODO: Cant load if a large onemode_graph was discarded
         df = pd.read_csv(f"out/{superclass}.{onemode}.csv", delim_whitespace=True)
         print("[Info] read edgelist finished")
 
         # TODO: n_t and omgraph nnodes have a difference of 1
-        print(df)
+        # print(df)
         print(len(df.values))
         print(df.nunique())
         for edge in df.values:
@@ -77,7 +112,7 @@ def compute_knc_onemode(onemode_graph, k_max):
     print("[Info] compute connectivity measures")
     for k in tqdm(range(1, k_max + 1)):
         for edge in list(onemode_graph.edges.data("weight")):
-            if edge[2] < k:
+            if int(edge[2]) < k:
                 onemode_graph.remove_edge(edge[0], edge[1])
         density = get_density(onemode_graph)
         ncomponents = get_ncc(onemode_graph)
