@@ -45,7 +45,7 @@ def query_subclasses(ontology, superclass):
 
 @get_time
 def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist):
-    """ Get edgelist for a superclass and all its subclasses """
+    """ Get edgelist for superclass and all its subclasses """
     subjects = []
     edgelist = []
     print("[Info] query subjects for each subclass")
@@ -56,6 +56,7 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
             triples = dataset.search_triples("", rdf + "type", subclass)[0]
         for triple in triples:
             subjects.append(triple[0])
+    subjects = list(set(subjects)) # Include unique subjects if subject is both of type superclass and subclasses
     print("[Info] query predicates for each subject")
     for subject in tqdm(subjects):
         if predicate_limit > 0:
@@ -65,7 +66,7 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
         for triple in triples:
             if not triple[1] in blacklist:
                 edgelist.append((triple[0], triple[1]))
-    return edgelist
+    return list(set(edgelist)) # Include unique properties
 
 def write_edgelist(classname, edgelist):
     """ Write edgelist to csv file """
