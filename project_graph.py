@@ -41,7 +41,7 @@ def write_edgelist(classname, onemode, edgelist):
 
 def project_graph(run_name, superclass, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
-    edgelist = read_edgelist(superclass, "g") # Are integer node labels faster/smaller?
+    edgelist = read_edgelist(superclass, "g")
     if project_method == "hyper": # TODO: Benchmark: @get_ram * ncores == htop ram ?
         project_hyper(run_name, superclass, edgelist)
     elif project_method == "intersect_al":
@@ -87,7 +87,7 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
     density = 2 * m / (n * (n - 1))
     k = combine_degrees(superclass, onemode, ncores)
     if onemode == "t":
-        add_results(run_name, superclass, m_t=m, n_t_om=n, density_t=density, k_t_om=k) # Is n_t_om always the same as n_t ?
+        add_results(run_name, superclass, m_t=m, n_t_om=n, density_t=density, k_t_om=k) # n_t == n_t_om ?
     elif onemode == "b":
         add_results(run_name, superclass, m_b=m, n_b_om=n, density_b=density, k_b_om=k)
     if save_el:

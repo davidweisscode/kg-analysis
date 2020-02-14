@@ -6,6 +6,7 @@ Build a bipartite graph from an n-triples Knowledge Graph representation.
 
 # TODO: Check Googles Python style guide
 # TODO: Check pylint
+# TODO: Only import required parts of libs (nx, pd, ...)
 
 import os
 import sys
