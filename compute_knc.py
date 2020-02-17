@@ -31,7 +31,7 @@ def compute_knc(run_name, superclass, project_method):
         knc_b = compute_knc_onemode(omgraph_b, n_t)
         write_knc(superclass, knc_b, "b")
     except FileNotFoundError as e:
-        print(f"[Info] Compute {superclass} knc with weight distribution", e)
+        print(f"[Info] Compute {superclass} knc with weight distribution\n", e)
         compute_knc_onemode_weights(run_name, superclass, "t")
         compute_knc_onemode_weights(run_name, superclass, "b")
 
@@ -40,8 +40,6 @@ def compute_knc_onemode_weights(run_name, superclass, onemode):
     """ Compute KNC plot based on weight distribution and max edges formula """
     knc = []
     weight_dist = {}
-    n_max = 0
-    k_max = 0
     n_edges = 0
     if onemode == "t":
         n_max = int(get_result(run_name, superclass, f"n_t"))

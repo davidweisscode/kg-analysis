@@ -38,20 +38,27 @@ def analyze_knc_onemode(run_name, superclass, knc_list, k_max):
 def compute_rc(run_name, superclass, knc_list, k_max):
     """ Compute representational consistency (AUC of KNC) based on connectivity measure """
     density_sum = 0
-    ncomponents_sum = 0
-    slcc_sum = 0
-    n_max = knc_list[0][3]
-    for k in tqdm(range(0, k_max)):
-        density_sum += knc_list[k][1]
-        ncomponents_sum += (n_max - knc_list[k][2]) / n_max
-        slcc_sum += (knc_list[k][3] - 1) / n_max
-    rc_density = (1 / k_max) * density_sum
-    rc_ncomponents = (1 / k_max) * ncomponents_sum
-    rc_slcc = (1 / k_max) * slcc_sum
-    print(f"rc_density {rc_density:.8f}")
-    print(f"rc_ncomponents {rc_ncomponents:.8f}")
-    print(f"rc_slcc {rc_slcc:.8f}")
-    return rc_density, rc_ncomponents, rc_slcc
+    if len(knc_list[0]) == 4: # Graph was build to compute connectivity measures
+        ncomponents_sum = 0
+        slcc_sum = 0
+        n_max = knc_list[0][3]
+        for k in tqdm(range(0, k_max)):
+            density_sum += knc_list[k][1]
+            ncomponents_sum += (n_max - knc_list[k][2]) / (n_max - 1)
+            slcc_sum += (knc_list[k][3] - 1) / (n_max - 1)
+        rc_density = (1 / k_max) * density_sum
+        rc_ncomponents = (1 / k_max) * ncomponents_sum
+        rc_slcc = (1 / k_max) * slcc_sum
+        print(f"[Info] rc_density {rc_density:.8f}")
+        print(f"[Info] rc_ncomponents {rc_ncomponents:.8f}")
+        print(f"[Info] rc_slcc {rc_slcc:.8f}")
+        return rc_density, rc_ncomponents, rc_slcc
+    elif len(knc_list[0]) == 2: # Weight distribution was used to compute density
+        for k in tqdm(range(0, k_max)):
+            density_sum += knc_list[k][1]
+        rc_density = (1 / k_max) * density_sum
+        print(f"[Info] rc_density {rc_density:.8f}")
+        return rc_density, None, None
 
 def add_results(run_name, superclass, **results):
     """ Append result columns in a superclass row """

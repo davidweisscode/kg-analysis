@@ -23,7 +23,7 @@ git clone https://github.com/davidweisscode/kg-analysis.git
 ```
 * Download HDT serialized [datasets, indexfiles](http://fragments.dbpedia.org/hdt/) and [ontologies](http://downloads.dbpedia.org/2016-04/) from [dbpedia.org](https://wiki.dbpedia.org/) and [rdfhdt.org](http://www.rdfhdt.org/datasets/)
 ```
-cd kg/
+mkdir kg/ && cd kg/
 wget -c http://fragments.dbpedia.org/hdt/dbpedia2016-04en.hdt
 wget -c http://fragments.dbpedia.org/hdt/dbpedia2016-04en.hdt.index.v1-1
 wget -c http://downloads.dbpedia.org/2016-04/dbpedia_2016-04.owl
