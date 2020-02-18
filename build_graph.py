@@ -131,11 +131,9 @@ def main():
     predicate_limit = run.config["predicate_limit"]
     with open("blacklist.txt", "r") as file:
         blacklist = file.read().splitlines()
-    if os.path.exists(f"out/_results_{run_name}.csv"):
-        print("[Info] Remove old results file")
-        os.remove(f"out/_results_{run_name}.csv")
-    df = pd.DataFrame(columns=["m"])
-    df.to_csv(f"out/_results_{run_name}.csv")
+    if not os.path.exists(f"out/_results_{run_name}.csv"):
+        df = pd.DataFrame(columns=["m"])
+        df.to_csv(f"out/_results_{run_name}.csv")
 
     for superclass in run.config["classes"]:
         print("\n[Build] ", superclass)
