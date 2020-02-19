@@ -87,17 +87,51 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
     density = 2 * m / (n * (n - 1))
     k = combine_degrees(superclass, onemode, ncores)
     if onemode == "t":
-        add_results(run_name, superclass, m_t=m, n_t_om=n, density_t=density, k_t_om=k) # n_t == n_t_om ?
+        add_results(run_name, superclass, m_t=m, n_t_om=n, density_t=density, k_t_om=k)
     elif onemode == "b":
         add_results(run_name, superclass, m_b=m, n_b_om=n, density_b=density, k_b_om=k)
     if save_el:
         concatenate_el(superclass, onemode)
     clean_out(superclass, onemode)
 
+def project_gen(classname, onemode, size, ncores, save_el, al_gen):
+    """ Get a weigthed edgelist by intersecting pairs from adjacency list generator slices """
+    pid = mp.current_process()._identity[0]
+    print(f"[Info] PID {pid:04}")
+    om_weights = {}
+    om_degrees = {}
+    with open(f"./out/{classname}.{onemode}.{pid:04}.csv", "a") as output_file:
+        if pid == ncores or pid == 2 * ncores: # TODO: Modulo --> Progress bar only for first superclass
+            for node_a, node_b in tqdm(al_gen, total=size):
+                neighbors_a = node_a[1]
+                neighbors_b = node_b[1]
+                weight = len(set.intersection(neighbors_a, neighbors_b))
+                om_weights[weight] = om_weights.get(weight, 0) + 1
+                if weight > 0:
+                    om_degrees[node_a[0]] = om_degrees.get(node_a[0], 0) + 1
+                    om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
+                    if save_el:
+                        output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
+        else:
+            for node_a, node_b in al_gen:
+                neighbors_a = node_a[1]
+                neighbors_b = node_b[1]
+                weight = len(set.intersection(neighbors_a, neighbors_b))
+                om_weights[weight] = om_weights.get(weight, 0) + 1
+                if weight > 0:
+                    om_degrees[node_a[0]] = om_degrees.get(node_a[0], 0) + 1
+                    om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
+                    if save_el:
+                        output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
+    with open(f"out/{classname}.{onemode}.w.{pid:04}.json", "w") as output_file:
+        json.dump(om_weights, output_file)
+    with open(f"out/{classname}.{onemode}.k.{pid:04}.json", "w") as output_file:
+        json.dump(om_degrees, output_file)
+
 def combine_weights(run_name, classname, onemode):
     """ Combine all multiprocessing weightdict files to single file """
     om_weights = {}
-    regex = f"{classname}.{onemode}.w.[0-9][0-9].json"
+    regex = f"{classname}.{onemode}.w.[0-9][0-9][0-9][0-9].json"
     mp_files = [mp_file for mp_file in os.listdir('out/') if re.match(regex, mp_file)]
     for mp_file in mp_files:
         with open("out/" + mp_file, "r") as input_file:
@@ -116,7 +150,7 @@ def combine_weights(run_name, classname, onemode):
 def combine_degrees(classname, onemode, ncores):
     """ Combine all multiprocessing degreedict files to single file and count occurences of values """
     om_degrees = {}
-    regex = f"{classname}.{onemode}.k.[0-9][0-9].json"
+    regex = f"{classname}.{onemode}.k.[0-9][0-9][0-9][0-9].json"
     mp_files = [mp_file for mp_file in os.listdir('out/') if re.match(regex, mp_file)]
     for mp_file in mp_files:
         with open("out/" + mp_file, "r") as input_file:
@@ -142,49 +176,13 @@ def combine_degrees(classname, onemode, ncores):
 def concatenate_el(classname, onemode):
     """ Combine all multiprocessing edgelist files to single onemode edgelist file in shell """
     os.system(f"cd out/; echo {onemode}1 {onemode}2 w > {classname}.{onemode}.csv")
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\...\.'csv' | xargs cat >> {classname}.{onemode}.csv")
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.....\.'csv' | xargs cat >> {classname}.{onemode}.csv")
 
 def clean_out(classname, onemode):
     """ Remove multiprocessing files """
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[w]\...\.'json' | xargs rm")
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[k]\...\.'json' | xargs rm")
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\...\.'csv' | xargs rm")
-
-@get_time
-@get_ram
-def project_gen(classname, onemode, size, ncores, save_el, al_gen):
-    """ Get a weigthed edgelist by intersecting pairs from adjacency list generator slices """
-    pid = mp.current_process()._identity[0]
-    print(f"[Info] PID {pid:02}")
-    om_weights = {}
-    om_degrees = {}
-    with open(f"./out/{classname}.{onemode}.{pid:02}.csv", "a") as output_file:
-        if pid == ncores or pid == 2 * ncores:
-            for node_a, node_b in tqdm(al_gen, total=size):
-                neighbors_a = node_a[1]
-                neighbors_b = node_b[1]
-                weight = len(set.intersection(neighbors_a, neighbors_b))
-                om_weights[weight] = om_weights.get(weight, 0) + 1
-                if weight > 0:
-                    om_degrees[node_a[0]] = om_degrees.get(node_a[0], 0) + 1
-                    om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
-                    if save_el:
-                        output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
-        else:
-            for node_a, node_b in al_gen:
-                neighbors_a = node_a[1]
-                neighbors_b = node_b[1]
-                weight = len(set.intersection(neighbors_a, neighbors_b))
-                om_weights[weight] = om_weights.get(weight, 0) + 1
-                if weight > 0:
-                    om_degrees[node_a[0]] = om_degrees.get(node_a[0], 0) + 1
-                    om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
-                    if save_el:
-                        output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
-    with open(f"out/{classname}.{onemode}.w.{pid:02}.json", "w") as output_file:
-        json.dump(om_weights, output_file)
-    with open(f"out/{classname}.{onemode}.k.{pid:02}.json", "w") as output_file:
-        json.dump(om_degrees, output_file)
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[w]\.....\.'json' | xargs rm")
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[k]\.....\.'json' | xargs rm")
+    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.....\.'csv' | xargs rm")
 
 @get_ram
 def project_intersect_al(superclass, edgelist):
