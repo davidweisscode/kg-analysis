@@ -74,6 +74,9 @@ def main():
 
     for superclass in run.config["classes"]:
         print("\n[Analyze knc]", superclass)
-        analyze_knc(run_name, superclass)
+        try:
+            analyze_knc(run_name, superclass)
+        except FileNotFoundError as e:
+            print(f"[Info] file not found {superclass} graph is the null graph\n{e}")
 
 main()

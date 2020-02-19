@@ -87,18 +87,15 @@ def write_integer_edgelist(classname, edgelist):
 
 def check_connected(bigraph):
     """ Check whether input graph is connected """
-    connected = True
-    if not nx.is_connected(bigraph):
-        connected = False
-    return connected
+    if nx.is_connected(bigraph):
+        return True
+    return False
 
 def check_bipartite(bigraph):
     """ Check whether input graph is bipartite """
-    bipartite = True
     if not nx.bipartite.is_bipartite(bigraph):
-        bipartite = False
         sys.exit("[Error] Input graph is not bipartite")
-    return bipartite
+    return True
 
 @get_time
 def split_edgelist(edges):
@@ -139,24 +136,26 @@ def main():
         print("\n[Build] ", superclass)
         subclasses = query_subclasses(ontology, superclass)
         edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
-        write_edgelist(superclass, edgelist)
-        write_integer_edgelist(superclass, edgelist)
-
-        bigraph = nx.Graph()
-        bigraph.add_edges_from(edgelist)
-        is_connected = check_connected(bigraph)
-        is_bipartite = check_bipartite(bigraph)
-        nodes_top, nodes_bot = split_edgelist(edgelist)
-        n_t, n_b = len(nodes_top), len(nodes_bot)
-        m = len(edgelist)
-        density = m / (n_t * n_b)
-        k_t = m / n_t
-        k_b = m / n_b
-        print(f"[Info] n {bigraph.number_of_nodes()}, m {bigraph.number_of_edges()}, t {n_t}, b {n_b}")
-        # In onemode network edgelists, information about disconnected nodes gets lost
-        add_results(run_name, superclass,
-                    connected=is_connected, bipartite=is_bipartite,
-                    m=m, n_t=n_t, n_b=n_b,
-                    density=density, k_t=k_t, k_b=k_b)
+        try:
+            bigraph = nx.Graph()
+            bigraph.add_edges_from(edgelist)
+            is_connected = check_connected(bigraph)
+            is_bipartite = check_bipartite(bigraph)
+            nodes_top, nodes_bot = split_edgelist(edgelist)
+            n_t, n_b = len(nodes_top), len(nodes_bot)
+            m = len(edgelist)
+            density = m / (n_t * n_b)
+            k_t = m / n_t
+            k_b = m / n_b
+            print(f"[Info] n {bigraph.number_of_nodes()}, m {bigraph.number_of_edges()}, t {n_t}, b {n_b}")
+            write_edgelist(superclass, edgelist)
+            write_integer_edgelist(superclass, edgelist)
+            # In onemode network edgelists, information about disconnected nodes gets lost
+            add_results(run_name, superclass,
+                        connected=is_connected, bipartite=is_bipartite,
+                        m=m, n_t=n_t, n_b=n_b,
+                        density=density, k_t=k_t, k_b=k_b)
+        except nx.NetworkXPointlessConcept as e:
+            print(f"[Info] {superclass} graph is the null graph\n{e}")
 
 main()

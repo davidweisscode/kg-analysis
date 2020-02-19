@@ -86,15 +86,6 @@ def load_onemode_graph(superclass, onemode, project_method):
         omgraph = nx.Graph()
         df = pd.read_csv(f"out/{superclass}.{onemode}.csv", delim_whitespace=True)
         print("[Info] read edgelist finished")
-
-        # TODO: n_t and omgraph nnodes have a difference of 1
-        # print(df)
-        print(len(df.values))
-        print(df.nunique())
-        for edge in df.values:
-            if "t1" in tuple(edge) or "t2" in tuple(edge):
-                print(f"[Info] header edge detected {edge}")
-
         omgraph.add_weighted_edges_from([tuple(edge) for edge in df.values])
         print(f"[Info] omgraph number of nodes {onemode} {omgraph.number_of_nodes()}")
     return omgraph
@@ -102,7 +93,6 @@ def load_onemode_graph(superclass, onemode, project_method):
 @get_time
 def compute_knc_onemode(onemode_graph, k_max):
     """ Compute points of an KNC plot """
-    # TODO: Break and fill rest if connectivity measure reached min
     knc_list = []
     get_density = nx.classes.function.density
     get_ncc = nx.algorithms.components.number_connected_components
@@ -135,6 +125,6 @@ def main():
         try:
             compute_knc(run_name, superclass, run.config["project_method"])
         except KeyError as e:
-            sys.exit("[Error] Please specify project_method as <hyper;intersect_al;intersect;hop;dot;nx> in run config\n", e)
+            print(f"[Info] file not found {superclass} graph is the null graph\n{e}")
 
 main()

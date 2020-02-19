@@ -125,7 +125,7 @@ def combine_degrees(classname, onemode, ncores):
                 om_degrees[key] = om_degrees.get(key, 0) + value
     om_degrees_count = {}
     for key, value in om_degrees.items():
-        om_degrees_count[value] = om_degrees_count.get(value, 0) + 1 # Are disconnected nodes (degree == 0) captured?
+        om_degrees_count[value] = om_degrees_count.get(value, 0) + 1
     with open(f"out/{classname}.{onemode}.nk.json", "w") as output_file:
         json.dump(om_degrees, output_file, indent=4)
     om_degrees_count = {int(key):om_degrees_count[key] for key in om_degrees_count.keys()}
@@ -133,7 +133,7 @@ def combine_degrees(classname, onemode, ncores):
         json.dump(om_degrees_count, output_file, indent=4, sort_keys=True)
     n = 0
     for key, value in om_degrees_count.items():
-        n += value # Are disconnected nodes (degree == 0) captured?
+        n += value
     k = 0
     for key, value in om_degrees_count.items():
         k += key * (value / n)
@@ -337,6 +337,8 @@ def main():
             print("\n[Project]", superclass)
             try:
                 project_graph(run_name, superclass, run.config["project_method"])
+            except FileNotFoundError as e:
+                print(f"[Info] file not found {superclass} graph is the null graph\n{e}")
             except KeyError as e:
                 sys.exit("[Error] Please specify project_method as <hyper;intersect_al;intersect;hop;dot;nx> in run config\n", e)
 
