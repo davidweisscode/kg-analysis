@@ -101,7 +101,7 @@ def project_gen(classname, onemode, size, ncores, save_el, al_gen):
     om_weights = {}
     om_degrees = {}
     with open(f"./out/{classname}.{onemode}.{pid:04}.csv", "a") as output_file:
-        if pid == ncores or pid == 2 * ncores: # TODO: Modulo --> Progress bar only for first superclass
+        if pid % (2 * ncores) == ncores:
             for node_a, node_b in tqdm(al_gen, total=size):
                 neighbors_a = node_a[1]
                 neighbors_b = node_b[1]
