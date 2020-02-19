@@ -110,17 +110,21 @@ def load_onemode_graph(superclass, onemode, project_method):
 def compute_knc_onemode(onemode_graph, k_max):
     """ Compute points of an KNC plot """
     knc_list = []
+    fully_disconnected = False
     get_density = nx.classes.function.density
     get_ncc = nx.algorithms.components.number_connected_components
     get_slcc = nx.algorithms.components.connected_components
     print("[Info] compute connectivity measures")
     for k in tqdm(range(1, k_max + 1)):
-        for edge in list(onemode_graph.edges.data("weight")):
-            if int(edge[2]) < k:
-                onemode_graph.remove_edge(edge[0], edge[1])
-        density = get_density(onemode_graph)
-        ncomponents = get_ncc(onemode_graph)
-        slcc = len(max(get_slcc(onemode_graph), key=len))
+        if not fully_disconnected:
+            for edge in list(onemode_graph.edges.data("weight")):
+                if int(edge[2]) < k:
+                    onemode_graph.remove_edge(edge[0], edge[1])
+            density = get_density(onemode_graph)
+            ncomponents = get_ncc(onemode_graph)
+            slcc = len(max(get_slcc(onemode_graph), key=len))
+            if density == 0:
+                fully_disconnected = True
         knc_list.append((k, density, ncomponents, slcc))
     return knc_list
 
