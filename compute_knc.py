@@ -4,6 +4,7 @@ Compute points for a KNC plot.
 
 #!/usr/bin/python3
 
+import os
 import sys
 import time
 import json
@@ -19,20 +20,35 @@ def get_result(run_name, superclass, result):
     df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
     return df.loc[superclass, result]
 
+def is_buildable(classname, onemode):
+    """ Check if onemode edgelist file exists and a networkx graph of it can be loaded into main memory """
+    edgelist_file = f"out/{classname}.{onemode}.csv"
+    nx_max_size = 3
+    if os.path.isfile(edgelist_file):
+        filesize = os.path.getsize(edgelist_file) / (1000 ** 3)
+        if filesize < nx_max_size:
+            return True
+        else:
+            return False
+    else:
+        return False
+
 def compute_knc(run_name, superclass, project_method):
     """ Compute points for a KNC plot and save them together in .k.csv """
-    try:
+    if is_buildable(superclass, "t"):
         n_b = int(get_result(run_name, superclass, "n_b"))
         omgraph_t = load_onemode_graph(superclass, "t", project_method)
         knc_t = compute_knc_onemode(omgraph_t, n_b)
         write_knc(superclass, knc_t, "t")
+    else:
+        compute_knc_onemode_weights(run_name, superclass, "t")
+
+    if is_buildable(superclass, "b"):
         n_t = int(get_result(run_name, superclass, "n_t"))
         omgraph_b = load_onemode_graph(superclass, "b", project_method)
         knc_b = compute_knc_onemode(omgraph_b, n_t)
         write_knc(superclass, knc_b, "b")
-    except FileNotFoundError as e:
-        print(f"[Info] Compute {superclass} knc with weight distribution\n", e)
-        compute_knc_onemode_weights(run_name, superclass, "t")
+    else:
         compute_knc_onemode_weights(run_name, superclass, "b")
 
 @get_time
@@ -72,7 +88,7 @@ def load_onemode_graph(superclass, onemode, project_method):
         print(f"[Time] load-npz {onemode} {time.time() - t_start:.3f} sec")
         print(f"[Info] wmatrix {onemode} type {type(wmatrix)}")
         print(f"[Info] wmatrix {onemode} dtype {wmatrix.dtype}")
-        print(f"[Info] wmatrix {onemode} nbytes in GB {(wmatrix.data.nbytes) / (1024 ** 3):.6f}")
+        print(f"[Info] wmatrix {onemode} nbytes in GB {(wmatrix.data.nbytes) / (1000 ** 3):.6f}")
         count_nonzeroes = wmatrix.nnz
         max_nonzeroes = 0.5 * wmatrix.shape[0] * (wmatrix.shape[0] - 1)
         matrix_density = count_nonzeroes / max_nonzeroes

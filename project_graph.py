@@ -272,7 +272,7 @@ def project_dot_onemode(superclass, biadjmatrix, onemode):
     print(f"[Time] onemode-dotproduct {onemode} {time.time() - t_start:.3f} sec")
     print(f"[Info] wmatrix {onemode} type {type(wmatrix)}")
     print(f"[Info] wmatrix {onemode} dtype {wmatrix.dtype}")
-    print(f"[Info] wmatrix {onemode} nbytes in GB {(wmatrix.data.nbytes + wmatrix.indptr.nbytes + wmatrix.indices.nbytes) / (1024 ** 3):.6f}")
+    print(f"[Info] wmatrix {onemode} nbytes in GB {(wmatrix.data.nbytes + wmatrix.indptr.nbytes + wmatrix.indices.nbytes) / (1000 ** 3):.6f}")
     print(f"[Info] wmatrix {onemode} shape {wmatrix.shape}")
     print(f"[Info] wmatrix {onemode} maxelement {wmatrix.max()}")
     count_nonzeroes = wmatrix.nnz
@@ -284,7 +284,7 @@ def project_dot_onemode(superclass, biadjmatrix, onemode):
     print(f"[Time] wmatrix {onemode} tril {time.time() - t_start:.3f} sec")
     wmatrix = wmatrix.tocsr()
     print(f"[Info] wmatrix {onemode} tril type {type(wmatrix)}")
-    print(f"[Info] wmatrix {onemode} tril nbytes data in GB {(wmatrix.data.nbytes) / (1024 ** 3):.6f}")
+    print(f"[Info] wmatrix {onemode} tril nbytes data in GB {(wmatrix.data.nbytes) / (1000 ** 3):.6f}")
     t_start = time.time()
     sparse.save_npz(f"out/{superclass}.{onemode}.npz", wmatrix)
     print(f"[Time] save-npz {onemode} {time.time() - t_start:.3f} sec")
