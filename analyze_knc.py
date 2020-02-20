@@ -44,7 +44,9 @@ def compute_rc(run_name, superclass, knc_list, k_max):
         n_max = knc_list[0][3]
         for k in tqdm(range(0, k_max)):
             density_sum += knc_list[k][1]
-            ncomponents_sum += (n_max - knc_list[k][2]) / (n_max - 1)
+            ncomponents_sum += (n_max - knc_list[k][2]) / (n_max - 1) # TODO: At which k negative?
+            if ((n_max - knc_list[k][2]) / (n_max - 1)) < 0:
+                print(f"NEGATIVE at k = {k} with value {(n_max - knc_list[k][2]) / (n_max - 1)}")
             slcc_sum += (knc_list[k][3] - 1) / (n_max - 1)
         rc_density = (1 / k_max) * density_sum
         rc_ncomponents = (1 / k_max) * ncomponents_sum
