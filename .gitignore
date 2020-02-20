@@ -1,5 +1,5 @@
 /kg/*
-/out/*
+/out/*.*.*
 *.pyc
 .vscode/
 .ipynb_checkpoints/
