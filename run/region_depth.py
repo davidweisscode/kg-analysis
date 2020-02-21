@@ -1,9 +1,7 @@
 config = {
     "classes": ["Region",
                 "AdministrativeRegion",
-                "GovernmentalAdministrativeRegion",
-                "District",
-                "HistoricalDistrict"
+                "GovernmentalAdministrativeRegion"
                 ],
     "project_method": "hyper",
     "kg_source": "kg/dbpedia2016-04en.hdt",
