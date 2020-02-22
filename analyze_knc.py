@@ -21,32 +21,32 @@ def get_result(run_name, superclass, result):
     return df.loc[superclass, result]
 
 def analyze_knc(run_name, superclass):
+    n_t = int(get_result(run_name, superclass, "n_t"))
+    n_b = int(get_result(run_name, superclass, "n_b"))
+
     knc_t = read_knc_list(superclass, "t")
-    k_max_t = int(get_result(run_name, superclass, "n_b"))
-    rc_t_density, rc_t_ncomponents, rc_t_slcc = analyze_knc_onemode(run_name, superclass, knc_t, k_max_t)
+    rc_t_density, rc_t_ncomponents, rc_t_slcc = analyze_knc_onemode(run_name, superclass, knc_t, n_t, n_b)
+
     knc_b = read_knc_list(superclass, "b")
-    k_max_b = int(get_result(run_name, superclass, "n_t"))
-    rc_b_density, rc_b_ncomponents, rc_b_slcc = analyze_knc_onemode(run_name, superclass, knc_b, k_max_b)
+    rc_b_density, rc_b_ncomponents, rc_b_slcc = analyze_knc_onemode(run_name, superclass, knc_b, n_b, n_t)
+
     add_results(run_name, superclass,
                 rc_t_density=rc_t_density, rc_t_ncomponents=rc_t_ncomponents, rc_t_slcc=rc_t_slcc,
                 rc_b_density=rc_b_density, rc_b_ncomponents=rc_b_ncomponents, rc_b_slcc=rc_b_slcc)
 
-def analyze_knc_onemode(run_name, superclass, knc_list, k_max):
+def analyze_knc_onemode(run_name, superclass, knc_list, n_max, k_max):
     #TODO: lower_quartile, median, upper_quartile, slope
-    return compute_rc(run_name, superclass, knc_list, k_max)
+    return compute_rc(run_name, superclass, knc_list, n_max, k_max)
 
-def compute_rc(run_name, superclass, knc_list, k_max):
+def compute_rc(run_name, superclass, knc_list, n_max, k_max):
     """ Compute representational consistency (AUC of KNC) based on connectivity measure """
     density_sum = 0
     if len(knc_list[0]) == 4: # Graph was build to compute connectivity measures
         ncomponents_sum = 0
         slcc_sum = 0
-        n_max = knc_list[0][3]
         for k in tqdm(range(0, k_max)):
             density_sum += knc_list[k][1]
-            ncomponents_sum += (n_max - knc_list[k][2]) / (n_max - 1) # TODO: At which k negative?
-            if ((n_max - knc_list[k][2]) / (n_max - 1)) < 0:
-                print(f"NEGATIVE at k = {k} with value {(n_max - knc_list[k][2]) / (n_max - 1)}")
+            ncomponents_sum += (n_max - knc_list[k][2]) / (n_max - 1)
             slcc_sum += (knc_list[k][3] - 1) / (n_max - 1)
         rc_density = (1 / k_max) * density_sum
         rc_ncomponents = (1 / k_max) * ncomponents_sum
@@ -80,5 +80,7 @@ def main():
             analyze_knc(run_name, superclass)
         except FileNotFoundError as e:
             print(f"[Info] file not found {superclass} graph is the null graph\n{e}")
+        except KeyError as e:
+            print(f"[Info] key not found {superclass} graph is the null graph\n{e}")
 
 main()
