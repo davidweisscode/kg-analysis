@@ -1,5 +1,6 @@
 /kg/*
-/out/*.*.*
+out/
 *.pyc
 .vscode/
 .ipynb_checkpoints/
+my_run.py
