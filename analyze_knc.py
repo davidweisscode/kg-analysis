@@ -12,7 +12,7 @@ from tqdm import tqdm
 
 def read_knc_list(superclass, onemode):
     """ Read KNC plot values from csv file """
-    df = pd.read_csv(f"out/{superclass}.{onemode}.knc.csv")
+    df = pd.read_csv(f"out/{superclass}/{superclass}.{onemode}.knc.csv")
     return list(df.itertuples(index=False, name=None))
 
 def get_result(run_name, superclass, result):

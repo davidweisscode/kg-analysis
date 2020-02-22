@@ -23,7 +23,7 @@ import multiprocessing as mp
 
 def read_edgelist(superclass, label):
     """ Read edgelist from csv file """
-    df = pd.read_csv(f"out/{superclass}.{label}.csv")
+    df = pd.read_csv(f"out/{superclass}/{superclass}.{label}.csv")
     return list(df.itertuples(index=False, name=None))
 
 def add_results(run_name, superclass, **results):
@@ -37,7 +37,7 @@ def add_results(run_name, superclass, **results):
 def write_edgelist(classname, onemode, edgelist):
     """ Write edge list to csv file """
     df = pd.DataFrame(edgelist, columns=["node_a", "node_b", "w"])
-    df.to_csv(f"out/{classname}.{onemode}.csv", index=False)
+    df.to_csv(f"out/{classname}/{classname}.{onemode}.csv", index=False)
 
 def project_graph(run_name, superclass, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
@@ -100,7 +100,7 @@ def project_gen(classname, onemode, size, ncores, save_el, al_gen):
     print(f"[Info] PID {pid:04}")
     om_weights = {}
     om_degrees = {}
-    with open(f"./out/{classname}.{onemode}.{pid:04}.csv", "a") as output_file:
+    with open(f"./out/{classname}/{classname}.{onemode}.{pid:04}.csv", "a") as output_file:
         if pid % (2 * ncores) == ncores:
             for node_a, node_b in tqdm(al_gen, total=size):
                 neighbors_a = node_a[1]
@@ -123,23 +123,23 @@ def project_gen(classname, onemode, size, ncores, save_el, al_gen):
                     om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
                     if save_el:
                         output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
-    with open(f"out/{classname}.{onemode}.w.{pid:04}.json", "w") as output_file:
+    with open(f"out/{classname}/{classname}.{onemode}.w.{pid:04}.json", "w") as output_file:
         json.dump(om_weights, output_file)
-    with open(f"out/{classname}.{onemode}.k.{pid:04}.json", "w") as output_file:
+    with open(f"out/{classname}/{classname}.{onemode}.k.{pid:04}.json", "w") as output_file:
         json.dump(om_degrees, output_file)
 
 def combine_weights(run_name, classname, onemode):
     """ Combine all multiprocessing weightdict files to single file """
     om_weights = {}
     regex = f"{classname}.{onemode}.w.[0-9][0-9][0-9][0-9].json"
-    mp_files = [mp_file for mp_file in os.listdir('out/') if re.match(regex, mp_file)]
+    mp_files = [mp_file for mp_file in os.listdir(f'out/{classname}') if re.match(regex, mp_file)]
     for mp_file in mp_files:
-        with open("out/" + mp_file, "r") as input_file:
+        with open(f"out/{classname}/" + mp_file, "r") as input_file:
             mp_om_weights = json.load(input_file)
             for key, value in mp_om_weights.items():
                 om_weights[key] = om_weights.get(key, 0) + value
     om_weights = {int(key):om_weights[key] for key in om_weights.keys()}
-    with open(f"out/{classname}.{onemode}.w.json", "w") as output_file:
+    with open(f"out/{classname}/{classname}.{onemode}.w.json", "w") as output_file:
         json.dump(om_weights, output_file, indent=4, sort_keys=True)
     m = 0
     for key, value in om_weights.items():
@@ -151,19 +151,19 @@ def combine_degrees(classname, onemode, ncores):
     """ Combine all multiprocessing degreedict files to single file and count occurences of values """
     om_degrees = {}
     regex = f"{classname}.{onemode}.k.[0-9][0-9][0-9][0-9].json"
-    mp_files = [mp_file for mp_file in os.listdir('out/') if re.match(regex, mp_file)]
+    mp_files = [mp_file for mp_file in os.listdir(f'out/{classname}') if re.match(regex, mp_file)]
     for mp_file in mp_files:
-        with open("out/" + mp_file, "r") as input_file:
+        with open(f"out/{classname}/" + mp_file, "r") as input_file:
             mp_om_degrees = json.load(input_file)
             for key, value in mp_om_degrees.items():
                 om_degrees[key] = om_degrees.get(key, 0) + value
     om_degrees_count = {}
     for key, value in om_degrees.items():
         om_degrees_count[value] = om_degrees_count.get(value, 0) + 1
-    with open(f"out/{classname}.{onemode}.nk.json", "w") as output_file:
+    with open(f"out/{classname}/{classname}.{onemode}.nk.json", "w") as output_file:
         json.dump(om_degrees, output_file, indent=4)
     om_degrees_count = {int(key):om_degrees_count[key] for key in om_degrees_count.keys()}
-    with open(f"out/{classname}.{onemode}.k.json", "w") as output_file:
+    with open(f"out/{classname}/{classname}.{onemode}.k.json", "w") as output_file:
         json.dump(om_degrees_count, output_file, indent=4, sort_keys=True)
     n = 0
     for key, value in om_degrees_count.items():
@@ -175,14 +175,14 @@ def combine_degrees(classname, onemode, ncores):
 
 def concatenate_el(classname, onemode):
     """ Combine all multiprocessing edgelist files to single onemode edgelist file in shell """
-    os.system(f"cd out/; echo {onemode}1 {onemode}2 w > {classname}.{onemode}.csv")
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.....\.'csv' | xargs cat >> {classname}.{onemode}.csv")
+    os.system(f"cd out/{classname}; echo {onemode}1 {onemode}2 w > {classname}.{onemode}.csv")
+    os.system(f"cd out/{classname}; ls | grep {classname}\.[{onemode}]\.....\.'csv' | xargs cat >> {classname}.{onemode}.csv")
 
 def clean_out(classname, onemode):
     """ Remove multiprocessing files """
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[w]\.....\.'json' | xargs rm")
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.[k]\.....\.'json' | xargs rm")
-    os.system(f"cd out/; ls | grep {classname}\.[{onemode}]\.....\.'csv' | xargs rm")
+    os.system(f"cd out/{classname}; ls | grep {classname}\.[{onemode}]\.[w]\.....\.'json' | xargs rm")
+    os.system(f"cd out/{classname}; ls | grep {classname}\.[{onemode}]\.[k]\.....\.'json' | xargs rm")
+    os.system(f"cd out/{classname}; ls | grep {classname}\.[{onemode}]\.....\.'csv' | xargs rm")
 
 @get_ram
 def project_intersect_al(superclass, edgelist):

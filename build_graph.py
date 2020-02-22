@@ -72,7 +72,7 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
 def write_edgelist(classname, edgelist):
     """ Write edgelist to csv file """
     df = pd.DataFrame(edgelist, columns=["t", "b"])
-    df.to_csv(f"out/{classname}.g.csv", index=False)
+    df.to_csv(f"out/{classname}/{classname}.g.csv", index=False)
 
 @get_time
 def write_integer_edgelist(classname, edgelist):
@@ -83,7 +83,7 @@ def write_integer_edgelist(classname, edgelist):
     b_offset = df["t"].nunique()
     df["t"] = df["t"].cat.codes
     df["b"] = df["b"].cat.codes + b_offset
-    df.to_csv(f"out/{classname}.i.csv", index=False)
+    df.to_csv(f"out/{classname}/{classname}.i.csv", index=False)
 
 def check_connected(bigraph):
     """ Check whether input graph is connected """
@@ -148,6 +148,8 @@ def main():
             k_t = m / n_t
             k_b = m / n_b
             print(f"[Info] n {bigraph.number_of_nodes()}, m {bigraph.number_of_edges()}, t {n_t}, b {n_b}")
+            if not os.path.exists(f"./out/{superclass}"):
+                os.mkdir(f"./out/{superclass}")
             write_edgelist(superclass, edgelist)
             write_integer_edgelist(superclass, edgelist)
             # In onemode network edgelists, information about disconnected nodes gets lost
