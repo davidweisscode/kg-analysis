@@ -55,7 +55,6 @@ def project_graph(run_name, superclass, project_method):
     # elif project_method == "nx":
     #     project_nx(superclass, bigraph, nodes_top, nodes_bot)
 
-@get_time
 @get_ram
 def project_hyper(run_name, superclass, edgelist):
     """ Get both top and bot onemode graph of superclass using multiprocessing """
@@ -64,7 +63,6 @@ def project_hyper(run_name, superclass, edgelist):
     al_bot = get_adjacencylist(edgelist, "b")
     project_hyper_onemode(run_name, superclass, "b", al_bot)
 
-@get_time
 @get_ram
 def project_hyper_onemode(run_name, superclass, onemode, adj_list):
     """ Start multiple processes with split up adjacency list """

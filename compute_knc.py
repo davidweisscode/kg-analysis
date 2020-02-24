@@ -106,7 +106,6 @@ def load_onemode_graph(superclass, onemode, project_method):
         print(f"[Info] omgraph number of nodes {onemode} {omgraph.number_of_nodes()}")
     return omgraph
 
-@get_time
 def compute_knc_onemode(onemode_graph, k_max):
     """ Compute points of an KNC plot """
     knc_list = []
@@ -114,7 +113,6 @@ def compute_knc_onemode(onemode_graph, k_max):
     get_density = nx.classes.function.density
     get_ncc = nx.algorithms.components.number_connected_components
     get_slcc = nx.algorithms.components.connected_components
-    print("[Info] compute connectivity measures")
     for k in tqdm(range(1, k_max + 1)):
         if not fully_disconnected:
             for edge in list(onemode_graph.edges.data("weight")):
