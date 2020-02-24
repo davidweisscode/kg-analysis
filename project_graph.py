@@ -84,12 +84,12 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
         gen_slices = [(superclass, onemode, size, ncores, save_el, gen_slice) for gen_slice in gen_slices]
         pool.starmap(project_gen, gen_slices)
     m = combine_weights(run_name, superclass, onemode)
-    density = 2 * m / (n * (n - 1))
+    dens = 2 * m / (n * (n - 1))
     k = combine_degrees(superclass, onemode, ncores)
     if onemode == "t":
-        add_results(run_name, superclass, m_t=m, n_t_om=n, density_t=density, k_t_om=k)
+        add_results(run_name, superclass, n_t_om=n, m_t=m, dens_t=dens, k_t_om=k)
     elif onemode == "b":
-        add_results(run_name, superclass, m_b=m, n_b_om=n, density_b=density, k_b_om=k)
+        add_results(run_name, superclass, n_b_om=n, m_b=m, dens_b=dens, k_b_om=k)
     if save_el:
         concatenate_el(superclass, onemode)
     clean_out(superclass, onemode)

@@ -25,14 +25,14 @@ def analyze_knc(run_name, superclass):
     n_b = int(get_result(run_name, superclass, "n_b"))
 
     knc_t = read_knc_list(superclass, "t")
-    rc_t_density, rc_t_ncomponents, rc_t_slcc = analyze_knc_onemode(run_name, superclass, knc_t, n_t, n_b)
+    rc_t_dens, rc_t_ncomp, rc_t_slcc = analyze_knc_onemode(run_name, superclass, knc_t, n_t, n_b)
 
     knc_b = read_knc_list(superclass, "b")
-    rc_b_density, rc_b_ncomponents, rc_b_slcc = analyze_knc_onemode(run_name, superclass, knc_b, n_b, n_t)
+    rc_b_dens, rc_b_ncomp, rc_b_slcc = analyze_knc_onemode(run_name, superclass, knc_b, n_b, n_t)
 
     add_results(run_name, superclass,
-                rc_t_density=rc_t_density, rc_t_ncomponents=rc_t_ncomponents, rc_t_slcc=rc_t_slcc,
-                rc_b_density=rc_b_density, rc_b_ncomponents=rc_b_ncomponents, rc_b_slcc=rc_b_slcc)
+                rc_t_dens=rc_t_dens, rc_t_ncomp=rc_t_ncomp, rc_t_slcc=rc_t_slcc,
+                rc_b_dens=rc_b_dens, rc_b_ncomp=rc_b_ncomp, rc_b_slcc=rc_b_slcc)
 
 def analyze_knc_onemode(run_name, superclass, knc_list, n_max, k_max):
     #TODO: lower_quartile, median, upper_quartile, slope
