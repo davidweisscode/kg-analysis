@@ -86,7 +86,7 @@ def write_integer_edgelist(classname, edgelist):
     df.to_csv(f"out/{classname}/{classname}.i.csv", index=False)
 
 def check_connected(bigraph):
-    """ Check whether input graph is connected """
+    """ Check whether input graph is connected and throw NetworkXPointlessConcept if null graph """
     if nx.is_connected(bigraph):
         return True
     return False
@@ -138,6 +138,7 @@ def main():
         try:
             bigraph = nx.Graph()
             bigraph.add_edges_from(edgelist)
+            check_connected(bigraph)
             check_bipartite(bigraph)
             nodes_top, nodes_bot = split_edgelist(edgelist)
             n_t, n_b = len(nodes_top), len(nodes_bot)

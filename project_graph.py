@@ -85,9 +85,9 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
     dens = 2 * m / (n * (n - 1))
     k = combine_degrees(superclass, onemode, ncores)
     if onemode == "t":
-        add_results(run_name, superclass, n_t_om=n, m_t=m, dens_t=dens, k_t_om=k)
+        add_results(run_name, superclass, m_t=m, dens_t=dens, k_t_om=k)
     elif onemode == "b":
-        add_results(run_name, superclass, n_b_om=n, m_b=m, dens_b=dens, k_b_om=k)
+        add_results(run_name, superclass, m_b=m, dens_b=dens, k_b_om=k)
     if save_el:
         concatenate_el(superclass, onemode)
     clean_out(superclass, onemode)
