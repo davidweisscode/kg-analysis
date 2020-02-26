@@ -69,6 +69,7 @@ def compute_knc_onemode_weights(run_name, superclass, onemode):
     for key, value in weight_dist.items():
         if int(key) > 0:
             n_edges += value
+    print(f"[Info] compute knc density plot based on w-dist for {superclass} {onemode}")
     for k in tqdm(range(1, k_max + 1)):
         edges_miss = 0
         for key, value in weight_dist.items():
