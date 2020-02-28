@@ -82,12 +82,13 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
         gen_slices = [(superclass, onemode, size, ncores, save_el, gen_slice) for gen_slice in gen_slices]
         pool.starmap(project_gen, gen_slices)
     m = combine_weights(run_name, superclass, onemode)
-    dens = 2 * m / (n * (n - 1))
     k = combine_degrees(superclass, onemode, ncores)
+    c = combine_connectivities(superclass, onemode, ncores)
+    dens = 2 * m / (n * (n - 1))
     if onemode == "t":
-        add_results(run_name, superclass, m_t=m, dens_t=dens, k_t_om=k)
+        add_results(run_name, superclass, m_t=m, dens_t=dens, k_t_om=k, c_t_om=c)
     elif onemode == "b":
-        add_results(run_name, superclass, m_b=m, dens_b=dens, k_b_om=k)
+        add_results(run_name, superclass, m_b=m, dens_b=dens, k_b_om=k, c_b_om=c)
     if save_el:
         concatenate_el(superclass, onemode)
     clean_out(superclass, onemode)
@@ -98,6 +99,7 @@ def project_gen(classname, onemode, size, ncores, save_el, al_gen):
     print(f"[Info] PID {pid:04}")
     om_weights = {}
     om_degrees = {}
+    om_connectivity = {}
     with open(f"./out/{classname}/{classname}.{onemode}.{pid:04}.csv", "a") as output_file:
         if pid % (2 * ncores) == ncores:
             for node_a, node_b in tqdm(al_gen, total=size):
@@ -108,6 +110,9 @@ def project_gen(classname, onemode, size, ncores, save_el, al_gen):
                 if weight > 0:
                     om_degrees[node_a[0]] = om_degrees.get(node_a[0], 0) + 1
                     om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
+                    # Connectivity of a node i defined as the sum of all weigths of edges connected to i
+                    om_connectivity[node_a[0]] = om_connectivity.get(node_a[0], 0) + weight
+                    om_connectivity[node_b[0]] = om_connectivity.get(node_b[0], 0) + weight
                     if save_el:
                         output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
         else:
@@ -119,15 +124,19 @@ def project_gen(classname, onemode, size, ncores, save_el, al_gen):
                 if weight > 0:
                     om_degrees[node_a[0]] = om_degrees.get(node_a[0], 0) + 1
                     om_degrees[node_b[0]] = om_degrees.get(node_b[0], 0) + 1
+                    om_connectivity[node_a[0]] = om_connectivity.get(node_a[0], 0) + weight
+                    om_connectivity[node_b[0]] = om_connectivity.get(node_b[0], 0) + weight
                     if save_el:
                         output_file.write(f"{node_a[0]} {node_b[0]} {weight}\n")
     with open(f"out/{classname}/{classname}.{onemode}.w.{pid:04}.json", "w") as output_file:
         json.dump(om_weights, output_file)
     with open(f"out/{classname}/{classname}.{onemode}.k.{pid:04}.json", "w") as output_file:
         json.dump(om_degrees, output_file)
+    with open(f"out/{classname}/{classname}.{onemode}.nc.{pid:04}.json", "w") as output_file:
+        json.dump(om_connectivity, output_file)
 
 def combine_weights(run_name, classname, onemode):
-    """ Combine all multiprocessing weightdict files to single file """
+    """ Combine all multiprocessing weight dict files to single file, Count total edges """
     om_weights = {}
     regex = f"{classname}.{onemode}.w.[0-9][0-9][0-9][0-9].json"
     mp_files = [mp_file for mp_file in os.listdir(f'out/{classname}') if re.match(regex, mp_file)]
@@ -146,7 +155,7 @@ def combine_weights(run_name, classname, onemode):
     return m
 
 def combine_degrees(classname, onemode, ncores):
-    """ Combine all multiprocessing degreedict files to single file and count occurences of values """
+    """ Combine all multiprocessing degree dict files to single file, Count occurences of degrees, Compute avg degree """
     om_degrees = {}
     regex = f"{classname}.{onemode}.k.[0-9][0-9][0-9][0-9].json"
     mp_files = [mp_file for mp_file in os.listdir(f'out/{classname}') if re.match(regex, mp_file)]
@@ -155,11 +164,12 @@ def combine_degrees(classname, onemode, ncores):
             mp_om_degrees = json.load(input_file)
             for key, value in mp_om_degrees.items():
                 om_degrees[key] = om_degrees.get(key, 0) + value
+    with open(f"out/{classname}/{classname}.{onemode}.nk.json", "w") as output_file:
+        json.dump(om_degrees, output_file, indent=4)
+
     om_degrees_count = {}
     for key, value in om_degrees.items():
         om_degrees_count[value] = om_degrees_count.get(value, 0) + 1
-    with open(f"out/{classname}/{classname}.{onemode}.nk.json", "w") as output_file:
-        json.dump(om_degrees, output_file, indent=4)
     om_degrees_count = {int(key):om_degrees_count[key] for key in om_degrees_count.keys()}
     with open(f"out/{classname}/{classname}.{onemode}.k.json", "w") as output_file:
         json.dump(om_degrees_count, output_file, indent=4, sort_keys=True)
@@ -171,6 +181,33 @@ def combine_degrees(classname, onemode, ncores):
         k += key * (value / n)
     return k
 
+def combine_connectivities(classname, onemode, ncores):
+    """ Combine all multiprocessing connectivity dict files to single file, Count occurences of connectivity, Compute avg connectivity """
+    om_connectivity = {}
+    regex = f"{classname}.{onemode}.nc.[0-9][0-9][0-9][0-9].json"
+    mp_files = [mp_file for mp_file in os.listdir(f'out/{classname}') if re.match(regex, mp_file)]
+    for mp_file in mp_files:
+        with open(f"out/{classname}/" + mp_file, "r") as input_file:
+            mp_om_connectivity = json.load(input_file)
+            for key, value in mp_om_connectivity.items():
+                om_connectivity[key] = om_connectivity.get(key, 0) + value
+    with open(f"out/{classname}/{classname}.{onemode}.nc.json", "w") as output_file:
+        json.dump(om_connectivity, output_file, indent=4)
+
+    om_connectivity_count = {}
+    for key, value in om_connectivity.items():
+        om_connectivity_count[value] = om_connectivity_count.get(value, 0) + 1
+    om_connectivity_count = {int(key):om_connectivity_count[key] for key in om_connectivity_count.keys()}
+    with open(f"out/{classname}/{classname}.{onemode}.c.json", "w") as output_file:
+        json.dump(om_connectivity_count, output_file, indent=4, sort_keys=True)
+    n = 0
+    for key, value in om_connectivity_count.items():
+        n += value
+    c = 0
+    for key, value in om_connectivity_count.items():
+        c += key * (value / n)
+    return c
+
 def concatenate_el(classname, onemode):
     """ Combine all multiprocessing edgelist files to single onemode edgelist file in shell """
     os.system(f"cd out/{classname}; echo {onemode}1 {onemode}2 w > {classname}.{onemode}.csv")
@@ -180,6 +217,7 @@ def clean_out(classname, onemode):
     """ Remove multiprocessing files """
     os.system(f"cd out/{classname}; ls | grep {classname}\.[{onemode}]\.[w]\.....\.'json' | xargs rm")
     os.system(f"cd out/{classname}; ls | grep {classname}\.[{onemode}]\.[k]\.....\.'json' | xargs rm")
+    os.system(f"cd out/{classname}; ls | grep {classname}\.[{onemode}]\.[n][c]\.....\.'json' | xargs rm")
     os.system(f"cd out/{classname}; ls | grep {classname}\.[{onemode}]\.....\.'csv' | xargs rm")
 
 @get_ram
