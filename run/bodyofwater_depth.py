@@ -1,9 +1,12 @@
 config = {
     "classes": ["BodyOfWater",
+                "Bay",
                 "Lake",
+                "Ocean",
+                "Sea",
                 "Stream",
-                "River",
-                "Canal"
+                "Canal",
+                "River"
                 ],
     "project_method": "hyper",
     "kg_source": "kg/dbpedia2016-04en.hdt",

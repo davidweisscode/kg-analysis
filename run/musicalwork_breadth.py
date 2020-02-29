@@ -1,12 +1,13 @@
 config = {
     "classes": ["MusicalWork",
                 "Album",
+                "ClassicalMusicComposition",
+                "Musical",
+                "NationalAnthem",
+                "Opera",
                 "Single",
                 "Song",
-                "Opera",
-		"Musical",
-		"NationalAnthem",
-		"ClassicalMusicComposition"
+                "EurovisionSongContestEntry"
                 ],
     "project_method": "hyper",
     "kg_source": "kg/dbpedia2016-04en.hdt",

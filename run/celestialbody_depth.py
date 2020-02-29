@@ -1,8 +1,17 @@
 config = {
     "classes": ["CelestialBody",
                 "Asteroid",
+                "Constellation",
+                "Galaxy",
+                "Nebula",
+                "Planet",
                 "Satellite",
-                "ArtificialSatellite"
+                "ArtificialSatellite",
+                "Star",
+                "BrownDwarf",
+                "Swarm",
+                "Globularswarm",
+                "Openswarm"
                 ],
     "project_method": "hyper",
     "kg_source": "kg/dbpedia2016-04en.hdt",

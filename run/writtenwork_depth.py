@@ -1,11 +1,16 @@
 config = {
     "classes": ["WrittenWork",
                 "Comic",
+                "ComicStrip",
                 "Manga",
+                "Manhua",
+                "Manhwa",
                 "PeriodicalLiterature",
                 "AcademicJournal",
                 "Magazine",
-                "Newspaper"
+                "Newspaper",
+                "UndergroundJournal",
+                "Poem"
                 ],
     "project_method": "hyper",
     "kg_source": "kg/dbpedia2016-04en.hdt",

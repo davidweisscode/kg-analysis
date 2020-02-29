@@ -4,10 +4,10 @@ config = {
                 "BloodVessel",
                 "Bone",
                 "Brain",
-		"Lymph",
-		"Muscle",
-		"Nerve",
-		"Vein"
+                "Lymph",
+                "Muscle",
+                "Nerve",
+                "Vein"
                 ],
     "project_method": "hyper",
     "kg_source": "kg/dbpedia2016-04en.hdt",
