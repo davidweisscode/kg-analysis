@@ -72,7 +72,7 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
     ncores = os.cpu_count()
     size = ceil(pairs_len / ncores)
     print(f"[Info] Start {ncores} processes with input length {size}")
-    if len(adj_list) < 100000: # Discard large graphs (top)
+    if len(adj_list) < 100: # Discard large graphs (top)
         save_el = True
     else:
         save_el = False

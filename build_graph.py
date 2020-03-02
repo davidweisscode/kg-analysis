@@ -133,8 +133,19 @@ def main():
 
     for superclass in run.config["classes"]:
         print("\n[Build] ", superclass)
-        subclasses = query_subclasses(ontology, superclass)
-        edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
+        if not os.path.exists(f"./out/{superclass}"):
+                os.mkdir(f"./out/{superclass}")
+        tsv_files = [fn for fn in os.listdir(f"out/{superclass}/") if fn.endswith(".tsv")]
+        if len(tsv_files) == 1:
+            df = pd.read_csv(f"out/{superclass}/{tsv_files[0]}", names=["t","b"], sep="\t")
+            for blacklisted_predicate in blacklist:
+                df = df[df["b"] != blacklisted_predicate]
+            duplicate_predicates = df["b"].str.contains("/direct/")
+            df = df[~duplicate_predicates]
+            edgelist = list(df.itertuples(index=False, name=None))
+        else:
+            subclasses = query_subclasses(ontology, superclass)
+            edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         try:
             bigraph = nx.Graph()
             bigraph.add_edges_from(edgelist)
@@ -146,9 +157,7 @@ def main():
             dens_g = m_g / (n_t * n_b)
             k_t = m_g / n_t
             k_b = m_g / n_b
-            print(f"[Info] n {bigraph.number_of_nodes()}, m_g {bigraph.number_of_edges()}, t {n_t}, b {n_b}")
-            if not os.path.exists(f"./out/{superclass}"):
-                os.mkdir(f"./out/{superclass}")
+            print(f"[Info] n_t {n_t}, n_b {n_b}, m_g {bigraph.number_of_edges()}")
             write_edgelist(superclass, edgelist)
             write_integer_edgelist(superclass, edgelist)
             # In onemode network edgelists, information about disconnected nodes gets lost
