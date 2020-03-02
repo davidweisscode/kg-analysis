@@ -1,5 +1,6 @@
 config = {
-    "classes": ["WrittenWork",
+    "classes": [
+                "WrittenWork",
                 "Comic",
                 "ComicStrip",
                 "Manga",

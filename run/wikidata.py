@@ -1,12 +1,9 @@
 config = {
     "classes": [
-                "ReligiousBuilding",
-                "Church",
-                "Monastery",
-                "Mosque",
-                "Shrine",
-                "Synagogue",
-                "Temple"
+                "BoxerWikidata",
+                "ComicWikidata",
+                "CyclistWikidata",
+                "ScientificJournalWikidata"
                 ],
     "project_method": "hyper",
     "kg_source": "kg/dbpedia2016-04en.hdt",

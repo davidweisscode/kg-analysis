@@ -1,5 +1,6 @@
 config = {
-    "classes": ["CelestialBody",
+    "classes": [
+                "CelestialBody",
                 "Asteroid",
                 "Constellation",
                 "Galaxy",

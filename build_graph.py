@@ -157,7 +157,7 @@ def main():
             dens_g = m_g / (n_t * n_b)
             k_t = m_g / n_t
             k_b = m_g / n_b
-            print(f"[Info] n_t {n_t}, n_b {n_b}, m_g {bigraph.number_of_edges()}")
+            print(f"[Info] n_t {n_t}, n_b {n_b}, m_g {len(edgelist)}")
             write_edgelist(superclass, edgelist)
             write_integer_edgelist(superclass, edgelist)
             # In onemode network edgelists, information about disconnected nodes gets lost

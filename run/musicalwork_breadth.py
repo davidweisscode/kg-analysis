@@ -1,5 +1,6 @@
 config = {
-    "classes": ["MusicalWork",
+    "classes": [
+                "MusicalWork",
                 "Album",
                 "ClassicalMusicComposition",
                 "Musical",

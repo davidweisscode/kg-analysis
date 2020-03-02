@@ -1,5 +1,6 @@
 config = {
-    "classes": ["AnatomicalStructure",
+    "classes": [
+                "AnatomicalStructure",
                 "Artery",
                 "BloodVessel",
                 "Bone",

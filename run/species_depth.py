@@ -1,5 +1,6 @@
 config = {
-    "classes": ["Species",
+    "classes": [
+                "Species",
                 "Archaea",
                 "Bacteria",
                 "Animal",

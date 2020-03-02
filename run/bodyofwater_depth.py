@@ -1,5 +1,6 @@
 config = {
-    "classes": ["BodyOfWater",
+    "classes": [
+                "BodyOfWater",
                 "Bay",
                 "Lake",
                 "Ocean",

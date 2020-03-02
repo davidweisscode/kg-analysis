@@ -1,5 +1,6 @@
 config = {
-    "classes": ["Athlete",
+    "classes": [
+                "Athlete",
                 "Boxer",
                 "AmateurBoxer",
                 "GridironFootballPlayer",

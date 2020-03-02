@@ -1,5 +1,6 @@
 config = {
-    "classes": ["Politician",
+    "classes": [
+                "Politician",
                 "Ambassador",
                 "Chancellor",
                 "Congressman",
