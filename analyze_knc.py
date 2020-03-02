@@ -83,13 +83,16 @@ def get_k_0(knc_list):
     return 0
 
 def get_rel_rc(run_name, superclass, rc_dens, onemode):
-    """ Compute the representational consistency relative to its superclass """
+    """ Compute the representational consistency relative to its run superclass """
     df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
-    if onemode == "t":
-        rc_dens_super = df.iloc[0].rc_t_dens
-    elif onemode == "b":
-        rc_dens_super = df.iloc[0].rc_b_dens
-    return rc_dens / rc_dens_super
+    if superclass == df.index[0]:
+        return None
+    else:
+        if onemode == "t":
+            rc_dens_super = df.iloc[0].rc_t_dens
+        elif onemode == "b":
+            rc_dens_super = df.iloc[0].rc_b_dens
+        return rc_dens / rc_dens_super
 
 def add_results(run_name, superclass, **results):
     """ Append result columns in a superclass row """
