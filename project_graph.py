@@ -26,6 +26,11 @@ def read_edgelist(superclass, label):
     df = pd.read_csv(f"out/{superclass}/{superclass}.{label}.csv")
     return list(df.itertuples(index=False, name=None))
 
+def get_result(run_name, superclass, result):
+    """ Get the result value of a superclass """
+    df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
+    return df.loc[superclass, result]
+
 def add_results(run_name, superclass, **results):
     """ Append result columns in a superclass row """
     df = pd.read_csv(f"out/_results_{run_name}.csv", index_col=0)
@@ -67,7 +72,7 @@ def project_hyper(run_name, superclass, edgelist):
 def project_hyper_onemode(run_name, superclass, onemode, adj_list):
     """ Start multiple processes with split up adjacency list """
     gen_pairs = combinations(adj_list, 2)
-    n = len(adj_list)
+    n = int(get_result(run_name, superclass, f"n_{onemode}"))
     pairs_len = n * (n - 1) * 0.5
     ncores = os.cpu_count()
     size = ceil(pairs_len / ncores)
@@ -84,11 +89,11 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
     m = combine_weights(run_name, superclass, onemode)
     k = combine_degrees(superclass, onemode, ncores)
     c = combine_connectivities(superclass, onemode, ncores)
-    dens = 2 * m / (n * (n - 1))
+
     if onemode == "t":
-        add_results(run_name, superclass, m_t=m, dens_t=dens, k_t_om=k, c_t_om=c)
+        add_results(run_name, superclass, m_t=m, k_t_om=k, c_t_om=c)
     elif onemode == "b":
-        add_results(run_name, superclass, m_b=m, dens_b=dens, k_b_om=k, c_b_om=c)
+        add_results(run_name, superclass, m_b=m, k_b_om=k, c_b_om=c)
     if save_el:
         concatenate_el(superclass, onemode)
     clean_out(superclass, onemode)
@@ -145,7 +150,6 @@ def combine_weights(run_name, classname, onemode):
             mp_om_weights = json.load(input_file)
             for key, value in mp_om_weights.items():
                 om_weights[key] = om_weights.get(key, 0) + value
-    om_weights = {int(key):om_weights[key] for key in om_weights.keys()}
     with open(f"out/{classname}/{classname}.{onemode}.w.json", "w") as output_file:
         json.dump(om_weights, output_file, indent=4, sort_keys=True)
     m = 0
