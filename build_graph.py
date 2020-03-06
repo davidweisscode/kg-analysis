@@ -6,7 +6,7 @@ Build a bipartite graph from an n-triples Knowledge Graph representation.
 
 # TODO: Check Googles Python style guide
 # TODO: Check pylint
-# TODO: Only import required parts of libs (nx, pd, ...)
+# TODO: Remove .pack file from git history https://rtyley.github.io/bfg-repo-cleaner/
 
 import os
 import sys
@@ -137,6 +137,7 @@ def main():
                 os.mkdir(f"./out/{superclass}")
         tsv_files = [fn for fn in os.listdir(f"out/{superclass}/") if fn.endswith(".tsv")]
         if len(tsv_files) == 1:
+            # Convert .tsv file in cleaned .g.csv edgelist
             df = pd.read_csv(f"out/{superclass}/{tsv_files[0]}", names=["t","b"], sep="\t")
             for blacklisted_predicate in blacklist:
                 df = df[df["b"] != blacklisted_predicate]
@@ -144,6 +145,7 @@ def main():
             df = df[~duplicate_predicates]
             edgelist = list(df.itertuples(index=False, name=None))
         else:
+            # Query .hdt data to create .g.csv edgelist
             subclasses = query_subclasses(ontology, superclass)
             edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         try:

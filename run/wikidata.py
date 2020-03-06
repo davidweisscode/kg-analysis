@@ -1,8 +1,8 @@
 config = {
     "classes": [
                 "BoxerWikidata",
-                "ComicWikidata",
                 "CyclistWikidata",
+                "ComicWikidata",
                 "ScientificJournalWikidata"
                 ],
     "project_method": "hyper",
