@@ -91,9 +91,9 @@ def project_hyper_onemode(run_name, superclass, onemode, adj_list):
     c = combine_connectivities(superclass, onemode, ncores)
 
     if onemode == "t":
-        add_results(run_name, superclass, m_t=m, k_t_om=k, c_t_om=c)
+        add_results(run_name, superclass, m_t=m, k_mean_t=k, c_mean_t=c)
     elif onemode == "b":
-        add_results(run_name, superclass, m_b=m, k_b_om=k, c_b_om=c)
+        add_results(run_name, superclass, m_b=m, k_mean_b=k, c_mean_b=c)
     if save_el:
         concatenate_el(superclass, onemode)
     clean_out(superclass, onemode)

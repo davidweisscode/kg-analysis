@@ -157,8 +157,8 @@ def main():
             n_t, n_b = len(nodes_top), len(nodes_bot)
             m_g = len(edgelist)
             dens_g = m_g / (n_t * n_b)
-            k_t = m_g / n_t
-            k_b = m_g / n_b
+            k_t_g = m_g / n_t
+            k_b_g = m_g / n_b
             print(f"[Info] n_t {n_t}, n_b {n_b}, m_g {len(edgelist)}")
             write_edgelist(superclass, edgelist)
             write_integer_edgelist(superclass, edgelist)
@@ -166,7 +166,7 @@ def main():
             add_results(run_name, superclass,
                         n_t=n_t, n_b=n_b,
                         m_g=m_g, dens_g=dens_g,
-                        k_t=k_t, k_b=k_b)
+                        k_t_g=k_t_g, k_b_g=k_b_g)
         except nx.NetworkXPointlessConcept as e:
             print(f"[Info] {superclass} graph is the null graph\n{e}")
 
