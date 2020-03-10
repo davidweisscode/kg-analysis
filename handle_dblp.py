@@ -26,6 +26,6 @@ edgelist = list(df.itertuples(index=False, name=None))
 
 print("example edges\n", edgelist[:10])
 
-# TODO: Sample subset of same size as AcademicJournal in DBpedia (n_t 7688)
+# TODO: How to sample subset of same size as AcademicJournal in DBpedia (n_t 7688) ?
 
 write_edgelist("JournalDBLP", edgelist)

@@ -25,19 +25,22 @@ def rc(dist):
 kncs = {
     "homo": np.array([0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]),
     "hetero_same_stepsize": np.array([1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]),
-    "hetero_diff_stepsize": np.array([1.0, 0.2, 0.18, 0.15, 0.13, 0.1, 0.08, 0.05, 0.02, 0.01]),
-    "more_slope": np.linspace(0.8, 0.3, 10),
+    "hetero_diff_stepsize": np.array([1.0, 0.19, 0.18, 0.17, 0.16, 0.15, 0.14, 0.13, 0.12, 0.11]),
+    "more_slope": np.linspace(0.7, 0.3, 10),
     "less_slope": np.linspace(0.6, 0.4, 10),
     "early_k0": np.array([1.0, 0.8, 0.5, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
     "later_k0": np.array([1.0, 0.8, 0.6, 0.5, 0.4, 0.2, 0.0, 0.0, 0.0, 0.0]),
     "early_k0_same_rc": np.array([1.0, 0.8, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),
     "later_k0_same_rc": np.array([0.5, 0.5, 0.3, 0.3, 0.2, 0.2, 0.0, 0.0, 0.0, 0.0]),
-    "low_k_max": np.linspace(0.8, 0.0, 100),
-    "big_k_max": np.linspace(0.8, 0.0, 500),
+    "10_k_max": np.linspace(1.0, 0.0, 10),
+    "11_k_max": np.linspace(1.0, 0.0, 11),
+    "100_k_max": np.linspace(1.0, 0.0, 100),
+    "500_k_max": np.linspace(1.0, 0.0, 500),
+    "10000_k_max": np.linspace(1.0, 0.0, 10000),
 }
 
-df = pd.DataFrame(columns=["entropy", "rc", "rel_rc"])
+df = pd.DataFrame(columns=["k_max", "entropy", "rc", "norm_rc"])
 for kncname, knc in kncs.items():
-    df.loc[kncname] = (entropy(knc), rc(knc), entropy(knc) / rc(knc))
+    df.loc[kncname] = (len(knc), entropy(knc), rc(knc), "?")
 
 print(df)
