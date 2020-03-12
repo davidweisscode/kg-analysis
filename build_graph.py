@@ -57,7 +57,7 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
             triples = dataset.search_triples("", rdf + "type", subclass)[0]
         for triple in triples:
             subjects.append(triple[0])
-    subjects = list(set(subjects)) # Include unique subjects if subject is both of type superclass and subclasses
+    subjects = list(set(subjects)) # Include unique subjects if subject is both of type superclass and subclass
     print("[Info] query predicates for each subject")
     for subject in tqdm(subjects):
         if predicate_limit > 0:
@@ -67,7 +67,7 @@ def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_l
         for triple in triples:
             if not triple[1] in blacklist:
                 edgelist.append((triple[0], triple[1]))
-    return list(set(edgelist)) # Include unique properties
+    return list(set(edgelist)) # Exclude duplicate entity-property relations
 
 def write_edgelist(classname, edgelist):
     """ Write edgelist to csv file """
@@ -119,12 +119,7 @@ def add_results(run_name, superclass, **results):
 def main():
     run_name = sys.argv[1][:-3]
     run = import_module(run_name)
-    dataset = HDTDocument(run.config["kg_source"])
-    t_ontology = time.time()
-    ontology = Graph().parse(run.config["kg_ontology"])
-    print(f"\n[Time] load-ontology {time.time() - t_ontology:.3f} sec")
-    subject_limit = run.config["subject_limit"]
-    predicate_limit = run.config["predicate_limit"]
+
     with open("blacklist.txt", "r") as file:
         blacklist = file.read().splitlines()
     if not os.path.exists(f"out/_results_{run_name}.csv"):
@@ -138,14 +133,28 @@ def main():
         tsv_files = [fn for fn in os.listdir(f"out/{superclass}/") if fn.endswith(".tsv")]
         if len(tsv_files) == 1:
             # Convert .tsv file in cleaned .g.csv edgelist
+            print("[Info] build from tsv edgelist")
             df = pd.read_csv(f"out/{superclass}/{tsv_files[0]}", names=["t","b"], sep="\t")
-            for blacklisted_predicate in blacklist:
-                df = df[df["b"] != blacklisted_predicate]
+            print(f"[Info] len edgelist {len(df)}, t_unique {df['t'].nunique()}, b_unique {df['b'].nunique()}")
             duplicate_predicates = df["b"].str.contains("/direct/")
             df = df[~duplicate_predicates]
+            print(f"[Info] len after duplicates {len(df)}, t_unique {df['t'].nunique()}, b_unique {df['b'].nunique()}")
+            for blacklisted_predicate in blacklist:
+                m_before = len(df)
+                df = df[df["b"] != blacklisted_predicate]
+                m_after = len(df)
+                if m_before != m_after:
+                    print(f"[Info] edges with blacklisted predicate removed\n       {blacklisted_predicate}")
+            print(f"[Info] len after blacklist {len(df)}, t_unique {df['t'].nunique()}, b_unique {df['b'].nunique()}")
             edgelist = list(df.itertuples(index=False, name=None))
         else:
             # Query .hdt data to create .g.csv edgelist
+            dataset = HDTDocument(run.config["kg_source"])
+            t_ontology = time.time()
+            ontology = Graph().parse(run.config["kg_ontology"])
+            print(f"\n[Time] load-ontology {time.time() - t_ontology:.3f} sec")
+            subject_limit = run.config["subject_limit"]
+            predicate_limit = run.config["predicate_limit"]
             subclasses = query_subclasses(ontology, superclass)
             edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist)
         try:
