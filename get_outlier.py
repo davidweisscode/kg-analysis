@@ -109,31 +109,79 @@ outliers_athlete = {
     "Boxer": (
         [(10,60), (300,600), (1000, 3000)],
         [(40,100), (300,400), (800,1100)]),
+    "AmateurBoxer": (
+        [(15,25)],
+        [(200,300)]),
+    "AmericanFootballPlayer": (
+        [(20,40), (550,900)],
+        [(80,100), (500,1000)]),
+    "MotorsportRacer": (
+        [(20,30), (50,100), (800, 1000)],
+        [(50,100), (100,200)]),
+    "FormulaOneRacer": (
+        [(300,400), (700,750), (750, 850)],
+        [(700,850), (1500,2000), (2000,3000), (4000,5000)]),
+    "NascarDriver": (
+        [(20,30), (300,500)],
+        [(100,150), (250,350), (800,1000)]),
+    "Curler": (
+        [(1,6), (100,200)],
+        [(1,5), (20,40), (200,400)]),
+    "IceHockeyPlayer": (
+        [(1,6), (10,20), (80, 200), (1000, 2000)],
+        [(20,40), (50,140), (400,500)]),
+    "Skier": (
+        [(100,200), (200,350), (800, 1100)],
+        [(200,500), (1000,2000), (2000,3000)]),
+    "BaseballPlayer": (
+        [(20,30), (300,400), (1000, 2000)],
+        [(10,60), (60,100), (300,500)]),
+    "BasketballPlayer": (
+        [(10,20), (100,200), (1000, 3000)],
+        [(30,50), (100,150)]),
+    "ChessPlayer": (
+        [(1,10), (200,300)],
+        [(10,20), (50,90), (200,300), (1000,2000)]),
     "Cyclist": (
         [(10,20), (20,30), (1000,2000), (4000,5000)],
-        [(20,30), (40,60), (1000,1500)])
+        [(20,30), (40,60), (1000,1500)]),
+    "Fencer": (
+        [(20,30), (500,600)],
+        [(1,50), (1000,2000)]),
+    "GolfPlayer": (
+        [(1,9), (10,20), (900,1100)],
+        [(1,10), (30,50), (300,500)]),
+    "HorseRider": (
+        [(8,10), (40,60), (90, 100), (200,250), (300,400)],
+        [(1,40), (40,90), (90,150), (400,500), (600,1000)]),
+    "SoccerPlayer": (
+        [(10,20), (25,35), (50, 80), (200,350), (800,1000), (8000,10000)],
+        [(10,80), (100,200), (300,400), (800,1000)]),
+    "TennisPlayer": (
+        [(8,10), (20,40), (200, 450)],
+        [(90,200), (300,500), (2000,3000)]),
 }
 
-run = "writtenwork_depth"
+run = "athlete"
 res = pd.read_csv(f"out/_results_{run}.csv", index_col=0)
 res_wikidata_glob = pd.read_csv("out/_results_wikidata.csv", index_col=0)
 res_athlete_glob = pd.read_csv("out/_results_athlete.csv", index_col=0)
 res_random_glob = pd.read_csv("out/_results_random_run.csv", index_col=0)
 
 # Control which classes to analyze. Add or remove rows in res DataFrame
-res = pd.concat([res, res_athlete_glob, res_wikidata_glob, res_random_glob], sort=True)
-res = res.loc[[
-                "WrittenWork",# "WrittenWorkRandom",
-                "AcademicJournal",# "AcademicJournalRandom", "ScientificJournalWikidata",
-                "Comic",# "ComicRandom", "ComicWikidata",
-                "Manga",# "MangaRandom",
-                "Novel",
-                "PeriodicalLiterature",# "PeriodicalLiteratureRandom",
-                "Newspaper",# "NewspaperRandom",
-                "Poem",# "PoemRandom",
-                # "Boxer",# "BoxerWikidata",
-                # "Cyclist",# "CyclistWikidata",
-            ]]
+# res = pd.concat([res, res_athlete_glob, res_wikidata_glob, res_random_glob], sort=True)
+# res = res.loc[[
+#                 "WrittenWork",# "WrittenWorkRandom",
+#                 "AcademicJournal",# "AcademicJournalRandom", "ScientificJournalWikidata",
+#                 "Comic",# "ComicRandom", "ComicWikidata",
+#                 "Manga",# "MangaRandom",
+#                 "Novel",
+#                 "PeriodicalLiterature",# "PeriodicalLiteratureRandom",
+#                 "Newspaper",# "NewspaperRandom",
+#                 "Poem",# "PoemRandom",
+#                 # "Boxer",# "BoxerWikidata",
+#                 # "Cyclist",# "CyclistWikidata",
+#             ]]
 
 
 # Control which classes to analyze. Add or remove rows in res DataFrame
@@ -144,7 +192,7 @@ classes = list(res.index.values)
 # df = pd.DataFrame(columns=["k", "class", "kmin", "kmax"])
 
 # Subject outliers may be grouped together
-# get_subj_outlier(outliers_writtenwork)
+# get_subj_outlier(outliers_athlete)
 
 # Predicate outliers belong to the n least used predicates in multiple classes
 get_pred_outlier(classes)
