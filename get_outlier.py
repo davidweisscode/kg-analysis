@@ -195,6 +195,108 @@ classes = list(res.index.values)
 # get_subj_outlier(outliers_athlete)
 
 # Predicate outliers belong to the n least used predicates in multiple classes
-get_pred_outlier(classes)
+# get_pred_outlier(classes)
+
+scatter_ranges = { # 1st for subj, 2nd for pred
+    # athlete
+    "Athlete": [(200000, 8), (4000, 1600)],
+    "Boxer": [(3000, 10), (250, 150)],
+    "AmericanFootballPlayer": [(10000, 15), (600, 500)],
+    "NascarDriver": [(500, 12), (150, 120)],
+    "Curler": [(500, 7), (130, 70)],
+    "ChessPlayer": [(800, 8), (120, 70)],
+    "GolfPlayer": [(1500, 10), (200, 200)],
+    "SoccerPlayer": [(80000, 11), (1200, 1500)],
+    "TennisPlayer": [(2500, 13), (250, 150)],
+}
+classes = list(scatter_ranges.keys())
+def get_scatter_outliers(classes):
+    print("\nScatter\n")
+    for classname in classes:
+        # Top
+        print(f"\n{classname} t\n")
+        with open(f"out/{classname}/{classname}.t.nk.json", "r") as in_file:
+            ddist = json.load(in_file)
+        with open(f"out/{classname}/{classname}.t.nc.json", "r") as in_file:
+            cdist = json.load(in_file)
+        low_degree = set()
+        high_degree = set()
+        low_avg_edgeweight = set()
+        high_avg_edgeweight = set()
+
+        for entity, degree in ddist.items():
+            if degree >= scatter_ranges[classname][0][0]:
+                high_degree.add(entity)
+            else:
+                low_degree.add(entity)
+        for entity, connectivity in cdist.items():
+            aew = connectivity / ddist[entity]
+            if aew >= scatter_ranges[classname][0][1]:
+                high_avg_edgeweight.add(entity)
+            else:
+                low_avg_edgeweight.add(entity)
+
+        subj_tl = list(low_degree.intersection(high_avg_edgeweight))
+        subj_tr = list(high_degree.intersection(high_avg_edgeweight))
+        subj_bl = list(low_degree.intersection(low_avg_edgeweight))
+        subj_br = list(high_degree.intersection(low_avg_edgeweight))
+
+        print("tl")
+        for subj in subj_tl[:5]:
+            print(subj, ddist[subj], round(cdist[subj] / ddist[subj]))
+        print("tr")
+        for subj in subj_tr[:5]:
+            print(subj, ddist[subj], round(cdist[subj] / ddist[subj]))
+        print("bl")
+        for subj in subj_bl[:5]:
+            print(subj, ddist[subj], round(cdist[subj] / ddist[subj]))
+        print("br")
+        for subj in subj_br[:5]:
+            print(subj, ddist[subj], round(cdist[subj] / ddist[subj]))
+
+        # Bot
+        print(f"\n{classname} b\n")
+        with open(f"out/{classname}/{classname}.b.nk.json", "r") as in_file:
+            ddist = json.load(in_file)
+        with open(f"out/{classname}/{classname}.b.nc.json", "r") as in_file:
+            cdist = json.load(in_file)
+        low_degree = set()
+        high_degree = set()
+        low_avg_edgeweight = set()
+        high_avg_edgeweight = set()
+
+        for entity, degree in ddist.items():
+            if degree >= scatter_ranges[classname][1][0]:
+                high_degree.add(entity)
+            else:
+                low_degree.add(entity)
+        for entity, connectivity in cdist.items():
+            aew = connectivity / ddist[entity]
+            if aew >= scatter_ranges[classname][1][1]:
+                high_avg_edgeweight.add(entity)
+            else:
+                low_avg_edgeweight.add(entity)
+
+        pred_tl = list(low_degree.intersection(high_avg_edgeweight))
+        pred_tr = list(high_degree.intersection(high_avg_edgeweight))
+        pred_bl = list(low_degree.intersection(low_avg_edgeweight))
+        pred_br = list(high_degree.intersection(low_avg_edgeweight))
+
+        print("tl")
+        for pred in pred_tl[:5]:
+            print(pred, ddist[pred], round(cdist[pred] / ddist[pred]))
+        print("tr")
+        for pred in pred_tr[:5]:
+            print(pred, ddist[pred], round(cdist[pred] / ddist[pred]))
+        print("bl")
+        for pred in pred_bl[:5]:
+            print(pred, ddist[pred], round(cdist[pred] / ddist[pred]))
+        print("br")
+        for pred in pred_br[:5]:
+            print(pred, ddist[pred], round(cdist[pred] / ddist[pred]))
+
+
+# Scatter outliers (avg edgeweight vs k)
+get_scatter_outliers(classes)
 
 # print(df)
