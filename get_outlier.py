@@ -105,6 +105,23 @@ outliers_writtenwork = {
         [(10,20), (20,30), (30,40), (100,200)],
         [(4,6), (9,11), (11,18), (20,30), (30,40), (40,60)]),
 }
+outliers_species = {
+    "Bird": (
+        [],
+        [(0, 1000)]),
+    "Crustacean": (
+        [],
+        [(0, 3000)]),
+    "Fish": (
+        [],
+        [(0, 100)]),
+    "ClubMoss": (
+        [],
+        [(0, 100)]),
+    "Fern": (
+        [],
+        [(0, 3000)]),
+}
 outliers_athlete = {
     "Boxer": (
         [(10,60), (300,600), (1000, 3000)],
@@ -162,7 +179,7 @@ outliers_athlete = {
         [(90,200), (300,500), (2000,3000)]),
 }
 
-run = "athlete"
+run = "species_depth"
 res = pd.read_csv(f"out/_results_{run}.csv", index_col=0)
 res_wikidata_glob = pd.read_csv("out/_results_wikidata.csv", index_col=0)
 res_athlete_glob = pd.read_csv("out/_results_athlete.csv", index_col=0)
@@ -192,10 +209,13 @@ classes = list(res.index.values)
 # df = pd.DataFrame(columns=["k", "class", "kmin", "kmax"])
 
 # Subject outliers may be grouped together
-# get_subj_outlier(outliers_athlete)
+# get_subj_outlier(outliers_species)
 
+classes = [
+    "Bird","Crustacean","Fish","ClubMoss","Fern",
+]
 # Predicate outliers belong to the n least used predicates in multiple classes
-# get_pred_outlier(classes)
+get_pred_outlier(classes)
 
 scatter_ranges = { # 1st for subj, 2nd for pred
     # athlete
@@ -297,6 +317,6 @@ def get_scatter_outliers(classes):
 
 
 # Scatter outliers (avg edgeweight vs k)
-get_scatter_outliers(classes)
+# get_scatter_outliers(classes)
 
 # print(df)
