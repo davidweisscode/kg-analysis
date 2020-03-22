@@ -215,14 +215,17 @@ classes = [
     "Bird","Crustacean","Fish","ClubMoss","Fern",
 ]
 # Predicate outliers belong to the n least used predicates in multiple classes
-get_pred_outlier(classes)
+# get_pred_outlier(classes)
 
 scatter_ranges = { # 1st for subj, 2nd for pred
     # athlete
     "Athlete": [(200000, 8), (4000, 1600)],
     "Boxer": [(3000, 10), (250, 150)],
     "AmericanFootballPlayer": [(10000, 15), (600, 500)],
+    "MotorsportRacer": [(4000, 8), (500, 80)],
+    "RacingDriver": [(2800, 7), (350, 80)],
     "NascarDriver": [(500, 12), (150, 120)],
+    "IceHockeyPlayer": [(10000, 15), (1250, 700)],
     "Curler": [(500, 7), (130, 70)],
     "ChessPlayer": [(800, 8), (120, 70)],
     "GolfPlayer": [(1500, 10), (200, 200)],
@@ -303,20 +306,20 @@ def get_scatter_outliers(classes):
         pred_br = list(high_degree.intersection(low_avg_edgeweight))
 
         print("tl")
-        for pred in pred_tl[:5]:
+        for pred in pred_tl[:10]:
             print(pred, ddist[pred], round(cdist[pred] / ddist[pred]))
         print("tr")
-        for pred in pred_tr[:5]:
+        for pred in pred_tr[:10]:
             print(pred, ddist[pred], round(cdist[pred] / ddist[pred]))
         print("bl")
-        for pred in pred_bl[:5]:
+        for pred in pred_bl[:10]:
             print(pred, ddist[pred], round(cdist[pred] / ddist[pred]))
         print("br")
-        for pred in pred_br[:5]:
+        for pred in pred_br[:10]:
             print(pred, ddist[pred], round(cdist[pred] / ddist[pred]))
 
 
 # Scatter outliers (avg edgeweight vs k)
-# get_scatter_outliers(classes)
+get_scatter_outliers(classes)
 
 # print(df)
