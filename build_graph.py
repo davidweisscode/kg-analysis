@@ -85,12 +85,14 @@ def write_integer_edgelist(classname, edgelist):
     df["b"] = df["b"].cat.codes + b_offset
     df.to_csv(f"out/{classname}/{classname}.i.csv", index=False)
 
+@get_time
 def check_connected(bigraph):
     """ Check whether input graph is connected and throw NetworkXPointlessConcept if null graph """
     if nx.is_connected(bigraph):
         return True
     return False
 
+@get_time
 def check_bipartite(bigraph):
     """ Check whether input graph is bipartite """
     if not nx.bipartite.is_bipartite(bigraph):

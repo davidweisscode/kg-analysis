@@ -320,6 +320,26 @@ def get_scatter_outliers(classes):
 
 
 # Scatter outliers (avg edgeweight vs k)
-get_scatter_outliers(classes)
+# get_scatter_outliers(classes)
 
-# print(df)
+def get_disc_outliers(classname, onemode):
+    # Get nodes of one-mode
+    with open(f"out/{classname}/{classname}.{onemode}.nk.json", "r") as in_file:
+        ddist = json.load(in_file)
+    gnodes = []
+    for key, value in ddist.items():
+        gnodes.append(key)
+    gnodes = set(gnodes)
+
+    # Get nodes of two-mode
+    df = pd.read_csv(f"out/{classname}/{classname}.g.csv")
+    bnodes = list(df.itertuples(index=False, name=None))
+    bnodes = [node[0] for node in bnodes]
+    bnodes = set(bnodes)
+
+    discnodes = bnodes - gnodes
+
+    [print(node) for node in discnodes]
+
+get_disc_outliers("Novel", "t")
+# build bipartite graph for edge list, get all unique nodes, get difference of set

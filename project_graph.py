@@ -47,11 +47,11 @@ def write_edgelist(classname, onemode, edgelist):
 def project_graph(run_name, superclass, project_method):
     """ Get the onemode representations of the bipartite subject-predicate graph of a superclass """
     edgelist = read_edgelist(superclass, "g")
-    if project_method == "hyper": # TODO: Benchmark: @get_ram * ncores == htop ram ?
+    if project_method == "hyper": # Benchmark: @get_ram * ncores == htop ram ?
         project_hyper(run_name, superclass, edgelist)
     elif project_method == "intersect_al":
         project_intersect_al(superclass, edgelist)
-    # elif project_method == "intersect": # TODO: Compare and benchmark approaches
+    # elif project_method == "intersect": # Compare and benchmark approaches
     #     project_intersect(superclass, bigraph, nodes_top, nodes_bot)
     # elif project_method == "dot":
     #     project_dot(superclass, bigraph, nodes_top, nodes_bot)
