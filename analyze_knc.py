@@ -74,10 +74,11 @@ def get_rel_rc(run_name, superclass, rc_dens, onemode):
     if superclass == df.index[0]:
         return None
     else:
+        return None
         if onemode == "t":
-            rc_dens_super = df.iloc[0].rc_t_dens
+            rc_dens_super = df.iloc[0].rc_dens_t
         elif onemode == "b":
-            rc_dens_super = df.iloc[0].rc_b_dens
+            rc_dens_super = df.iloc[0].rc_dens_b
         return rc_dens / rc_dens_super
 
 def get_disc_nodes(run_name, classname, onemode):
@@ -199,7 +200,7 @@ def main():
         'k_0_t', 'rc_dens_t', 'rc_ncomp_t', 'rc_slcc_t', 'rel_rc_t',
         'm_b', 'dens_b', 'mean_dens_b', 'k_mean_b', 'k_med_b', 'k_sd_b', 'c_mean_b', 'c_med_b', 'c_sd_b','w_med_b',
         'k_0_b', 'rc_dens_b', 'rc_ncomp_b', 'rc_slcc_b', 'rel_rc_b',
-        'superclass',
+        # 'superclass',
         ]
     res = res[cols]
     res.to_csv(f"out/_results_{run_name}.csv")

@@ -1,0 +1,26 @@
+top = ["Clara", "Eusebius", "Florestan", "Pierrot", "Robert"]
+bot = ["dateofbirth", "friend", "member", "key"]
+
+# Full connected graph
+# G.add_edges_from([("Clara","dateofbirth"),("Clara","friend"),("Clara","member"),("Clara","key"),
+#                     ("Eusebius","dateofbirth"),("Eusebius","friend"),("Eusebius","member"),("Eusebius","key"),
+#                     ("Florestan","dateofbirth"),("Florestan","friend"),("Florestan","member"),("Florestan","key"),
+#                     ("Pierrot","dateofbirth"),("Pierrot","friend"),("Pierrot","member"),("Pierrot","key"),
+#                     ("Robert","dateofbirth"),("Robert","friend"),("Robert","member"),("Robert","key")])
+# FiveFour graph
+# G.add_edges_from([("Clara","dateofbirth"),("Clara","friend"),("Clara","member"),
+#                     ("Eusebius","dateofbirth"),("Eusebius","friend"),("Eusebius","member"),
+#                     ("Florestan","dateofbirth"),("Florestan","friend"),("Florestan","member"),("Florestan","key"),
+#                     ("Pierrot","friend"),("Pierrot","member"),
+#                     ("Robert","key")])
+# Disconnected graph
+# G.add_edges_from([("Clara","dateofbirth"),
+#                     ("Eusebius","friend"),
+#                     ("Florestan","member"),
+#                     ("Pierrot","key")])
+# Two Cluster graph
+G.add_edges_from([("Clara","dateofbirth"),("Clara","friend"),
+                    ("Eusebius","dateofbirth"),("Eusebius","friend"),
+                    ("Florestan","friend"),("Florestan","member"),
+                    ("Pierrot","member"),("Pierrot","key"),
+                    ("Robert","member"),("Robert","key")])
