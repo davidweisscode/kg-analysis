@@ -1,0 +1,3 @@
+http://www.wikidata.org/prop/P569
+http://www.wikidata.org/prop/P2048
+http://www.wikidata.org/prop/P27
