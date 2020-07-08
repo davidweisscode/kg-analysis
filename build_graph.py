@@ -128,7 +128,7 @@ def main():
 
     with open("blacklist.txt", "r") as file:
         blacklist = file.read().splitlines()
-    with open("whitelist-boxer-selected.txt", "r") as file:
+    with open("whitelist-boxer.txt", "r") as file:
         whitelist = file.read().splitlines()
     if not os.path.exists(f"out/_results_{run_name}.csv"):
         df = pd.DataFrame(columns=["n_t"])
@@ -148,15 +148,15 @@ def main():
             df = df[~duplicate_predicates]
             print(f"[Info] len after duplicates {len(df)}, t_unique {df['t'].nunique()}, b_unique {df['b'].nunique()}")
             # Either blacklist
-            # for blacklisted_predicate in blacklist:
-            #     m_before = len(df)
-            #     df = df[df["b"] != blacklisted_predicate]
-            #     m_after = len(df)
-            #     if m_before != m_after:
-            #         print(f"[Info] edges with blacklisted predicate removed\n       {blacklisted_predicate}")
-            #     print(f"[Info] len after blacklist {len(df)}, t_unique {df['t'].nunique()}, b_unique {df['b'].nunique()}")
+            for blacklisted_predicate in blacklist:
+                 m_before = len(df)
+                 df = df[df["b"] != blacklisted_predicate]
+                 m_after = len(df)
+                 if m_before != m_after:
+                     print(f"[Info] edges with blacklisted predicate removed\n       {blacklisted_predicate}")
+                 print(f"[Info] len after blacklist {len(df)}, t_unique {df['t'].nunique()}, b_unique {df['b'].nunique()}")
             # Or whitelist
-            df = df[df["b"].isin(whitelist)]
+            # df = df[df["b"].isin(whitelist)]
 
             edgelist = list(df.itertuples(index=False, name=None))
         else:
