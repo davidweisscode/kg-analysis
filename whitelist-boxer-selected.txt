@@ -1,3 +1,0 @@
-http://dbpedia.org/ontology/birthDate
-http://dbpedia.org/ontology/height
-http://dbpedia.org/property/nationality
