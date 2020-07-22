@@ -15,7 +15,7 @@ pip install pybind11
 ```
 * Install project dependencies
 ```
-pip install hdt rdflib networkx numpy scipy pandas tqdm importlib
+pip install hdt rdflib networkx numpy scipy pandas tqdm
 ```  
 * Clone this project
 ```
