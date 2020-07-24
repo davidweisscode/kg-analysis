@@ -1,7 +1,7 @@
 config = {
     "classes": [
-                "BoxerWikidata",
-                "CyclistWikidata",
+                "CapitalWikidata",
+                "CountryWikidata",
                 ],
     "project_method": "hyper",
     "kg_source": "kg/wikidata-20170313-all-BETA.hdt",
