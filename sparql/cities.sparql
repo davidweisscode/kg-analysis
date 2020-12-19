@@ -9,13 +9,17 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX schema: <http://schema.org/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 
-SELECT DISTINCT ?s ?p
+SELECT DISTINCT ?s ?country STR(?cityname) ?lat ?long
 WHERE {
-    ?s a dbo:MusicalArtist .
-    ?s dbo:birthPlace :Karlsruhe .
-    ?s ?p ?o .
+    ?s a dbo:City .
+    ?s rdfs:label ?cityname .
+    FILTER(LANG(?cityname) = "en") .
+    ?s dbo:country ?country .
+    ?s geo:lat ?lat .
+    ?s geo:long ?long .
+    FILTER(?lat > 48.5 && ?lat < 49.5) .
 }
-ORDER BY ?s
-LIMIT 100
-OFFSET 10
+ORDER BY ?country
+LIMIT 300

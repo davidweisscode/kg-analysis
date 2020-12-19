@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns="http://www.metaphacts.com/resource/"
+	xmlns:User="http://www.metaphacts.com/resource/user/"
+	xmlns:Help="http://help.metaphacts.com/resource/"
+	xmlns:Platform="http://www.metaphacts.com/ontologies/platform#"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:Admin="http://www.metaphacts.com/resource/admin/"
+	xmlns:Default="http://www.metaphacts.com/resource/"
+	xmlns:Repository="http://www.metaphacts.com/ontologies/repository#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:Assets="http://www.metaphacts.com/resource/assets/"
+	xmlns:ephedra="http://www.metaphacts.com/ontologies/platform/ephedra#"
+	xmlns:sp="http://spinrdf.org/sp#">
+
+<rdf:Description rdf:about="http://example.org/david#me">
+	<birthDate xmlns="http://schema.org/" rdf:datatype="http://www.w3.org/2001/XMLSchema#date">1955-05-05</birthDate>
+	<thumbnail xmlns="http://schema.org/">https://avatars0.githubusercontent.com/u/8447009?s=400&amp;u=65fa480991225e0aa16d36b9e075332d0e343424&amp;v=4</thumbnail>
+	<rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+	<rdfs:label>David</rdfs:label>
+	<knows xmlns="http://xmlns.com/foaf/0.1/" rdf:resource="http://example.org/alice#me"/>
+	<knows xmlns="http://xmlns.com/foaf/0.1/" rdf:resource="http://example.org/bob#me"/>
+	<topic_interest xmlns="http://xmlns.com/foaf/0.1/" rdf:resource="http://www.wikidata.org/entity/Q12418"/>
+</rdf:Description>
+
+</rdf:RDF>

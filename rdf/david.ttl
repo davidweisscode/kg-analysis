@@ -1,0 +1,35 @@
+@prefix : <http://www.metaphacts.com/resource/> .
+@prefix User: <http://www.metaphacts.com/resource/user/> .
+@prefix Help: <http://help.metaphacts.com/resource/> .
+@prefix Platform: <http://www.metaphacts.com/ontologies/platform#> .
+@prefix Admin: <http://www.metaphacts.com/resource/admin/> .
+@prefix Repository: <http://www.metaphacts.com/ontologies/repository#> .
+@prefix Assets: <http://www.metaphacts.com/resource/assets/> .
+@prefix ephedra: <http://www.metaphacts.com/ontologies/platform/ephedra#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix wd: <http://www.wikidata.org/wiki/> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dbr: <http://dbpedia.org/resource/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+:david a foaf:Person;
+    rdfs:label "David";
+    foaf:givenName "David";
+    foaf:surname "Weiß";
+    foaf:gender "male";
+    schema:thumbnail "https://avatars0.githubusercontent.com/u/8447009?s=400&u=65fa480991225e0aa16d36b9e075332d0e343424&v=4";
+    schema:birthDate "1955-05-05"^^xsd:date;
+    dbo:birthPlace dbr:Karlsruhe;
+    foaf:knows <http://example.org/alice#me>,
+        <http://example.org/bob#me>,
+        wd:Q51283173;
+    dbo:university dbr:Karlsruhe_Institute_of_Technology;
+    foaf:topic_interest wd:Q255 .
+
+foaf:Person owl:sameAs dbo:Person .

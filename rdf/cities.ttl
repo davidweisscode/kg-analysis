@@ -1,0 +1,1990 @@
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dbo:	<http://dbpedia.org/ontology/> .
+<http://dbpedia.org/resource/Kirovsk,_Luhansk_Oblast>	rdf:type	dbo:City .
+@prefix rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+<http://dbpedia.org/resource/Kirovsk,_Luhansk_Oblast>	rdfs:label	"Kirovsk, Luhansk Oblast"@en .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+@prefix geo:	<http://www.w3.org/2003/01/geo/wgs84_pos#> .
+<http://dbpedia.org/resource/Kirovsk,_Luhansk_Oblast>	geo:lat	"48.633335113525390625"^^xsd:float ,
+		"48.637500762939453125"^^xsd:float ;
+	geo:long	"38.65000152587890625"^^xsd:float ,
+		"38.64333343505859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kirovsk_lg_prapor.gif?width=300> .
+@prefix dbr:	<http://dbpedia.org/resource/> .
+<http://dbpedia.org/resource/Kirovsk,_Luhansk_Oblast>	dbo:country	dbr:Ukraine .
+dbr:Lozova	rdf:type	dbo:City ;
+	rdfs:label	"Lozova"@en ;
+	geo:lat	"48.883335113525390625"^^xsd:float ;
+	geo:long	"36.383335113525390625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Lozova_RailwaY_Station.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Druzhkivka	rdf:type	dbo:City ;
+	rdfs:label	"Druzhkivka"@en ;
+	geo:lat	"48.621387481689453125"^^xsd:float ;
+	geo:long	"37.52777862548828125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Druzhkivka.svg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Dunaivtsi	rdf:type	dbo:City ;
+	rdfs:label	"Dunaivtsi"@en ;
+	geo:lat	"48.889446258544921875"^^xsd:float ;
+	geo:long	"26.856945037841796875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Dunaivtsi_Center.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Eppelheim	rdf:type	dbo:City ;
+	rdfs:label	"Eppelheim"@en ;
+	geo:lat	"49.40000152587890625"^^xsd:float ;
+	geo:long	"8.6333332061767578125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Mh_HSB_MGT6D_272_in_eppelheim.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Feuchtwangen	rdf:type	dbo:City ;
+	rdfs:label	"Feuchtwangen"@en ;
+	geo:lat	"49.166667938232421875"^^xsd:float ;
+	geo:long	"10.316666603088378906"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wappen_von_Feuchtwangen.png?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Hlobyne	rdf:type	dbo:City ;
+	rdfs:label	"Hlobyne"@en ;
+	geo:lat	"49.366664886474609375"^^xsd:float ,
+		"49.383335113525390625"^^xsd:float ;
+	geo:long	"33.28333282470703125"^^xsd:float ,
+		"33.266666412353515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Globine_fl.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Kamianka,_Cherkasy_Oblast>	rdf:type	dbo:City ;
+	rdfs:label	"Kamianka, Cherkasy Oblast"@en ;
+	geo:lat	"49.03333282470703125"^^xsd:float ;
+	geo:long	"32.09999847412109375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u0443\u0448\u043A\u0456\u043D\u0441\u044C\u043A\u0438\u0439_\u0433\u0440\u043E\u0442.JPG?width=300> ;
+	dbo:country	dbr:Kamianka_Raion ,
+		dbr:Ukraine ,
+		dbr:Cherkasy_Oblast .
+dbr:Khrystynivka	rdf:type	dbo:City ;
+	rdfs:label	"Khrystynivka"@en ;
+	geo:lat	"48.799999237060546875"^^xsd:float ;
+	geo:long	"29.96666717529296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Christinivka_gerb.png?width=300> ;
+	dbo:country	dbr:Cherkasy_Oblast ,
+		dbr:Khrystynivka_Raion ,
+		dbr:Ukraine .
+dbr:Krasnohrad	rdf:type	dbo:City ;
+	rdfs:label	"Krasnohrad"@en ;
+	geo:lat	"49.366664886474609375"^^xsd:float ;
+	geo:long	"35.450000762939453125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Krasnohrad1.jpg?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Kharkiv_Oblast .
+dbr:Monastyryshche	rdf:type	dbo:City ;
+	rdfs:label	"Monastyryshche"@en ;
+	geo:lat	"48.990001678466796875"^^xsd:float ;
+	geo:long	"29.801111221313476562"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u043E\u043A\u0440\u043E\u0432\u0441\u044C\u043A\u0430_\u0446\u0435\u0440\u043A\u0432\u0430_\u0443_\u041C\u043E\u043D\u0430\u0441\u0442\u0438\u0440\u0438\u0449\u0456_\u043D\u0430_\u0427\u0435\u0440\u043A\u0430\u0449\u0438\u043D\u0456.jpg?width=300> ;
+	dbo:country	dbr:Monastyryshche_Raion ,
+		dbr:Ukraine ,
+		dbr:Cherkasy_Oblast .
+dbr:Niederstotzingen	rdf:type	dbo:City ;
+	rdfs:label	"Niederstotzingen"@en ;
+	geo:lat	"48.541110992431640625"^^xsd:float ;
+	geo:long	"10.23305511474609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/H\u00FCrben_Kaltenburg3.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Novodnistrovsk	rdf:type	dbo:City ;
+	rdfs:label	"Novodnistrovsk"@en ;
+	geo:lat	"48.577777862548828125"^^xsd:float ;
+	geo:long	"27.441389083862304688"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Coat_of_arms_Novodnistrovsk.PNG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Novomyrhorod	rdf:type	dbo:City ;
+	rdfs:label	"Novomyrhorod"@en ;
+	geo:lat	"48.78333282470703125"^^xsd:float ;
+	geo:long	"31.649999618530273438"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Novomyrhorod_Montage.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Ornbau	rdf:type	dbo:City ;
+	rdfs:label	"Ornbau"@en ;
+	geo:lat	"49.177776336669921875"^^xsd:float ;
+	geo:long	"10.65555572509765625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wappen_von_Ornbau.png?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Pervomaisk,_Luhansk_Oblast>	rdf:type	dbo:City ;
+	rdfs:label	"Pervomaisk, Luhansk Oblast"@en ;
+	geo:lat	"48.62972259521484375"^^xsd:float ;
+	geo:long	"38.56194305419921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u0435\u0440\u0432\u043E\u043C\u0430\u0439\u0441\u043A_\u0443\u043B.\u0422\u0440\u0443\u0434\u043E\u0432\u0430\u044F.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Pervomaiskyi	rdf:type	dbo:City ;
+	rdfs:label	"Pervomaiskyi"@en ;
+	geo:lat	"49.383335113525390625"^^xsd:float ,
+		"49.386943817138671875"^^xsd:float ;
+	geo:long	"36.214168548583984375"^^xsd:float ,
+		"36.21666717529296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Railway_Station_Pervomaiski.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Rubizhne	rdf:type	dbo:City ;
+	rdfs:label	"Rubizhne"@en ;
+	geo:lat	"49.009998321533203125"^^xsd:float ;
+	geo:long	"38.371387481689453125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Rubizhne_panorama.jpg?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Luhansk_Oblast .
+dbr:Skole	rdf:type	dbo:City ;
+	rdfs:label	"Skole"@en ;
+	geo:lat	"49.03333282470703125"^^xsd:float ;
+	geo:long	"23.516666412353515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Church_of_the_Nativity_Blessed_Virgin_Mary_in_Skole.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Talne	rdf:type	dbo:City ;
+	rdfs:label	"Talne"@en ;
+	geo:lat	"48.88861083984375"^^xsd:float ;
+	geo:long	"30.704166412353515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Talnoe_city_fl.png?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Cherkasy_Oblast ,
+		dbr:Talne_Raion .
+dbr:Tetiiv	rdf:type	dbo:City ;
+	rdfs:label	"Tetiiv"@en ;
+	geo:lat	"49.3708343505859375"^^xsd:float ;
+	geo:long	"29.690000534057617188"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0422\u0435\u0442\u0456\u0457\u0432\u0441\u044C\u043A\u0430_\u0446\u0435\u0440\u043A\u0432\u0430.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Truskavets	rdf:type	dbo:City ;
+	rdfs:label	"Truskavets"@en ;
+	geo:lat	"49.28055572509765625"^^xsd:float ;
+	geo:long	"23.504999160766601562"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Truskavets1.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Verkhnodniprovsk	rdf:type	dbo:City ;
+	rdfs:label	"Verkhnodniprovsk"@en ;
+	geo:lat	"48.6561126708984375"^^xsd:float ;
+	geo:long	"34.328334808349609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Glory_memorial_in_Verkhnodniprovsk.jpg?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Verkhnodniprovsk_Raion ,
+		dbr:Dnipropetrovsk_Oblast .
+dbr:Zhashkiv	rdf:type	dbo:City ;
+	rdfs:label	"Zhashkiv"@en ;
+	geo:lat	"49.23583221435546875"^^xsd:float ;
+	geo:long	"30.111110687255859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Zhashkiv_prapor_new.png?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Flag ,
+		dbr:Cherkasy_Oblast .
+dbr:Zhmerynka	rdf:type	dbo:City ;
+	rdfs:label	"Zhmerynka"@en ;
+	geo:lat	"49.049999237060546875"^^xsd:float ;
+	geo:long	"28.100000381469726562"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u0440\u0430\u043F\u043E\u0440-\u0416\u043C\u0435\u0440\u0438\u043D\u043A\u0430.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Zhydachiv	rdf:type	dbo:City ;
+	rdfs:label	"Zhydachiv"@en ;
+	geo:lat	"49.384998321533203125"^^xsd:float ;
+	geo:long	"24.144443511962890625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Zhydachiv_flag.gif?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Overly,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Overly, North Dakota"@en ;
+	geo:lat	"48.681110382080078125"^^xsd:float ;
+	geo:long	"-100.1511077880859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Overly,_North_Dakota_7-17-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Wudalianchi	rdf:type	dbo:City ;
+	rdfs:label	"Wudalianchi"@en ;
+	geo:lat	"48.75"^^xsd:float ;
+	geo:long	"126.16666412353515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wudalianchi1.jpg?width=300> ;
+	dbo:country	<http://dbpedia.org/resource/People\u0027s_Republic_of_China> .
+<http://dbpedia.org/resource/Lyman,_Ukraine>	rdf:type	dbo:City ;
+	rdfs:label	"Lyman, Ukraine"@en ;
+	geo:lat	"48.985279083251953125"^^xsd:float ;
+	geo:long	"37.8111114501953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0417\u0430\u043B\u0456\u0437\u043D\u0438\u0447\u043D\u0438\u0439_\u0432\u043E\u043A\u0437\u0430\u043B_\u043C.\u041A\u0440\u0430\u0441\u043D\u0438\u0439_\u041B\u0438\u043C\u0430\u043D_\u043F\u0456\u0441\u043B\u044F_\u0440\u0435\u0441\u0442\u0430\u0432\u0440\u0430\u0446\u0456\u0457.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Uman	rdf:type	dbo:City ;
+	rdfs:label	"Uman"@en ;
+	geo:lat	"48.75"^^xsd:float ;
+	geo:long	"30.21666717529296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Flag_Uman.PNG?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Cherkasy_Oblast .
+dbr:Aalen	rdf:type	dbo:City ;
+	rdfs:label	"Aalen"@en ;
+	geo:lat	"48.833332061767578125"^^xsd:float ,
+		"48.850555419921875"^^xsd:float ;
+	geo:long	"10.100000381469726562"^^xsd:float ,
+		"10.095555305480957031"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Coa_Aalen.svg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Ansbach	rdf:type	dbo:City ;
+	rdfs:label	"Ansbach"@en ;
+	geo:lat	"49.299999237060546875"^^xsd:float ;
+	geo:long	"10.583333015441894531"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Ansbach_Centre.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Nuremberg	rdf:type	dbo:City ;
+	rdfs:label	"Nuremberg"@en ;
+	geo:lat	"49.450000762939453125"^^xsd:float ;
+	geo:long	"11.083333015441894531"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041D\u044E\u0440\u043D\u0431\u0435\u0440\u0433.\u0411\u0443\u0440\u0433_\u0432\u0438\u0434_\u0441_\u0420\u0435\u0445\u0435\u043D\u0431\u0435\u0440\u0433\u0430_2.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Novomoskovsk,_Ukraine>	rdf:type	dbo:City ;
+	rdfs:label	"Novomoskovsk, Ukraine"@en ;
+	geo:lat	"48.633335113525390625"^^xsd:float ;
+	geo:long	"35.21666717529296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Novomoskovsk_(Dnepropetrovsk_oblast).png?width=300> ;
+	dbo:country	dbr:Dnipropetrovsk_oblast ,
+		dbr:Ukraine .
+dbr:Rohatyn	rdf:type	dbo:City ;
+	rdfs:label	"Rohatyn"@en ;
+	geo:lat	"49.416667938232421875"^^xsd:float ;
+	geo:long	"24.616666793823242188"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Statue_of_Roksolana_in_downtown_Rohatyn.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Achern	rdf:type	dbo:City ;
+	rdfs:label	"Achern"@en ;
+	geo:lat	"48.633335113525390625"^^xsd:float ;
+	geo:long	"8.0666666030883789062"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Coat_of_Arms_of_Achern_(Baden).svg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Bakhmut	rdf:type	dbo:City ;
+	rdfs:label	"Bakhmut"@en ;
+	geo:lat	"48.591388702392578125"^^xsd:float ;
+	geo:long	"38.080554962158203125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u0430\u043D\u043E\u0440\u0430\u043C\u0430_\u043C\u0456\u0441\u0442\u0430_\u0410\u0440\u0442\u0435\u043C\u0456\u0432\u0441\u044C\u043A_77.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Bopfingen	rdf:type	dbo:City ;
+	rdfs:label	"Bopfingen"@en ;
+	geo:lat	"48.856945037841796875"^^xsd:float ;
+	geo:long	"10.352222442626953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Bopfingen-wappen.png?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Cap-Chat,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Cap-Chat, Quebec"@en ;
+	geo:lat	"49.09999847412109375"^^xsd:float ;
+	geo:long	"-66.6833343505859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Capchat.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Giengen	rdf:type	dbo:City ;
+	rdfs:label	"Giengen"@en ;
+	geo:lat	"48.62166595458984375"^^xsd:float ;
+	geo:long	"10.244999885559082031"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wappen_Giengen_an_der_Brenz.svg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Grand_Forks,_British_Columbia>	rdf:type	dbo:City ;
+	rdfs:label	"Grand Forks, British Columbia"@en ;
+	geo:lat	"49.03333282470703125"^^xsd:float ;
+	geo:long	"-118.44000244140625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/TransCanadaTrailGrandforksBC.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Kostiantynivka	rdf:type	dbo:City ;
+	rdfs:label	"Kostiantynivka"@en ;
+	geo:lat	"48.53333282470703125"^^xsd:float ;
+	geo:long	"37.71666717529296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0424\u043B\u0430\u0433_\u041A\u043E\u043D\u0441\u0442\u0430\u043D\u0442\u0438\u043D\u043E\u0432\u043A\u0438.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Kramatorsk	rdf:type	dbo:City ;
+	rdfs:label	"Kramatorsk"@en ;
+	geo:lat	"48.71666717529296875"^^xsd:float ;
+	geo:long	"37.53333282470703125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u043B._\u041B\u0435\u043D\u0438\u043D\u0430.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Metzingen	rdf:type	dbo:City ;
+	rdfs:label	"Metzingen"@en ;
+	geo:lat	"48.5366668701171875"^^xsd:float ;
+	geo:long	"9.2858333587646484375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Metzingen-Rathaus.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Murdochville,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Murdochville, Quebec"@en ;
+	geo:lat	"48.96666717529296875"^^xsd:float ;
+	geo:long	"-65.5"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Murdochville.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Neckarsulm	rdf:type	dbo:City ;
+	rdfs:label	"Neckarsulm"@en ;
+	geo:lat	"49.1916961669921875"^^xsd:float ;
+	geo:long	"9.22455596923828125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Neckarsulm_Rathaus01.JPG?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Renchen	rdf:type	dbo:City ;
+	rdfs:label	"Renchen"@en ;
+	geo:lat	"48.585834503173828125"^^xsd:float ;
+	geo:long	"8.010555267333984375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Coa_Germany_Town_Renchen.svg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Sievierodonetsk	rdf:type	dbo:City ;
+	rdfs:label	"Sievierodonetsk"@en ;
+	geo:lat	"48.9333343505859375"^^xsd:float ;
+	geo:long	"38.5"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/SivHram.JPG?width=300> ;
+	dbo:country	dbr:Luhansk_Oblast ,
+		dbr:Ukraine .
+dbr:Skalica	rdf:type	dbo:City ;
+	rdfs:label	"Skalica"@en ;
+	geo:lat	"48.84222412109375"^^xsd:float ;
+	geo:long	"17.226667404174804688"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/View_from_tower_of_church_st_michal_during_skalica_days.JPG?width=300> ;
+	dbo:country	dbr:Slovakia .
+dbr:Sloviansk	rdf:type	dbo:City ;
+	rdfs:label	"Sloviansk"@en ;
+	geo:lat	"48.85333251953125"^^xsd:float ;
+	geo:long	"37.625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Sloviansk_City_Bank.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Svaliava	rdf:type	dbo:City ;
+	rdfs:label	"Svaliava"@en ;
+	geo:lat	"48.547222137451171875"^^xsd:float ;
+	geo:long	"22.986110687255859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Center_svalava.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Svitlovodsk	rdf:type	dbo:City ;
+	rdfs:label	"Svitlovodsk"@en ;
+	geo:lat	"49.0502777099609375"^^xsd:float ;
+	geo:long	"33.241943359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Svitlovodsk1.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Zalishchyky	rdf:type	dbo:City ;
+	rdfs:label	"Zalishchyky"@en ;
+	geo:lat	"48.65000152587890625"^^xsd:float ;
+	geo:long	"25.733333587646484375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Zalischyky_panorama1.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Zvenyhorodka	rdf:type	dbo:City ;
+	rdfs:label	"Zvenyhorodka"@en ;
+	geo:lat	"49.069721221923828125"^^xsd:float ;
+	geo:long	"30.967777252197265625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Panorama_zvenygorodka.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Horodok,_Khmelnytskyi_Oblast>	rdf:type	dbo:City ;
+	rdfs:label	"Horodok, Khmelnytskyi Oblast"@en ;
+	geo:lat	"49.166667938232421875"^^xsd:float ;
+	geo:long	"26.566667556762695312"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Coat_of_Arms_of_Horodok_(Khmelnytskyi_Oblast).png?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Alamo,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Alamo, North Dakota"@en ;
+	geo:lat	"48.5800018310546875"^^xsd:float ;
+	geo:long	"-103.46944427490234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Alamo,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Alsen,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Alsen, North Dakota"@en ;
+	geo:lat	"48.627498626708984375"^^xsd:float ;
+	geo:long	"-98.70583343505859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Post_office_in_Alsen,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Ambrose,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Ambrose, North Dakota"@en ;
+	geo:lat	"48.954166412353515625"^^xsd:float ;
+	geo:long	"-103.48305511474609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Ambrose,_North_Dakota_5-21-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Antler,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Antler, North Dakota"@en ;
+	geo:lat	"48.9713897705078125"^^xsd:float ;
+	geo:long	"-101.28194427490234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Customs_house_in_Antler,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Badger,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Badger, Minnesota"@en ;
+	geo:lat	"48.782501220703125"^^xsd:float ,
+		"48.779998779296875"^^xsd:float ;
+	geo:long	"-96.01667022705078125"^^xsd:float ,
+		"-96.01444244384765625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Roseau_County_Minnesota_Incorporated_and_Unincorporated_areas_Badger_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Bathgate,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Bathgate, North Dakota"@en ;
+	geo:lat	"48.88111114501953125"^^xsd:float ;
+	geo:long	"-97.472503662109375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_School_for_the_Blind.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Baudette,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Baudette, Minnesota"@en ;
+	geo:lat	"48.71250152587890625"^^xsd:float ;
+	geo:long	"-94.595001220703125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Baudette_MN.JPG?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Bellingham,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Bellingham, Washington"@en ;
+	geo:lat	"48.75"^^xsd:float ,
+		"48.750278472900390625"^^xsd:float ;
+	geo:long	"-122.48332977294921875"^^xsd:float ,
+		"-122.47499847412109375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Aerial_View_of_Bellingham,_Washington.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Bisbee,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Bisbee, North Dakota"@en ;
+	geo:lat	"48.62583160400390625"^^xsd:float ;
+	geo:long	"-99.37972259521484375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Bisbee,_North_Dakota_7-18-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Bonners_Ferry,_Idaho>	rdf:type	dbo:City ;
+	rdfs:label	"Bonners Ferry, Idaho"@en ;
+	geo:lat	"48.69222259521484375"^^xsd:float ;
+	geo:long	"-116.31749725341796875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Bonners_Ferry_along_Kootenai_River_th.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Bottineau,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Bottineau, North Dakota"@en ;
+	geo:lat	"48.833332061767578125"^^xsd:float ;
+	geo:long	"-100.4499969482421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/2009-0521-ND-Bottineau-TommyTurtle.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Bowbells,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Bowbells, North Dakota"@en ;
+	geo:lat	"48.799999237060546875"^^xsd:float ;
+	geo:long	"-102.25"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Bowbells,_North_Dakota_5-21-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Brno	rdf:type	dbo:City ;
+	rdfs:label	"Brno"@en ;
+	geo:lat	"49.200000762939453125"^^xsd:float ;
+	geo:long	"16.616666793823242188"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Brno_Montage_III.jpg?width=300> ;
+	dbo:country	dbr:Czech_Republic .
+<http://dbpedia.org/resource/Calio,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Calio, North Dakota"@en ;
+	geo:lat	"48.630001068115234375"^^xsd:float ;
+	geo:long	"-98.93499755859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Calio,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Calvin,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Calvin, North Dakota"@en ;
+	geo:lat	"48.85111236572265625"^^xsd:float ;
+	geo:long	"-98.9375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Calvin,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Canton_City,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Canton City, North Dakota"@en ;
+	geo:lat	"48.687778472900390625"^^xsd:float ;
+	geo:long	"-97.6672210693359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Pembina_County_Canton_City.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Cavalier,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Cavalier, North Dakota"@en ;
+	geo:lat	"48.795276641845703125"^^xsd:float ;
+	geo:long	"-97.6233367919921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Cavalier_Cinema.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Chinook,_Montana>	rdf:type	dbo:City ;
+	rdfs:label	"Chinook, Montana"@en ;
+	geo:lat	"48.583332061767578125"^^xsd:float ;
+	geo:long	"-109.23332977294921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Chinook_Hotel.JPG?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Ch\u00E2lons-en-Champagne>	rdf:type	dbo:City ;
+	rdfs:label	"Ch\u00E2lons-en-Champagne"@en ;
+	geo:lat	"48.957500457763671875"^^xsd:float ;
+	geo:long	"4.3649997711181640625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/H\u00F4tel_de_ville_de_Ch\u00E2lons-en-Champagne_(Marne).JPG?width=300> ;
+	dbo:country	dbr:France .
+<http://dbpedia.org/resource/Columbus,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Columbus, North Dakota"@en ;
+	geo:lat	"48.90000152587890625"^^xsd:float ;
+	geo:long	"-102.78333282470703125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Burke_County_Columbus.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Crosby,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Crosby, North Dakota"@en ;
+	geo:lat	"48.91249847412109375"^^xsd:float ;
+	geo:long	"-103.2947235107421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Crosby,_North_Dakota_5-21-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Crystal,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Crystal, North Dakota"@en ;
+	geo:lat	"48.596668243408203125"^^xsd:float ;
+	geo:long	"-97.67055511474609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Crystal,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Cut_Bank,_Montana>	rdf:type	dbo:City ;
+	rdfs:label	"Cut Bank, Montana"@en ;
+	geo:lat	"48.634723663330078125"^^xsd:float ;
+	geo:long	"-112.33110809326171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Cut_Bank_Creek_Montana.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Donaldson,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Donaldson, Minnesota"@en ;
+	geo:lat	"48.572223663330078125"^^xsd:float ,
+		"48.572498321533203125"^^xsd:float ;
+	geo:long	"-96.89638519287109375"^^xsd:float ,
+		"-96.8955535888671875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kittson_County_Minnesota_Incorporated_and_Unincorporated_areas_Donaldson_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Donnybrook,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Donnybrook, North Dakota"@en ;
+	geo:lat	"48.509998321533203125"^^xsd:float ;
+	geo:long	"-101.88527679443359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Donnybrook,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Drayton,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Drayton, North Dakota"@en ;
+	geo:lat	"48.5611114501953125"^^xsd:float ;
+	geo:long	"-97.179443359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Drayton_Drug.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Dunseith,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Dunseith, North Dakota"@en ;
+	geo:lat	"48.813610076904296875"^^xsd:float ;
+	geo:long	"-100.06166839599609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Rolette_County_Dunseith.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Egeland,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Egeland, North Dakota"@en ;
+	geo:lat	"48.628055572509765625"^^xsd:float ;
+	geo:long	"-99.098052978515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Post_office_in_Egeland,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Flaxton,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Flaxton, North Dakota"@en ;
+	geo:lat	"48.8980560302734375"^^xsd:float ;
+	geo:long	"-102.393890380859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Post_office_in_Flaxton,_North_Dakota_7-9-2007.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Fortuna,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Fortuna, North Dakota"@en ;
+	geo:lat	"48.911014556884765625"^^xsd:float ,
+		"48.91110992431640625"^^xsd:float ;
+	geo:long	"-103.774169921875"^^xsd:float ,
+		"-103.774261474609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Divide_County_Fortuna.svg?width=300> ;
+	dbo:country	dbr:United_States_of_America .
+<http://dbpedia.org/resource/Gardena,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Gardena, North Dakota"@en ;
+	geo:lat	"48.70027923583984375"^^xsd:float ;
+	geo:long	"-100.4986114501953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Gardena_Corner_Service_-_Gardena,_North_Dakota_5-22-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Glenburn,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Glenburn, North Dakota"@en ;
+	geo:lat	"48.51305389404296875"^^xsd:float ,
+		"48.513153076171875"^^xsd:float ;
+	geo:long	"-101.22083282470703125"^^xsd:float ,
+		"-101.2209320068359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Renville_County_Glenburn.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Grano,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Grano, North Dakota"@en ;
+	geo:lat	"48.615833282470703125"^^xsd:float ;
+	geo:long	"-101.58750152587890625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Grano,_North_Dakota_5-22-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Greenbush,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Greenbush, Minnesota"@en ;
+	geo:lat	"48.69916534423828125"^^xsd:float ,
+		"48.70055389404296875"^^xsd:float ;
+	geo:long	"-96.18166351318359375"^^xsd:float ,
+		"-96.18305206298828125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Roseau_County_Minnesota_Incorporated_and_Unincorporated_areas_Greenbush_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Grenora,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Grenora, North Dakota"@en ;
+	geo:lat	"48.6180572509765625"^^xsd:float ;
+	geo:long	"-103.93666839599609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Grenora,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Hallock,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Hallock, Minnesota"@en ;
+	geo:lat	"48.772220611572265625"^^xsd:float ,
+		"48.774444580078125"^^xsd:float ;
+	geo:long	"-96.94388580322265625"^^xsd:float ,
+		"-96.94638824462890625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Hallock_Minnesota_welcome_sign_8-14-2013.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Halma,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Halma, Minnesota"@en ;
+	geo:lat	"48.66110992431640625"^^xsd:float ,
+		"48.65972137451171875"^^xsd:float ;
+	geo:long	"-96.60028076171875"^^xsd:float ,
+		"-96.59860992431640625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kittson_County_Minnesota_Incorporated_and_Unincorporated_areas_Halma_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Hamilton,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Hamilton, North Dakota"@en ;
+	geo:lat	"48.808055877685546875"^^xsd:float ;
+	geo:long	"-97.45194244384765625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Hamilton,_North_Dakota_7-9-2007.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Hampden,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Hampden, North Dakota"@en ;
+	geo:lat	"48.539554595947265625"^^xsd:float ,
+		"48.5394439697265625"^^xsd:float ;
+	geo:long	"-98.6548919677734375"^^xsd:float ,
+		"-98.654998779296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Hampden_Fire_Department_Hampden,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Hannah,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Hannah, North Dakota"@en ;
+	geo:lat	"48.973056793212890625"^^xsd:float ;
+	geo:long	"-98.6905517578125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Post_office_in_Hannah,_North_Dakota_7-26-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Hansboro,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Hansboro, North Dakota"@en ;
+	geo:lat	"48.952220916748046875"^^xsd:float ;
+	geo:long	"-99.38111114501953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Hansboro,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Harlem,_Montana>	rdf:type	dbo:City ;
+	rdfs:label	"Harlem, Montana"@en ;
+	geo:lat	"48.531665802001953125"^^xsd:float ;
+	geo:long	"-108.78444671630859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Blaine_County_Montana_Incorporated_and_Unincorporated_areas_Harlem_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Havre,_Montana>	rdf:type	dbo:City ;
+	rdfs:label	"Havre, Montana"@en ;
+	geo:lat	"48.549999237060546875"^^xsd:float ;
+	geo:long	"-109.6833343505859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Havre_Montana_RR_Station.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Heidelberg	rdf:type	dbo:City ;
+	rdfs:label	"Heidelberg"@en ;
+	geo:lat	"49.416667938232421875"^^xsd:float ;
+	geo:long	"8.7166662216186523438"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Heidelberg_Altstadt_Schloss_Luftbild.JPG?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Hoople,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Hoople, North Dakota"@en ;
+	geo:lat	"48.5352783203125"^^xsd:float ;
+	geo:long	"-97.6369476318359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Walsh_County_Hoople.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Humboldt,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Humboldt, Minnesota"@en ;
+	geo:lat	"48.921112060546875"^^xsd:float ,
+		"48.921390533447265625"^^xsd:float ;
+	geo:long	"-97.09471893310546875"^^xsd:float ,
+		"-97.09333038330078125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kittson_County_Minnesota_Incorporated_and_Unincorporated_areas_Humboldt_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/International_Falls,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"International Falls, Minnesota"@en ;
+	geo:lat	"48.59166717529296875"^^xsd:float ;
+	geo:long	"-93.40528106689453125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/International_Falls,_Minnesota_1.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Karlsruhe	rdf:type	dbo:City ;
+	rdfs:label	"Karlsruhe"@en ;
+	geo:lat	"49.0"^^xsd:float ,
+		"49.00920867919921875"^^xsd:float ;
+	geo:long	"8.4039516448974609375"^^xsd:float ,
+		"8.3999996185302734375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Karlsruhe_town_centre_air.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Karlstad,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Karlstad, Minnesota"@en ;
+	geo:lat	"48.57611083984375"^^xsd:float ,
+		"48.5774993896484375"^^xsd:float ;
+	geo:long	"-96.5205535888671875"^^xsd:float ,
+		"-96.518890380859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kittson_County_Minnesota_Incorporated_and_Unincorporated_areas_Karlstad_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Kenmare,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Kenmare, North Dakota"@en ;
+	geo:lat	"48.674999237060546875"^^xsd:float ;
+	geo:long	"-102.07861328125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/28678421.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Kennedy,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Kennedy, Minnesota"@en ;
+	geo:lat	"48.64194488525390625"^^xsd:float ,
+		"48.6425018310546875"^^xsd:float ;
+	geo:long	"-96.90860748291015625"^^xsd:float ,
+		"-96.9088897705078125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kittson_County_Minnesota_Incorporated_and_Unincorporated_areas_Kennedy_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Kramer,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Kramer, North Dakota"@en ;
+	geo:lat	"48.691112518310546875"^^xsd:float ;
+	geo:long	"-100.70749664306640625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kramer,_North_Dakota_5-22-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Lake_Bronson,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Lake Bronson, Minnesota"@en ;
+	geo:lat	"48.7324981689453125"^^xsd:float ,
+		"48.735553741455078125"^^xsd:float ;
+	geo:long	"-96.66278076171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kittson_County_Minnesota_Incorporated_and_Unincorporated_areas_Lake_Bronson_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Lancaster,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Lancaster, Minnesota"@en ;
+	geo:lat	"48.858890533447265625"^^xsd:float ,
+		"48.858333587646484375"^^xsd:float ;
+	geo:long	"-96.80472564697265625"^^xsd:float ,
+		"-96.804168701171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kittson_County_Minnesota_Incorporated_and_Unincorporated_areas_Lancaster_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Landa,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Landa, North Dakota"@en ;
+	geo:lat	"48.896389007568359375"^^xsd:float ;
+	geo:long	"-100.9113922119140625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Landa_Grain_Elevator.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Langdon,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Langdon, North Dakota"@en ;
+	geo:lat	"48.76166534423828125"^^xsd:float ;
+	geo:long	"-98.37166595458984375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Langdon,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Lansford,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Lansford, North Dakota"@en ;
+	geo:lat	"48.627498626708984375"^^xsd:float ;
+	geo:long	"-101.3766632080078125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Bottineau_County_Lansford.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Larson,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Larson, North Dakota"@en ;
+	geo:lat	"48.889446258544921875"^^xsd:float ;
+	geo:long	"-102.86055755615234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Larson,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Lignite,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Lignite, North Dakota"@en ;
+	geo:lat	"48.87694549560546875"^^xsd:float ;
+	geo:long	"-102.5625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Burke_County_Lignite.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Loma,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Loma, North Dakota"@en ;
+	geo:lat	"48.63777923583984375"^^xsd:float ;
+	geo:long	"-98.52527618408203125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Loma,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Loraine,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Loraine, North Dakota"@en ;
+	geo:lat	"48.867221832275390625"^^xsd:float ;
+	geo:long	"-101.5694427490234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Loraine,_North_Dakota_5-22-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Mannheim	rdf:type	dbo:City ;
+	rdfs:label	"Mannheim"@en ;
+	geo:lat	"49.488887786865234375"^^xsd:float ;
+	geo:long	"8.4691667556762695312"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/SchlossMannheimEHof.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Maxbass,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Maxbass, North Dakota"@en ;
+	geo:lat	"48.72222137451171875"^^xsd:float ;
+	geo:long	"-101.14221954345703125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Maxbass_Rural_Fire_District_-_Maxbass,_North_Dakota_5-23-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Metz	rdf:type	dbo:City ;
+	rdfs:label	"Metz"@en ;
+	geo:lat	"49.12027740478515625"^^xsd:float ;
+	geo:long	"6.1777777671813964844"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Metz_cathedrale_saint_etienne_vue_en_bas_rue_d_estree_sous_lumiere_hiver.jpg?width=300> ;
+	dbo:country	dbr:France .
+<http://dbpedia.org/resource/Milton,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Milton, North Dakota"@en ;
+	geo:lat	"48.6263885498046875"^^xsd:float ;
+	geo:long	"-98.04166412353515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Hultstrand61.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Mohall,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Mohall, North Dakota"@en ;
+	geo:lat	"48.7649993896484375"^^xsd:float ;
+	geo:long	"-101.5111083984375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Renville_County_Mohall.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Mountain,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Mountain, North Dakota"@en ;
+	geo:lat	"48.683887481689453125"^^xsd:float ;
+	geo:long	"-97.86499786376953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Mountain_Chalet_-_Mountain,_North_Dakota_7-26-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Moyie_Springs,_Idaho>	rdf:type	dbo:City ;
+	rdfs:label	"Moyie Springs, Idaho"@en ;
+	geo:lat	"48.72472381591796875"^^xsd:float ;
+	geo:long	"-116.19361114501953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Boundary_County_Idaho_Incorporated_and_Unincorporated_areas_Moyie_Springs_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Munich,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Munich, North Dakota"@en ;
+	geo:lat	"48.669445037841796875"^^xsd:float ;
+	geo:long	"-98.8355560302734375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Cavalier_County_Munich.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Mylo,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Mylo, North Dakota"@en ;
+	geo:lat	"48.635833740234375"^^xsd:float ;
+	geo:long	"-99.6183319091796875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Post_office_in_Mylo,_North_Dakota_7-17-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Neche,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Neche, North Dakota"@en ;
+	geo:lat	"48.983612060546875"^^xsd:float ;
+	geo:long	"-97.55083465576171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Neche,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Nekoma,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Nekoma, North Dakota"@en ;
+	geo:lat	"48.57666778564453125"^^xsd:float ;
+	geo:long	"-98.3711090087890625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Grain_Elevator_in_Nekoma,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Newburg,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Newburg, North Dakota"@en ;
+	geo:lat	"48.7147216796875"^^xsd:float ;
+	geo:long	"-100.91278076171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Newburg,_North_Dakota_05-23-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Noonan,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Noonan, North Dakota"@en ;
+	geo:lat	"48.888332366943359375"^^xsd:float ;
+	geo:long	"-103.0094451904296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Travelers_Hotel_Noonan,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Osnabrock,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Osnabrock, North Dakota"@en ;
+	geo:lat	"48.668888092041015625"^^xsd:float ;
+	geo:long	"-98.14861297607421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/First_State_Bank_-_Osnabrock,_North_Dakota_07-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Pembina,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Pembina, North Dakota"@en ;
+	geo:lat	"48.966388702392578125"^^xsd:float ;
+	geo:long	"-97.24527740478515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Pembina.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Perth,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Perth, North Dakota"@en ;
+	geo:lat	"48.715557098388671875"^^xsd:float ;
+	geo:long	"-99.45833587646484375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Perth,_North_Dakota_7-18-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Plentywood,_Montana>	rdf:type	dbo:City ;
+	rdfs:label	"Plentywood, Montana"@en ;
+	geo:lat	"48.776111602783203125"^^xsd:float ;
+	geo:long	"-104.55889129638671875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/DSCN0721_1.JPG?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Powers_Lake,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Powers Lake, North Dakota"@en ;
+	geo:lat	"48.56194305419921875"^^xsd:float ;
+	geo:long	"-102.64611053466796875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/American_legion_memorial_building_powers_lake_north_dakota_2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Ranier,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Ranier, Minnesota"@en ;
+	geo:lat	"48.61222076416015625"^^xsd:float ,
+		"48.613056182861328125"^^xsd:float ;
+	geo:long	"-93.3488922119140625"^^xsd:float ,
+		"-93.348052978515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Koochiching_County_Minnesota_Incorporated_and_Unincorporated_areas_Ranier_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Regensburg	rdf:type	dbo:City ;
+	rdfs:label	"Regensburg"@en ;
+	geo:lat	"49.016666412353515625"^^xsd:float ;
+	geo:long	"12.083333015441894531"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Rgbg-dom_und_rathaus.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Rocklake,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Rocklake, North Dakota"@en ;
+	geo:lat	"48.78333282470703125"^^xsd:float ;
+	geo:long	"-99.25"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Rocklake,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Rolette,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Rolette, North Dakota"@en ;
+	geo:lat	"48.663333892822265625"^^xsd:float ;
+	geo:long	"-99.84416961669921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Rolette_County_Rolette.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Rolla,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Rolla, North Dakota"@en ;
+	geo:lat	"48.85984039306640625"^^xsd:float ,
+		"48.859722137451171875"^^xsd:float ;
+	geo:long	"-99.6152801513671875"^^xsd:float ,
+		"-99.6151885986328125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Rolette_County_Rolla.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Roseau,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Roseau, Minnesota"@en ;
+	geo:lat	"48.846668243408203125"^^xsd:float ;
+	geo:long	"-95.760833740234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Roseau_County_Minnesota_Incorporated_and_Unincorporated_areas_Roseau_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Rouen	rdf:type	dbo:City ;
+	rdfs:label	"Rouen"@en ;
+	geo:lat	"49.439998626708984375"^^xsd:float ;
+	geo:long	"1.1000000238418579102"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Rouen_montage.jpg?width=300> ;
+	dbo:country	dbr:France .
+<http://dbpedia.org/resource/Scobey,_Montana>	rdf:type	dbo:City ;
+	rdfs:label	"Scobey, Montana"@en ;
+	geo:lat	"48.79095458984375"^^xsd:float ,
+		"48.79083251953125"^^xsd:float ;
+	geo:long	"-105.4199981689453125"^^xsd:float ,
+		"-105.419921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Daniels_County_Courthouse-_Scobey_MT.JPG?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Shelby,_Montana>	rdf:type	dbo:City ;
+	rdfs:label	"Shelby, Montana"@en ;
+	geo:lat	"48.507221221923828125"^^xsd:float ;
+	geo:long	"-111.8602752685546875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Shelby_Montana_Downtown.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Sherwood,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Sherwood, North Dakota"@en ;
+	geo:lat	"48.96138763427734375"^^xsd:float ;
+	geo:long	"-101.6319427490234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Renville_County_Sherwood.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Souris,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Souris, North Dakota"@en ;
+	geo:lat	"48.9102783203125"^^xsd:float ;
+	geo:long	"-100.6808319091796875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Souris,_North_Dakota_(1906).png?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/St._John,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"St. John, North Dakota"@en ;
+	geo:lat	"48.943889617919921875"^^xsd:float ;
+	geo:long	"-99.7108306884765625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Rolette_County_St_John.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/St._Thomas,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"St. Thomas, North Dakota"@en ;
+	geo:lat	"48.619720458984375"^^xsd:float ;
+	geo:long	"-97.44666290283203125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/St._Thomas,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/St._Vincent,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"St. Vincent, Minnesota"@en ;
+	geo:lat	"48.968334197998046875"^^xsd:float ;
+	geo:long	"-97.22611236572265625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kittson_County_Minnesota_Incorporated_and_Unincorporated_areas_St._Vincent_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Strathcona,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Strathcona, Minnesota"@en ;
+	geo:lat	"48.55361175537109375"^^xsd:float ,
+		"48.553890228271484375"^^xsd:float ;
+	geo:long	"-96.16805267333984375"^^xsd:float ,
+		"-96.16889190673828125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Roseau_County_Minnesota_Incorporated_and_Unincorporated_areas_Strathcona_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Tolley,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Tolley, North Dakota"@en ;
+	geo:lat	"48.729442596435546875"^^xsd:float ;
+	geo:long	"-101.82694244384765625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Tolley_North_Dakota_5-22-2008.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Upham,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Upham, North Dakota"@en ;
+	geo:lat	"48.581111907958984375"^^xsd:float ;
+	geo:long	"-100.7269439697265625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_McHenry_County_Upham.svg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Vancouver	rdf:type	dbo:City ;
+	rdfs:label	"Vancouver"@en ;
+	geo:lat	"49.25"^^xsd:float ;
+	geo:long	"-123.09999847412109375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Vancouver_photo_montage.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Verdun	rdf:type	dbo:City ;
+	rdfs:label	"Verdun"@en ;
+	geo:lat	"49.161998748779296875"^^xsd:float ;
+	geo:long	"5.387599945068359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Porte_Verdun.JPG?width=300> ;
+	dbo:country	dbr:France .
+dbr:Volgograd	rdf:type	dbo:City ;
+	rdfs:label	"Volgograd"@en ;
+	geo:lat	"48.700000762939453125"^^xsd:float ;
+	geo:long	"44.516666412353515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Volgograd_Montage_2016.png?width=300> ;
+	dbo:country	dbr:Russia .
+<http://dbpedia.org/resource/Wales,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Wales, North Dakota"@en ;
+	geo:lat	"48.8941650390625"^^xsd:float ;
+	geo:long	"-98.6016693115234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wales,_North_Dakota_7-26-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Walhalla,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Walhalla, North Dakota"@en ;
+	geo:lat	"48.92194366455078125"^^xsd:float ;
+	geo:long	"-97.91805267333984375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Walhalla_Trading_Post.JPG?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Warroad,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Warroad, Minnesota"@en ;
+	geo:lat	"48.905277252197265625"^^xsd:float ;
+	geo:long	"-95.31444549560546875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Roseau_County_Minnesota_Incorporated_and_Unincorporated_areas_Warroad_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Westhope,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Westhope, North Dakota"@en ;
+	geo:lat	"48.910831451416015625"^^xsd:float ;
+	geo:long	"-101.01999664306640625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ND_Bottineau_County_Westhope.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Wildrose,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Wildrose, North Dakota"@en ;
+	geo:lat	"48.630279541015625"^^xsd:float ;
+	geo:long	"-103.1833343505859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Cafe_wildrose_north_dakota_2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Williams,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Williams, Minnesota"@en ;
+	geo:lat	"48.76833343505859375"^^xsd:float ,
+		"48.768611907958984375"^^xsd:float ;
+	geo:long	"-94.9552764892578125"^^xsd:float ,
+		"-94.95444488525390625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Lake_of_the_Woods_County_Minnesota_Incorporated_and_Unincorporated_areas_Williams_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Willow_City,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Willow City, North Dakota"@en ;
+	geo:lat	"48.604167938232421875"^^xsd:float ;
+	geo:long	"-100.2947235107421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Willow_City,_North_Dakota.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Anacortes,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Anacortes, Washington"@en ;
+	geo:lat	"48.50194549560546875"^^xsd:float ;
+	geo:long	"-122.6236114501953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Skagit_County_Washington_Incorporated_and_Unincorporated_areas_Anacortes_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Baie-Comeau	rdf:type	dbo:City ;
+	rdfs:label	"Baie-Comeau"@en ;
+	geo:lat	"49.21666717529296875"^^xsd:float ;
+	geo:long	"-68.15000152587890625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Baie-Comeau.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Bansk\u00E1_Bystrica>	rdf:type	dbo:City ;
+	rdfs:label	"Bansk\u00E1 Bystrica"@en ;
+	geo:lat	"48.7324981689453125"^^xsd:float ;
+	geo:long	"19.149166107177734375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Banska_Bystrica_SNP_Square.jpg?width=300> ;
+	dbo:country	dbr:Slovakia .
+dbr:Beauvais	rdf:type	dbo:City ;
+	rdfs:label	"Beauvais"@en ;
+	geo:lat	"49.430301666259765625"^^xsd:float ;
+	geo:long	"2.0952000617980957031"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Mairie_de_Beauvais.jpg?width=300> ;
+	dbo:country	dbr:France .
+<http://dbpedia.org/resource/Blaine,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Blaine, Washington"@en ;
+	geo:lat	"48.988056182861328125"^^xsd:float ;
+	geo:long	"-122.74361419677734375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Whatcom_County_Washington_Incorporated_and_Unincorporated_areas_Blaine_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Boryslav	rdf:type	dbo:City ;
+	rdfs:label	"Boryslav"@en ;
+	geo:lat	"49.289165496826171875"^^xsd:float ;
+	geo:long	"23.418888092041015625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0411\u043E\u0440\u0438\u0441\u043B\u0430\u0432._\u0426\u0435\u0440\u043A\u0432\u0430_\u0441\u0432._\u0410\u043D\u043D\u0438._Cerkiew_Sw._Anny_(do_r._1945_kosciol_Sw._Barbary).jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Burnaby	rdf:type	dbo:City ;
+	rdfs:label	"Burnaby"@en ;
+	geo:lat	"49.266666412353515625"^^xsd:float ;
+	geo:long	"-122.96666717529296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Burnaby_highrises_across_Deer_Lake.JPG?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Chilliwack	rdf:type	dbo:City ;
+	rdfs:label	"Chilliwack"@en ;
+	geo:lat	"49.15772247314453125"^^xsd:float ;
+	geo:long	"-121.95092010498046875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Yale_Road_Chilliwack_-_1908_-_Site_of_City_Hall.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Colville,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Colville, Washington"@en ;
+	geo:lat	"48.543056488037109375"^^xsd:float ;
+	geo:long	"-117.90444183349609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Highland_Cemetery_-_Colville_Washington_crop.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Coquitlam	rdf:type	dbo:City ;
+	rdfs:label	"Coquitlam"@en ;
+	geo:lat	"49.2838897705078125"^^xsd:float ;
+	geo:long	"-122.7919464111328125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Coquitlam_Town_Centre_Area.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Corner_Brook	rdf:type	dbo:City ;
+	rdfs:label	"Corner Brook"@en ;
+	geo:lat	"48.950000762939453125"^^xsd:float ;
+	geo:long	"-57.950000762939453125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Corner_Brook_from_above.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Darkhan_(city)>	rdf:type	dbo:City ;
+	rdfs:label	"Darkhan (city)"@en ;
+	geo:lat	"49.4688873291015625"^^xsd:float ;
+	geo:long	"105.95749664306640625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Darkhan_Buddha.jpg?width=300> ;
+	dbo:country	dbr:Mongolia .
+dbr:Dolbeau-Mistassini	rdf:type	dbo:City ;
+	rdfs:label	"Dolbeau-Mistassini"@en ;
+	geo:lat	"48.883335113525390625"^^xsd:float ;
+	geo:long	"-72.23332977294921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Dol-Mis_CV.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Drohobych	rdf:type	dbo:City ;
+	rdfs:label	"Drohobych"@en ;
+	geo:lat	"49.34999847412109375"^^xsd:float ;
+	geo:long	"23.5"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Casco_hist%C3%B3rico_de_Drogobych.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Erdenet	rdf:type	dbo:City ;
+	rdfs:label	"Erdenet"@en ;
+	geo:lat	"49.02777862548828125"^^xsd:float ;
+	geo:long	"104.04444122314453125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Erdenet_02.jpg?width=300> ;
+	dbo:country	dbr:Mongolia .
+dbr:Esslingen_am_Neckar	rdf:type	dbo:City ;
+	rdfs:label	"Esslingen am Neckar"@en ;
+	geo:lat	"48.733333587646484375"^^xsd:float ;
+	geo:long	"9.3166666030883789062"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Esslingen_am_Neckar_2005.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Estevan	rdf:type	dbo:City ;
+	rdfs:label	"Estevan"@en ;
+	geo:lat	"49.13916778564453125"^^xsd:float ;
+	geo:long	"-102.986114501953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Souris_River,_Estevan_-_STS098.JPG?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/F\u00FCrth>	rdf:type	dbo:City ;
+	rdfs:label	"F\u00FCrth"@en ;
+	geo:lat	"49.46666717529296875"^^xsd:float ;
+	geo:long	"11.0"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Fuerth_Suedstadt_Zirndorf_Bridge_from_Alte_Veste_f_sw.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Gasp\u00E9,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Gasp\u00E9, Quebec"@en ;
+	geo:lat	"48.833332061767578125"^^xsd:float ;
+	geo:long	"-64.48332977294921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Gasp\u00E9_Centre-ville_Nord.JPG?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Halych	rdf:type	dbo:City ;
+	rdfs:label	"Halych"@en ;
+	geo:lat	"49.124721527099609375"^^xsd:float ;
+	geo:long	"24.728610992431640625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Halych_(13).jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Heilbronn	rdf:type	dbo:City ;
+	rdfs:label	"Heilbronn"@en ;
+	geo:lat	"49.15000152587890625"^^xsd:float ;
+	geo:long	"9.2166662216186523438"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Heilbronn_Innenstadt_u_Wartberg_20050918.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Ingolstadt	rdf:type	dbo:City ;
+	rdfs:label	"Ingolstadt"@en ;
+	geo:lat	"48.766666412353515625"^^xsd:float ;
+	geo:long	"11.433333396911621094"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wappen_Ingolstadt.svg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Ivano-Frankivsk	rdf:type	dbo:City ;
+	rdfs:label	"Ivano-Frankivsk"@en ;
+	geo:lat	"48.922779083251953125"^^xsd:float ;
+	geo:long	"24.7105560302734375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Ivano-FrankivskRatusha.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Jihlava	rdf:type	dbo:City ;
+	rdfs:label	"Jihlava"@en ;
+	geo:lat	"49.40027618408203125"^^xsd:float ;
+	geo:long	"15.590555191040039062"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Jihlava_legionaru.jpg?width=300> ;
+	dbo:country	dbr:Czech_Republic .
+dbr:Kaiserslautern	rdf:type	dbo:City ;
+	rdfs:label	"Kaiserslautern"@en ;
+	geo:lat	"49.444721221923828125"^^xsd:float ;
+	geo:long	"7.7688889503479003906"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kaiserslautern-Stadtwappen.svg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Kalush,_Ukraine>	rdf:type	dbo:City ;
+	rdfs:label	"Kalush, Ukraine"@en ;
+	geo:lat	"49.04416656494140625"^^xsd:float ;
+	geo:long	"24.359722137451171875"^^xsd:float ;
+	dbo:thumbnail	<http://en.wikipedia.org/wiki/Special:FilePath/Kalush-1.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Kettle_Falls,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Kettle Falls, Washington"@en ;
+	geo:lat	"48.6058349609375"^^xsd:float ;
+	geo:long	"-118.059722900390625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kettle_falls_sign.PNG?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Khmelnytskyi,_Ukraine>	rdf:type	dbo:City ;
+	rdfs:label	"Khmelnytskyi, Ukraine"@en ;
+	geo:lat	"49.416667938232421875"^^xsd:float ;
+	geo:long	"27.0"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Khmelnitsky,_Proskurivska_St,_beginning,_2005_08_10.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Ko\u0161ice>	rdf:type	dbo:City ;
+	rdfs:label	"Ko\u0161ice"@en ;
+	geo:lat	"48.71666717529296875"^^xsd:float ;
+	geo:long	"21.25"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/BandeauKosice.png?width=300> ;
+	dbo:country	dbr:Slovakia .
+dbr:Ludwigsburg	rdf:type	dbo:City ;
+	rdfs:label	"Ludwigsburg"@en ;
+	geo:lat	"48.89749908447265625"^^xsd:float ;
+	geo:long	"9.19222259521484375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/SchlossLudwigsburgInnenhof.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Ludwigshafen	rdf:type	dbo:City ;
+	rdfs:label	"Ludwigshafen"@en ;
+	geo:lat	"49.481109619140625"^^xsd:float ;
+	geo:long	"8.4352779388427734375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Ludwigshafenmitte_ausderluft.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Maple_Ridge,_British_Columbia>	rdf:type	dbo:City ;
+	rdfs:label	"Maple Ridge, British Columbia"@en ;
+	geo:lat	"49.21666717529296875"^^xsd:float ;
+	geo:long	"-122.59999847412109375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/GVRD_Maple_Ridge.svg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Nanaimo	rdf:type	dbo:City ;
+	rdfs:label	"Nanaimo"@en ;
+	geo:lat	"49.164165496826171875"^^xsd:float ;
+	geo:long	"-123.9363861083984375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Nanaimo_Skyline_2005.JPG?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:New_Westminster	rdf:type	dbo:City ;
+	rdfs:label	"New Westminster"@en ;
+	geo:lat	"49.206943511962890625"^^xsd:float ;
+	geo:long	"-122.91110992431640625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Uptown_new_westminster_bc.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Normandin,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Normandin, Quebec"@en ;
+	geo:lat	"48.833332061767578125"^^xsd:float ;
+	geo:long	"-72.53333282470703125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Vue_a\u00E9rienne_ville_de_normandin.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Penticton	rdf:type	dbo:City ;
+	rdfs:label	"Penticton"@en ;
+	geo:lat	"49.49111175537109375"^^xsd:float ;
+	geo:long	"-119.5886077880859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Penticton_Okanagan_Beach_Lakeshore.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Poprad	rdf:type	dbo:City ;
+	rdfs:label	"Poprad"@en ;
+	geo:lat	"49.059444427490234375"^^xsd:float ;
+	geo:long	"20.2975006103515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Stadscentrum_Poprad_-_Slovakije.jpg?width=300> ;
+	dbo:country	dbr:Slovakia .
+dbr:Port_Alberni	rdf:type	dbo:City ;
+	rdfs:label	"Port Alberni"@en ;
+	geo:lat	"49.233890533447265625"^^xsd:float ;
+	geo:long	"-124.80500030517578125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Aerial_view_of_the_south_end_of_Port_Alberni.JPG?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Port_Coquitlam	rdf:type	dbo:City ;
+	rdfs:label	"Port Coquitlam"@en ;
+	geo:lat	"49.262500762939453125"^^xsd:float ;
+	geo:long	"-122.7811126708984375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/GVRD_Port_Coquitlam.svg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Pre\u0161ov>	rdf:type	dbo:City ;
+	rdfs:label	"Pre\u0161ov"@en ;
+	geo:lat	"49.001667022705078125"^^xsd:float ;
+	geo:long	"21.239444732666015625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Hlavn\u00E1_Pre\u0161ov16Slovakia14.JPG?width=300> ;
+	dbo:country	dbr:Slovakia .
+<http://dbpedia.org/resource/Roosevelt,_Minnesota>	rdf:type	dbo:City ;
+	rdfs:label	"Roosevelt, Minnesota"@en ;
+	geo:lat	"48.80361175537109375"^^xsd:float ;
+	geo:long	"-95.097503662109375"^^xsd:float ,
+		"-95.09694671630859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Roseau_County_Minnesota_Incorporated_and_Unincorporated_areas_Roosevelt_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Saarlouis	rdf:type	dbo:City ;
+	rdfs:label	"Saarlouis"@en ;
+	geo:lat	"49.3166656494140625"^^xsd:float ;
+	geo:long	"6.75"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/LudwigskircheSaarlouis.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Saint-Malo	rdf:type	dbo:City ;
+	rdfs:label	"Saint-Malo"@en ;
+	geo:lat	"48.648101806640625"^^xsd:float ;
+	geo:long	"-2.0074999332427978516"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Drapeau_de_Saint-Malo_(20\u00E8_si\u00E8cle).svg?width=300> ;
+	dbo:country	dbr:France .
+<http://dbpedia.org/resource/Sarles,_North_Dakota>	rdf:type	dbo:City ;
+	rdfs:label	"Sarles, North Dakota"@en ;
+	geo:lat	"48.945278167724609375"^^xsd:float ;
+	geo:long	"-98.9969482421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Sarles,_North_Dakota_7-19-2009.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Sedro-Woolley,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Sedro-Woolley, Washington"@en ;
+	geo:lat	"48.505001068115234375"^^xsd:float ;
+	geo:long	"-122.2350006103515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/SWSmall.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+dbr:Shpola	rdf:type	dbo:City ;
+	rdfs:label	"Shpola"@en ;
+	geo:lat	"48.999721527099609375"^^xsd:float ,
+		"49.03333282470703125"^^xsd:float ;
+	geo:long	"31.416666030883789062"^^xsd:float ,
+		"31.392221450805664062"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Shpola_prapor.png?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Shpola_Raion ,
+		dbr:Cherkasy_Oblast .
+<http://dbpedia.org/resource/Tren\u010D\u00EDn>	rdf:type	dbo:City ;
+	rdfs:label	"Tren\u010D\u00EDn"@en ;
+	geo:lat	"48.89194488525390625"^^xsd:float ;
+	geo:long	"18.0366668701171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Skyline_Trencin.JPG?width=300> ;
+	dbo:country	dbr:Slovakia .
+<http://dbpedia.org/resource/T\u00E1bor>	rdf:type	dbo:City ;
+	rdfs:label	"T\u00E1bor"@en ;
+	geo:lat	"49.40000152587890625"^^xsd:float ;
+	geo:long	"14.649999618530273438"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Tabor,Czech_Republic.jpg?width=300> ;
+	dbo:country	dbr:Czech_Republic .
+dbr:Uzhhorod	rdf:type	dbo:City ;
+	rdfs:label	"Uzhhorod"@en ;
+	geo:lat	"48.623889923095703125"^^xsd:float ;
+	geo:long	"22.295000076293945312"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Uzhgorod.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Vranov_nad_Top\u013Eou>	rdf:type	dbo:City ;
+	rdfs:label	"Vranov nad Top\u013Eou"@en ;
+	geo:lat	"48.880832672119140625"^^xsd:float ;
+	geo:long	"21.673334121704101562"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/133-3339_IMG.JPG?width=300> ;
+	dbo:country	dbr:Slovakia .
+<http://dbpedia.org/resource/White_Rock,_British_Columbia>	rdf:type	dbo:City ;
+	rdfs:label	"White Rock, British Columbia"@en ;
+	geo:lat	"49.019916534423828125"^^xsd:float ;
+	geo:long	"-122.8026123046875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Buildings_on_Marine_Drive,_White_Rock.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/\u010Cesk\u00E9_Bud\u011Bjovice>	rdf:type	dbo:City ;
+	rdfs:label	"\u010Cesk\u00E9 Bud\u011Bjovice"@en ;
+	geo:lat	"48.97472381591796875"^^xsd:float ;
+	geo:long	"14.474721908569335938"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u010Cesk\u00E9_Bud\u011Bjovice_-_centrum_letecky.jpg?width=300> ;
+	dbo:country	dbr:Czech_Republic .
+<http://dbpedia.org/resource/\u017Dilina>	rdf:type	dbo:City ;
+	rdfs:label	"\u017Dilina"@en ;
+	geo:lat	"49.2227783203125"^^xsd:float ;
+	geo:long	"18.739999771118164062"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Zilina_city_90.jpg?width=300> ;
+	dbo:country	dbr:Slovakia .
+dbr:Berezhany	rdf:type	dbo:City ;
+	rdfs:label	"Berezhany"@en ;
+	geo:lat	"49.445835113525390625"^^xsd:float ;
+	geo:long	"24.9361114501953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Berezhany213.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Bruchsal	rdf:type	dbo:City ;
+	rdfs:label	"Bruchsal"@en ;
+	geo:lat	"49.133335113525390625"^^xsd:float ;
+	geo:long	"8.6000003814697265625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Schloss_Bruchsal_mit_Spiegelbild.JPG?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Burshtyn	rdf:type	dbo:City ;
+	rdfs:label	"Burshtyn"@en ;
+	geo:lat	"49.266666412353515625"^^xsd:float ;
+	geo:long	"24.633333206176757812"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Power_plant_Burshtyn_TES,_Ukraine-6352a.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Castlegar,_British_Columbia>	rdf:type	dbo:City ;
+	rdfs:label	"Castlegar, British Columbia"@en ;
+	geo:lat	"49.32611083984375"^^xsd:float ,
+		"49.32555389404296875"^^xsd:float ;
+	geo:long	"-117.66611480712890625"^^xsd:float ,
+		"-117.6647186279296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Castlegar,_British_Columbia_Location.png?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Cherkasy	rdf:type	dbo:City ;
+	rdfs:label	"Cherkasy"@en ;
+	geo:lat	"49.4444427490234375"^^xsd:float ;
+	geo:long	"32.059722900390625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0427\u0435\u0440\u043A\u0430\u0441\u0438.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Chortkiv	rdf:type	dbo:City ;
+	rdfs:label	"Chortkiv"@en ;
+	geo:lat	"49.00749969482421875"^^xsd:float ;
+	geo:long	"25.790555953979492188"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u010Cortkiv,_celek,_kostel.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Chyhyryn	rdf:type	dbo:City ;
+	rdfs:label	"Chyhyryn"@en ;
+	geo:lat	"49.083332061767578125"^^xsd:float ;
+	geo:long	"32.666667938232421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Chyhyryn8.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Donauw\u00F6rth>	rdf:type	dbo:City ;
+	rdfs:label	"Donauw\u00F6rth"@en ;
+	geo:lat	"48.700000762939453125"^^xsd:float ;
+	geo:long	"10.800000190734863281"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Reichsstrassedonauworth.JPG?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Harburg,_Bavaria>	rdf:type	dbo:City ;
+	rdfs:label	"Harburg, Bavaria"@en ;
+	geo:lat	"48.766666412353515625"^^xsd:float ;
+	geo:long	"10.666666984558105469"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wappen_Harburg_(Schwaben).jpg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Hulunbuir	rdf:type	dbo:City ;
+	rdfs:label	"Hulunbuir"@en ;
+	geo:lat	"49.200000762939453125"^^xsd:float ;
+	geo:long	"119.6999969482421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Hulunbuir.jpg?width=300> ;
+	dbo:country	dbr:China .
+dbr:Kamianets-Podilskyi	rdf:type	dbo:City ;
+	rdfs:label	"Kamianets-Podilskyi"@en ;
+	geo:lat	"48.6833343505859375"^^xsd:float ;
+	geo:long	"26.583333969116210938"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041A\u0430\u043C\u0435\u043D\u0435\u0446-\u041F\u043E\u0434\u043E\u043B\u044C\u0441\u043A\u0438\u0439.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Kamianske	rdf:type	dbo:City ;
+	rdfs:label	"Kamianske"@en ;
+	geo:lat	"48.516666412353515625"^^xsd:float ;
+	geo:long	"34.616664886474609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Prospekt_Lenin_Dneprodzerzhinsk.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Kolomyia	rdf:type	dbo:City ;
+	rdfs:label	"Kolomyia"@en ;
+	geo:lat	"48.53055572509765625"^^xsd:float ;
+	geo:long	"25.040277481079101562"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kolomyia_City_Hall.jpg?width=300> ;
+	dbo:country	dbr:Kolomyia_Raion ,
+		dbr:Municipality ,
+		dbr:Ivano-Frankivsk_Oblast ,
+		dbr:Ukraine .
+dbr:Korsun-Shevchenkivskyi	rdf:type	dbo:City ;
+	rdfs:label	"Korsun-Shevchenkivskyi"@en ;
+	geo:lat	"49.483333587646484375"^^xsd:float ;
+	geo:long	"31.28333282470703125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Korsuno-002.jpg?width=300> ;
+	dbo:country	dbr:Korsun-Shevchenkivskyi_Raion ,
+		dbr:Ukraine ,
+		dbr:Cherkasy_Oblast .
+dbr:Kremenchuk	rdf:type	dbo:City ;
+	rdfs:label	"Kremenchuk"@en ;
+	geo:lat	"49.0666656494140625"^^xsd:float ;
+	geo:long	"33.416667938232421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041C\u0435\u0433\u043E.jpeg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:La_Sarre	rdf:type	dbo:City ;
+	rdfs:label	"La Sarre"@en ;
+	geo:lat	"48.799999237060546875"^^xsd:float ;
+	geo:long	"-79.1999969482421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/LaSarre.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Maulbronn	rdf:type	dbo:City ;
+	rdfs:label	"Maulbronn"@en ;
+	geo:lat	"49.000278472900390625"^^xsd:float ;
+	geo:long	"8.810832977294921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Zaisersweiher_Marktplatz.jpg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Morden,_Manitoba>	rdf:type	dbo:City ;
+	rdfs:label	"Morden, Manitoba"@en ;
+	geo:lat	"49.191944122314453125"^^xsd:float ;
+	geo:long	"-98.100555419921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Post_and_customs_office,_Morden,_Manitoba.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Nadvirna	rdf:type	dbo:City ;
+	rdfs:label	"Nadvirna"@en ;
+	geo:lat	"48.633335113525390625"^^xsd:float ;
+	geo:long	"24.583333969116210938"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u043D\u0456\u0432\u0441\u044C\u043A\u0438\u0439_\u0437\u0430\u043C\u043E\u043A.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Oleksandriia	rdf:type	dbo:City ;
+	rdfs:label	"Oleksandriia"@en ;
+	geo:lat	"48.666667938232421875"^^xsd:float ;
+	geo:long	"33.116664886474609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041E\u043B\u0435\u043A\u0441\u0430\u043D\u0434\u0440\u0456\u044F_\u043F\u043B\u043E\u0449\u0430_\u041B\u0435\u043D\u0456\u043D\u0430.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Perc\u00E9,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Perc\u00E9, Quebec"@en ;
+	geo:lat	"48.53333282470703125"^^xsd:float ;
+	geo:long	"-64.21666717529296875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Perc\u00E9_Rock_(3).jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Port_Moody	rdf:type	dbo:City ;
+	rdfs:label	"Port Moody"@en ;
+	geo:lat	"49.283054351806640625"^^xsd:float ;
+	geo:long	"-122.8316650390625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Port_Moody_City_Hall.png?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Prievidza	rdf:type	dbo:City ;
+	rdfs:label	"Prievidza"@en ;
+	geo:lat	"48.77111053466796875"^^xsd:float ;
+	geo:long	"18.62166595458984375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Prievidza_church.jpg?width=300> ;
+	dbo:country	dbr:Slovakia .
+<http://dbpedia.org/resource/Prost\u011Bjov>	rdf:type	dbo:City ;
+	rdfs:label	"Prost\u011Bjov"@en ;
+	geo:lat	"49.46666717529296875"^^xsd:float ;
+	geo:long	"17.083333969116210938"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Radnice_(Prost\u011Bjov-_czech_republic).jpg?width=300> ;
+	dbo:country	dbr:Czech_Republic .
+dbr:Rheinstetten	rdf:type	dbo:City ;
+	rdfs:label	"Rheinstetten"@en ;
+	geo:lat	"48.9605560302734375"^^xsd:float ;
+	geo:long	"8.289722442626953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wappen_Rheinstetten.svg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Roberval,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Roberval, Quebec"@en ;
+	geo:lat	"48.516666412353515625"^^xsd:float ;
+	geo:long	"-72.23332977294921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Roberval2.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Rossland,_British_Columbia>	rdf:type	dbo:City ;
+	rdfs:label	"Rossland, British Columbia"@en ;
+	geo:lat	"49.078609466552734375"^^xsd:float ;
+	geo:long	"-117.799163818359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Rossland.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Straubing	rdf:type	dbo:City ;
+	rdfs:label	"Straubing"@en ;
+	geo:lat	"48.883335113525390625"^^xsd:float ;
+	geo:long	"12.566666603088378906"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/DEU_Straubing_COA.svg?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Stryi	rdf:type	dbo:City ;
+	rdfs:label	"Stryi"@en ;
+	geo:lat	"49.25611114501953125"^^xsd:float ,
+		"49.25"^^xsd:float ;
+	geo:long	"23.850276947021484375"^^xsd:float ,
+		"23.850000381469726562"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/02_Stryi,_Ukraine.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Vinnytsia	rdf:type	dbo:City ;
+	rdfs:label	"Vinnytsia"@en ;
+	geo:lat	"49.233333587646484375"^^xsd:float ;
+	geo:long	"28.483333587646484375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Old_Tower_night_winter_2011_G1.jpg?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Vinnytsia_Oblast .
+<http://dbpedia.org/resource/Volzhsky,_Volgograd_Oblast>	rdf:type	dbo:City ;
+	rdfs:label	"Volzhsky, Volgograd Oblast"@en ;
+	geo:lat	"48.8055572509765625"^^xsd:float ;
+	geo:long	"44.741664886474609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Volzhsky_center_pr_Lenina.jpg?width=300> ;
+	dbo:country	dbr:Russia .
+dbr:Wiesloch	rdf:type	dbo:City ;
+	rdfs:label	"Wiesloch"@en ;
+	geo:lat	"49.29416656494140625"^^xsd:float ;
+	geo:long	"8.698333740234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/COA_Wiesloch.svg?width=300> ;
+	dbo:country	dbr:Germany .
+<http://dbpedia.org/resource/Trail,_British_Columbia>	rdf:type	dbo:City ;
+	rdfs:label	"Trail, British Columbia"@en ;
+	geo:lat	"49.09722137451171875"^^xsd:float ,
+		"49.095001220703125"^^xsd:float ;
+	geo:long	"-117.7105560302734375"^^xsd:float ,
+		"-117.70999908447265625"^^xsd:float ;
+	dbo:thumbnail	<http://en.wikipedia.org/wiki/Special:FilePath/Welcome_to_City_of_Trail.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Dolyna	rdf:type	dbo:City ;
+	rdfs:label	"Dolyna"@en ;
+	geo:lat	"48.970554351806640625"^^xsd:float ;
+	geo:long	"24.011110305786132812"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/25758198\u043F\u0440._\u041D\u0435\u0437\u0430\u043B\u0435\u0436\u043D\u043E\u0441\u0442\u0456.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Horodenka	rdf:type	dbo:City ;
+	rdfs:label	"Horodenka"@en ;
+	geo:lat	"48.667499542236328125"^^xsd:float ;
+	geo:long	"25.500278472900390625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Gorodenkagerb.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Tlumach	rdf:type	dbo:City ;
+	rdfs:label	"Tlumach"@en ;
+	geo:lat	"48.866664886474609375"^^xsd:float ;
+	geo:long	"25.0"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Tlumach_prapor.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Balakliia	rdf:type	dbo:City ;
+	rdfs:label	"Balakliia"@en ;
+	geo:lat	"49.465831756591796875"^^xsd:float ;
+	geo:long	"36.867778778076171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0426\u0435\u043D\u0442\u0440\u0430\u043B\u044C\u043D\u0430\u044F_\u0443\u043B\u0438\u0446\u0430.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Bilozerske	rdf:type	dbo:City ;
+	rdfs:label	"Bilozerske"@en ;
+	geo:lat	"48.866664886474609375"^^xsd:float ;
+	geo:long	"37.133335113525390625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Bilozerske_03.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Horishni_Plavni	rdf:type	dbo:City ;
+	rdfs:label	"Horishni Plavni"@en ;
+	geo:lat	"49.016666412353515625"^^xsd:float ;
+	geo:long	"33.666667938232421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Saint_Nicholas_Cathedral,_Komsomolsk.JPG?width=300> ;
+	dbo:country	dbr:Poltava_Oblast .
+dbr:Illintsi	rdf:type	dbo:City ;
+	rdfs:label	"Illintsi"@en ;
+	geo:lat	"49.105556488037109375"^^xsd:float ;
+	geo:long	"29.208889007568359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u0440\u0430\u043F\u043E\u0440_\u0406\u043B\u043B\u0456\u043D\u0446\u0456\u0432.gif?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Kobeliaky	rdf:type	dbo:City ;
+	rdfs:label	"Kobeliaky"@en ;
+	geo:lat	"49.133335113525390625"^^xsd:float ;
+	geo:long	"34.200000762939453125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kobeliaky_Cathedral.JPG?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Kobeliaky_Raion ,
+		dbr:Poltava_Oblast .
+dbr:Mala_Vyska	rdf:type	dbo:City ;
+	rdfs:label	"Mala Vyska"@en ;
+	geo:lat	"48.65000152587890625"^^xsd:float ;
+	geo:long	"31.633333206176757812"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0421\u0442\u0430\u043D\u0446\u0456\u044F_\u0412\u0438\u0441\u043A\u0430.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Morshyn	rdf:type	dbo:City ;
+	rdfs:label	"Morshyn"@en ;
+	geo:lat	"49.15000152587890625"^^xsd:float ;
+	geo:long	"23.866666793823242188"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/090901_Morschyn_Ukraine_Spa.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Perechyn	rdf:type	dbo:City ;
+	rdfs:label	"Perechyn"@en ;
+	geo:lat	"48.734165191650390625"^^xsd:float ,
+		"48.733333587646484375"^^xsd:float ;
+	geo:long	"22.46666717529296875"^^xsd:float ,
+		"22.4741668701171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Perechyn1.JPG?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Zakarpattia_Oblast ,
+		dbr:Perechyn_Raion .
+dbr:Siversk	rdf:type	dbo:City ;
+	rdfs:label	"Siversk"@en ;
+	geo:lat	"48.863056182861328125"^^xsd:float ;
+	geo:long	"38.09722137451171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0421\u0456\u0432\u0435\u0440\u0441\u044C\u043A.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Vatutine	rdf:type	dbo:City ;
+	rdfs:label	"Vatutine"@en ;
+	geo:lat	"49.011943817138671875"^^xsd:float ;
+	geo:long	"31.07138824462890625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Vatutine_prapor.png?width=300> ;
+	dbo:country	dbr:Ukraine ,
+		dbr:Cherkasy_Oblast .
+dbr:Znamianka	rdf:type	dbo:City ;
+	rdfs:label	"Znamianka"@en ;
+	geo:lat	"48.713611602783203125"^^xsd:float ;
+	geo:long	"32.67333221435546875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0417\u043D\u0430\u043C\u0027\u044F\u043D\u0441\u044C\u043A\u0430_\u043C\u0456\u0441\u044C\u043A\u0430_\u0440\u0430\u0434\u0430.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Zolote	rdf:type	dbo:City ;
+	rdfs:label	"Zolote"@en ;
+	geo:lat	"48.692779541015625"^^xsd:float ;
+	geo:long	"38.519443511962890625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Zolote_prapor.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Pulkau	rdf:type	dbo:City ;
+	rdfs:label	"Pulkau"@en ;
+	geo:lat	"48.700000762939453125"^^xsd:float ;
+	geo:long	"15.850000381469726562"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wappen_Pulkau.jpg?width=300> ;
+	dbo:country	dbr:Austria .
+<http://dbpedia.org/resource/Everson,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Everson, Washington"@en ;
+	geo:lat	"48.917499542236328125"^^xsd:float ;
+	geo:long	"-122.3488922119140625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Bethany_Chapel_in_Everson.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Lynden,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Lynden, Washington"@en ;
+	geo:lat	"48.946666717529296875"^^xsd:float ;
+	geo:long	"-122.45694732666015625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Whatcom_County_Washington_Incorporated_and_Unincorporated_areas_Lynden_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Nooksack,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Nooksack, Washington"@en ;
+	geo:lat	"48.928333282470703125"^^xsd:float ;
+	geo:long	"-122.3194427490234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Nooksackwashington-postoffice.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Oroville,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Oroville, Washington"@en ;
+	geo:lat	"48.938610076904296875"^^xsd:float ;
+	geo:long	"-119.43499755859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Osoyoos_Lake_(2584320783).jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Republic,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Republic, Washington"@en ;
+	geo:lat	"48.6480560302734375"^^xsd:float ;
+	geo:long	"-118.7350006103515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Republic_Ferry_County_01.jpg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Sumas,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Sumas, Washington"@en ;
+	geo:lat	"48.997222900390625"^^xsd:float ;
+	geo:long	"-122.26555633544921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/SumasSign.JPG?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Tonasket,_Washington>	rdf:type	dbo:City ;
+	rdfs:label	"Tonasket, Washington"@en ;
+	geo:lat	"48.705554962158203125"^^xsd:float ;
+	geo:long	"-119.4386138916015625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Okanogan_County_Washington_Incorporated_and_Unincorporated_areas_Tonasket_Highlighted.svg?width=300> ;
+	dbo:country	dbr:United_States .
+<http://dbpedia.org/resource/Duncan,_British_Columbia>	rdf:type	dbo:City ;
+	rdfs:label	"Duncan, British Columbia"@en ;
+	geo:lat	"48.77869415283203125"^^xsd:float ,
+		"48.7786102294921875"^^xsd:float ;
+	geo:long	"-123.7077789306640625"^^xsd:float ,
+		"-123.70786285400390625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Duncan_City_Hall_-_British_Columbia.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Forestville,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Forestville, Quebec"@en ;
+	geo:lat	"48.733333587646484375"^^xsd:float ;
+	geo:long	"-69.08333587646484375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Vue_aerienne_5-1-.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Izium	rdf:type	dbo:City ;
+	rdfs:label	"Izium"@en ;
+	geo:lat	"49.21277618408203125"^^xsd:float ;
+	geo:long	"37.2569427490234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0406\u0437\u044E\u043C_1.JPG?width=300> ;
+	dbo:country	dbr:Izium_Raion ,
+		dbr:Kharkiv_Oblast ,
+		dbr:Ukraine .
+dbr:Lysychansk	rdf:type	dbo:City ;
+	rdfs:label	"Lysychansk"@en ;
+	geo:lat	"48.901668548583984375"^^xsd:float ,
+		"48.916667938232421875"^^xsd:float ;
+	geo:long	"38.508335113525390625"^^xsd:float ,
+		"38.40000152587890625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Street_in_Lisichansk.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Pavlohrad	rdf:type	dbo:City ;
+	rdfs:label	"Pavlohrad"@en ;
+	geo:lat	"48.516666412353515625"^^xsd:float ;
+	geo:long	"35.866664886474609375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u0440\u0430\u043F\u043E\u0440_\u041F\u0430\u0432\u043B\u043E\u0433\u0440\u0430\u0434\u0430.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Macamic,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Macamic, Quebec"@en ;
+	geo:lat	"48.75"^^xsd:float ;
+	geo:long	"-79.0"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Macamic_QC_1.JPG?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Saint-F\u00E9licien,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Saint-F\u00E9licien, Quebec"@en ;
+	geo:lat	"48.65000152587890625"^^xsd:float ;
+	geo:long	"-72.4499969482421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Carte_MRC_Le_Domaine-du-Roy-_Saint-F\u00E9licien.svg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Bar,_Vinnytsia_Oblast>	rdf:type	dbo:City ;
+	rdfs:label	"Bar, Vinnytsia Oblast"@en ;
+	geo:lat	"49.075000762939453125"^^xsd:float ;
+	geo:long	"27.676111221313476562"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/(1)_VIEW_ON_ORTHODOX_CATHEDRAL_AND_CATHOLIC_CATHEDRAL_IN_CITY_OF_BAR_REGION_OF_VINNYTSIA_STATE_OF_UKRAINE_PHOTOGRAPH_BY_VIKTOR_O_LEDENYOV_20160506.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Greenwood,_British_Columbia>	rdf:type	dbo:City ;
+	rdfs:label	"Greenwood, British Columbia"@en ;
+	geo:lat	"49.0911102294921875"^^xsd:float ,
+		"49.090000152587890625"^^xsd:float ;
+	geo:long	"-118.67694091796875"^^xsd:float ,
+		"-118.67749786376953125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Greenwood_BC_Roman_Catholic_Sacred_Heart_Chuch.JPG?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Langley,_British_Columbia_(city)>	rdf:type	dbo:City ;
+	rdfs:label	"Langley, British Columbia (city)"@en ;
+	geo:lat	"49.104099273681640625"^^xsd:float ,
+		"49.10388946533203125"^^xsd:float ;
+	geo:long	"-122.6575775146484375"^^xsd:float ,
+		"-122.65666961669921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Langley_City_Hall,_Canada_(April_2009).jpg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Martin,_Slovakia>	rdf:type	dbo:City ;
+	rdfs:label	"Martin, Slovakia"@en ;
+	geo:lat	"49.064998626708984375"^^xsd:float ;
+	geo:long	"18.92194366455078125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Martin-IMG_1707.JPG?width=300> ;
+	dbo:country	dbr:Slovakia .
+<http://dbpedia.org/resource/Richmond,_British_Columbia>	rdf:type	dbo:City ;
+	rdfs:label	"Richmond, British Columbia"@en ;
+	geo:lat	"49.166667938232421875"^^xsd:float ;
+	geo:long	"-123.133331298828125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Richmond_BC_Skyline.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Pitt_Meadows	rdf:type	dbo:City ;
+	rdfs:label	"Pitt Meadows"@en ;
+	geo:lat	"49.233333587646484375"^^xsd:float ;
+	geo:long	"-122.6833343505859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/GVRD_Pitt_Meadows.svg?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Starobilsk	rdf:type	dbo:City ;
+	rdfs:label	"Starobilsk"@en ;
+	geo:lat	"49.283298492431640625"^^xsd:float ;
+	geo:long	"38.916698455810546875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041B\u041D\u0423_\u0422_\u0428\u0435\u0432\u0447\u0435\u043D\u043A\u0430_\u0443_\u0421\u0442\u0430\u0440\u043E\u0431\u0456\u043B\u044C\u0441\u044C\u043A\u0443.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Terebovlia	rdf:type	dbo:City ;
+	rdfs:label	"Terebovlia"@en ;
+	geo:lat	"49.299167633056640625"^^xsd:float ;
+	geo:long	"25.690000534057617188"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041F\u0430\u043D\u043E\u0440\u0430\u043C\u0430_\u0422\u0435\u0440\u0435\u0431\u043E\u0432\u043B\u0456_\u0437_\u0417\u0430\u043C\u043A\u043E\u0432\u043E\u0457_\u0433\u043E\u0440\u0438.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Barvinkove	rdf:type	dbo:City ;
+	rdfs:label	"Barvinkove"@en ;
+	geo:lat	"48.90000152587890625"^^xsd:float ;
+	geo:long	"37.016666412353515625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0411\u0430\u0440\u0432\u0435\u043D\u043A\u043E\u0432\u043E_\u0437\u0438\u043C\u0430.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Derazhnia	rdf:type	dbo:City ;
+	rdfs:label	"Derazhnia"@en ;
+	geo:lat	"49.266666412353515625"^^xsd:float ;
+	geo:long	"27.433332443237304688"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Coat_of_arms_Derazhya_(Soviet).PNG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Irmino	rdf:type	dbo:City ;
+	rdfs:label	"Irmino"@en ;
+	geo:lat	"48.59999847412109375"^^xsd:float ;
+	geo:long	"38.59999847412109375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Irmino_mine%5E%5E39,s_terricone_-_panoramio.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Kalynivka,_Vinnytsia_Oblast>	rdf:type	dbo:City ;
+	rdfs:label	"Kalynivka, Vinnytsia Oblast"@en ;
+	geo:lat	"49.447223663330078125"^^xsd:float ;
+	geo:long	"28.5230560302734375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kalynivka_vn.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Karlivka	rdf:type	dbo:City ;
+	rdfs:label	"Karlivka"@en ;
+	geo:lat	"49.450000762939453125"^^xsd:float ;
+	geo:long	"35.133335113525390625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Karlivka1.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Khorostkiv	rdf:type	dbo:City ;
+	rdfs:label	"Khorostkiv"@en ;
+	geo:lat	"49.233333587646484375"^^xsd:float ;
+	geo:long	"25.916666030883789062"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0425\u043E\u0440\u043E\u0441\u0442\u043A\u0456\u0432_\u0426\u0435\u0440\u043A\u0432\u0430_\u0412\u043E\u0437\u043B\u043E\u0436\u0435\u043D\u043D\u044F_\u0420\u0438\u0437\u0438.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Kreminna	rdf:type	dbo:City ;
+	rdfs:label	"Kreminna"@en ;
+	geo:lat	"49.049999237060546875"^^xsd:float ;
+	geo:long	"38.216701507568359375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Kreminna_Railway_Station.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Monastyryska	rdf:type	dbo:City ;
+	rdfs:label	"Monastyryska"@en ;
+	geo:lat	"49.08889007568359375"^^xsd:float ;
+	geo:long	"25.169445037841796875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0426\u0435\u0440\u043A\u0432\u0430_\u0423\u0441\u043F\u0456\u043D\u043D\u044F_\u0411\u043E\u0436\u043E\u0457_\u041C\u0430\u0442\u0435\u0440\u0456_\u0443_\u041C\u043E\u043D\u0430\u0441\u0442\u0438\u0440\u0438\u0441\u044C\u043A\u0443.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Oleksandrivsk	rdf:type	dbo:City ;
+	rdfs:label	"Oleksandrivsk"@en ;
+	geo:lat	"48.583332061767578125"^^xsd:float ;
+	geo:long	"39.1833343505859375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Oleksandrivsk_prapor.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Pereshchepyne	rdf:type	dbo:City ;
+	rdfs:label	"Pereshchepyne"@en ;
+	geo:lat	"49.016666412353515625"^^xsd:float ;
+	geo:long	"35.34999847412109375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/City_\u0441ouncil,_Pereshchepyne(3).JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Popasna	rdf:type	dbo:City ;
+	rdfs:label	"Popasna"@en ;
+	geo:lat	"48.633335113525390625"^^xsd:float ;
+	geo:long	"38.380001068115234375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/ChME3P-1744.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Pryvillia	rdf:type	dbo:City ;
+	rdfs:label	"Pryvillia"@en ;
+	geo:lat	"49.0"^^xsd:float ;
+	geo:long	"38.299999237060546875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Leninpriv.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Rodynske	rdf:type	dbo:City ;
+	rdfs:label	"Rodynske"@en ;
+	geo:lat	"48.5666656494140625"^^xsd:float ;
+	geo:long	"37.3166656494140625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Rodynske_prapor.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Shchastya	rdf:type	dbo:City ;
+	rdfs:label	"Shchastya"@en ;
+	geo:lat	"48.73329925537109375"^^xsd:float ;
+	geo:long	"39.23329925537109375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Shaste.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Soledar	rdf:type	dbo:City ;
+	rdfs:label	"Soledar"@en ;
+	geo:lat	"48.6833343505859375"^^xsd:float ;
+	geo:long	"38.09999847412109375"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Soledar.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Svatove	rdf:type	dbo:City ;
+	rdfs:label	"Svatove"@en ;
+	geo:lat	"49.416667938232421875"^^xsd:float ;
+	geo:long	"38.15000152587890625"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Svatovo_Railway_Station.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Tysmenytsia	rdf:type	dbo:City ;
+	rdfs:label	"Tysmenytsia"@en ;
+	geo:lat	"48.9008331298828125"^^xsd:float ;
+	geo:long	"24.8491668701171875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u0422\u0438\u0441\u043C\u0435\u043D\u0438\u0446\u044F.jpg?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Chasiv_Yar	rdf:type	dbo:City ;
+	rdfs:label	"Chasiv Yar"@en ;
+	geo:lat	"48.96666717529296875"^^xsd:float ;
+	geo:long	"38.416667938232421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Chasiv_yar_gerb.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Sainte-Anne-des-Monts,_Quebec>	rdf:type	dbo:City ;
+	rdfs:label	"Sainte-Anne-des-Monts, Quebec"@en ;
+	geo:lat	"49.133335113525390625"^^xsd:float ;
+	geo:long	"-66.5"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Sainte-Anne-des-Monts.jpg?width=300> ;
+	dbo:country	dbr:Canada .
+<http://dbpedia.org/resource/Stakhanov,_Ukraine>	rdf:type	dbo:City ;
+	rdfs:label	"Stakhanov, Ukraine"@en ;
+	geo:lat	"48.56805419921875"^^xsd:float ;
+	geo:long	"38.658611297607421875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Stahanov.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Hnivan	rdf:type	dbo:City ;
+	rdfs:label	"Hnivan"@en ;
+	geo:lat	"49.0911102294921875"^^xsd:float ;
+	geo:long	"28.348611831665039062"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Hniwa\u0144_DSC_7693.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Pechenizhyn	rdf:type	dbo:City ;
+	rdfs:label	"Pechenizhyn"@en ;
+	geo:lat	"48.520000457763671875"^^xsd:float ;
+	geo:long	"24.879999160766601562"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Lw\u00F3w_-_Cmentarz_\u0141yczakowski_-_Gr\u00F3b_Stanis\u0142awa_Szczepanowskiego.JPG?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Bad_Rotenfels	rdf:type	dbo:City ;
+	rdfs:label	"Bad Rotenfels"@en ;
+	geo:lat	"48.803890228271484375"^^xsd:float ;
+	geo:long	"8.3194446563720703125"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Wappen_Bad_Rotenfels.png?width=300> ;
+	dbo:country	dbr:Germany .
+dbr:Ivano-Frankivsk_Municipality	rdf:type	dbo:City ;
+	rdfs:label	"Ivano-Frankivsk Municipality"@en ;
+	geo:lat	"48.9225006103515625"^^xsd:float ;
+	geo:long	"24.711111068725585938"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/IvanoFrankivsk-Raion.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/Lebel-sur-Qu\u00E9villon>	rdf:type	dbo:City ;
+	rdfs:label	"Lebel-sur-Qu\u00E9villon"@en ;
+	geo:lat	"49.049999237060546875"^^xsd:float ;
+	geo:long	"-76.98332977294921875"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Lebel_sur_Quevillon_QC.JPG?width=300> ;
+	dbo:country	dbr:Canada .
+dbr:Novyi_Rozdil	rdf:type	dbo:City ;
+	rdfs:label	"Novyi Rozdil"@en ;
+	geo:lat	"49.469722747802734375"^^xsd:float ;
+	geo:long	"24.136667251586914062"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u041D\u043E\u0432\u0438\u0439_\u0420\u043E\u0437\u0434\u0456\u043B_\u0433\u0435\u0440\u0431.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+<http://dbpedia.org/resource/\u010Cesk\u00FD_Krumlov>	rdf:type	dbo:City ;
+	rdfs:label	"\u010Cesk\u00FD Krumlov"@en ;
+	geo:lat	"48.8166656494140625"^^xsd:float ;
+	geo:long	"14.316666603088378906"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/\u010Cesk\u00FD_Krumlov_view.jpg?width=300> ;
+	dbo:country	dbr:Czech_Republic .
+dbr:Smila	rdf:type	dbo:City ;
+	rdfs:label	"Smila"@en ;
+	geo:lat	"49.211666107177734375"^^xsd:float ;
+	geo:long	"31.873056411743164062"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Flag_of_Smila.png?width=300> ;
+	dbo:country	dbr:Ukraine .
+dbr:Horodyshche	rdf:type	dbo:City ;
+	rdfs:label	"Horodyshche"@en ;
+	geo:lat	"49.292499542236328125"^^xsd:float ;
+	geo:long	"31.458055496215820312"^^xsd:float ;
+	dbo:thumbnail	<http://commons.wikimedia.org/wiki/Special:FilePath/Mykhailivska_Church_(Horodysche).jpg?width=300> ;
+	dbo:country	dbr:Horodysche_Raion ,
+		dbr:Cherkasy_Oblast ,
+		dbr:Ukraine .
