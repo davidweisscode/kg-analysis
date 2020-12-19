@@ -11,11 +11,11 @@ Build a bipartite graph from an n-triples Knowledge Graph representation.
 import os
 import sys
 import time
-from importlib import import_module
 from tqdm import tqdm
 from hdt import HDTDocument
-from rdflib import Graph, RDFS
 from logger import get_time
+from rdflib import Graph, RDFS
+from importlib import import_module
 import pandas as pd
 import networkx as nx
 
@@ -26,7 +26,7 @@ dbr = "http://dbpedia.org/resource/"
 # DBpedia classes: http://mappings.dbpedia.org/server/ontology/classes/
 
 @get_time
-def query_subclasses(ontology, superclass):
+def query_subclasses(superclass):
     """ Query ontology for subclass rdfs-entailment """
     # Option 1: Sequential querying with pyHDT
     # Option 2: Mappings from dataset.join()
@@ -39,38 +39,72 @@ def query_subclasses(ontology, superclass):
     }}
     """
     subclasses = []
+    t_ontology = time.time()
+    ontology = Graph().parse(run.config["kg_ontology"])
+    print(f"\n[Time] load-ontology {time.time() - t_ontology:.3f} sec")
     results = ontology.query(subclass_query)
     for result in results:
         subclasses.append(str(result['subclass']))
     return subclasses
 
 @get_time
-def get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist, whitelist):
+def extract_dbpedia(superclass):
     """ Get edgelist for superclass and all its subclasses """
-    subjects = []
     edgelist = []
-    print("[Info] query subjects for each subclass")
+    instances = set()
+    doc = HDTDocument(run.config["kg_source"])
+    subject_limit = run.config["subject_limit"]
+    predicate_limit = run.config["predicate_limit"]
+    subclasses = query_subclasses(superclass)
+    print("[Info] query instances for each subclass")
     for subclass in tqdm(subclasses):
         if subject_limit > 0:
-            triples = dataset.search_triples("", rdf + "type", subclass, limit=subject_limit)[0]
+            (triples, count) = doc.search_triples("", rdf + "type", subclass, limit=subject_limit)
         else:
-            triples = dataset.search_triples("", rdf + "type", subclass)[0]
+            (triples, count) = doc.search_triples("", rdf + "type", subclass)
         for triple in triples:
-            subjects.append(triple[0])
-    subjects = list(set(subjects)) # Include unique subjects if subject is both of type superclass and subclass
-    print("[Info] query predicates for each subject")
-    for subject in tqdm(subjects):
+            instances.add(triple[0])
+    print("[Info] query predicates for each instance")
+    for subject in tqdm(instances):
         if predicate_limit > 0:
-            triples = dataset.search_triples(subject, "", "", limit=predicate_limit)[0]
+            triples = doc.search_triples(subject, "", "", limit=predicate_limit)[0]
         else:
-            triples = dataset.search_triples(subject, "", "")[0]
+            (triples, count) = doc.search_triples(subject, "", "")
         for triple in triples:
             # Either blacklist
-            # if not triple[1] in blacklist:
-            #     edgelist.append((triple[0], triple[1]))
-            # Or whitelist
-            if triple[1] in whitelist:
+            if not triple[1] in blacklist:
                 edgelist.append((triple[0], triple[1]))
+            # Or whitelist
+            # if triple[1] in whitelist:
+            #     edgelist.append((triple[0], triple[1]))
+    return list(set(edgelist)) # Exclude duplicate entity-property relations
+
+def extract_wikidata(classname, typeproperty):
+    doc = HDTDocument("kg/wikidata-20170313-all-BETA.hdt")
+    wd = "http://www.wikidata.org/entity/"
+    wdt = "http://www.wikidata.org/prop/direct/"
+    wd_classes = {
+        "BoxerWikidata" : "Q11338576",
+        "CyclistWikidata": "Q2309784",
+        "CapitalWikidata" : "Q5119",
+        "CountryWikidata" : "Q6256",
+        "MetroAreaWikidata" : "Q1907114",
+        "GeographicRegionWikidata" : "Q82794",
+        "FilmFestivalWikidata" : "Q220505",
+    }
+    edgelist = []
+    instances = set()
+    (triples, count) = doc.search_triples("", f"{wdt}{typeproperty}", f"{wd}{wd_classes[classname]}")
+
+    for triple in triples:
+        instances.add(triple[0])
+
+    for instance in tqdm(instances, total=len(instances)):
+        (triples, count) = doc.search_triples(instance, "", "")
+        for triple in triples:
+            if not triple[1] in blacklist:
+                edgelist.append((triple[0], triple[1]))
+
     return list(set(edgelist)) # Exclude duplicate entity-property relations
 
 def write_edgelist(classname, edgelist):
@@ -78,7 +112,6 @@ def write_edgelist(classname, edgelist):
     df = pd.DataFrame(edgelist, columns=["t", "b"])
     df.to_csv(f"out/{classname}/{classname}.g.csv", index=False)
 
-@get_time
 def write_integer_edgelist(classname, edgelist):
     """ Write edgelist to csv file with node labels converted to unique integers """
     df = pd.DataFrame(edgelist, columns=["t", "b"])
@@ -89,20 +122,15 @@ def write_integer_edgelist(classname, edgelist):
     df["b"] = df["b"].cat.codes + b_offset
     df.to_csv(f"out/{classname}/{classname}.i.csv", index=False)
 
-@get_time
 def check_connected(bigraph):
     """ Check whether input graph is connected and throw NetworkXPointlessConcept if null graph """
-    if nx.is_connected(bigraph):
-        return True
-    return False
+    print("[Info] Graph connected", nx.is_connected(bigraph))
 
-@get_time
 def check_bipartite(bigraph):
     """ Check whether input graph is bipartite """
     if not nx.bipartite.is_bipartite(bigraph):
         sys.exit("[Error] Input graph is not bipartite")
 
-@get_time
 def split_edgelist(edges):
     """ Split the input edgelist into top (t) and bottom (b) nodes """
     nodes_top = []
@@ -121,8 +149,7 @@ def add_results(run_name, superclass, **results):
         df.at[superclass, resultname] = result
     df.to_csv(f"out/_results_{run_name}.csv")
 
-@get_time
-def main():
+if __name__ == "__main__":
     run_name = sys.argv[1][:-3]
     run = import_module(run_name)
 
@@ -138,37 +165,21 @@ def main():
         print("\n[Build] ", superclass)
         if not os.path.exists(f"./out/{superclass}"):
                 os.mkdir(f"./out/{superclass}")
-        tsv_files = [fn for fn in os.listdir(f"out/{superclass}/") if fn.endswith(".tsv")]
-        if len(tsv_files) == 1:
-            # Convert .tsv file in cleaned .g.csv edgelist
-            print("[Info] build from tsv edgelist")
-            df = pd.read_csv(f"out/{superclass}/{tsv_files[0]}", names=["t","b"], sep="\t")
-            print(f"[Info] len edgelist {len(df)}, t_unique {df['t'].nunique()}, b_unique {df['b'].nunique()}")
-            duplicate_predicates = df["b"].str.contains("/direct/")
-            df = df[~duplicate_predicates]
-            print(f"[Info] len after duplicates {len(df)}, t_unique {df['t'].nunique()}, b_unique {df['b'].nunique()}")
-            # Either blacklist
-            for blacklisted_predicate in blacklist:
-                 m_before = len(df)
-                 df = df[df["b"] != blacklisted_predicate]
-                 m_after = len(df)
-                 if m_before != m_after:
-                     print(f"[Info] edges with blacklisted predicate removed\n       {blacklisted_predicate}")
-                 print(f"[Info] len after blacklist {len(df)}, t_unique {df['t'].nunique()}, b_unique {df['b'].nunique()}")
-            # Or whitelist
-            # df = df[df["b"].isin(whitelist)]
 
+        if superclass == "Mixed":
+            df = pd.read_csv(f"out/{superclass}/{superclass}.g.csv")
             edgelist = list(df.itertuples(index=False, name=None))
-        else:
-            # Query .hdt data to create .g.csv edgelist
-            dataset = HDTDocument(run.config["kg_source"])
-            t_ontology = time.time()
-            ontology = Graph().parse(run.config["kg_ontology"])
-            print(f"\n[Time] load-ontology {time.time() - t_ontology:.3f} sec")
-            subject_limit = run.config["subject_limit"]
-            predicate_limit = run.config["predicate_limit"]
-            subclasses = query_subclasses(ontology, superclass)
-            edgelist = get_subject_predicate_tuples(dataset, subclasses, subject_limit, predicate_limit, blacklist, whitelist)
+
+        elif run.config["kg_source"] == "kg/wikidata-20170313-all-BETA.hdt":
+            # "instance_of" :  "P31"
+            # "occupation" : "P106"
+            edgelist = extract_wikidata(superclass, "P31")
+            write_edgelist(superclass, edgelist)
+
+        elif run.config["kg_source"] == "kg/dbpedia2016-04en.hdt":
+            edgelist = extract_dbpedia(superclass)
+            write_edgelist(superclass, edgelist)
+
         try:
             bigraph = nx.Graph()
             bigraph.add_edges_from(edgelist)
@@ -181,8 +192,6 @@ def main():
             k_t_g = m_g / n_t
             k_b_g = m_g / n_b
             print(f"[Info] n_t {n_t}, n_b {n_b}, m_g {len(edgelist)}")
-            write_edgelist(superclass, edgelist)
-            write_integer_edgelist(superclass, edgelist)
             # In onemode network edgelists, information about disconnected nodes gets lost
             add_results(run_name, superclass,
                         n_t=n_t, n_b=n_b,
@@ -190,5 +199,3 @@ def main():
                         k_t_g=k_t_g, k_b_g=k_b_g)
         except nx.NetworkXPointlessConcept as e:
             print(f"[Info] {superclass} graph is the null graph\n{e}")
-
-main()
