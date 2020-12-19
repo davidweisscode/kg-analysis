@@ -13,15 +13,20 @@ apt install python3.7-dev
 ```
 pip install pybind11
 ```
-* Install project dependencies
-```
-pip install hdt rdflib networkx numpy scipy pandas tqdm importlib
-```  
-* Clone this project
+* Clone the repo
 ```
 git clone https://github.com/davidweisscode/kg-analysis.git
 ```
-* Download HDT serialized [datasets, indexfiles](http://fragments.dbpedia.org/hdt/) and [ontologies](http://downloads.dbpedia.org/2016-04/) from [dbpedia.org](https://wiki.dbpedia.org/) and [rdfhdt.org](http://www.rdfhdt.org/datasets/)
+* Create and activate a virtual environment (optional, but recommended)
+```
+python3 -m venv venv
+source venv/bin/activate
+```
+* Install project dependencies
+```
+pip install -r requirements.txt
+```  
+* Download HDT serialized [datasets, indexfiles](http://fragments.dbpedia.org/hdt/) and [ontologies](http://downloads.dbpedia.org/2016-04/) from [dbpedia.org](https://wiki.dbpedia.org/) and [rdfhdt.org](http://www.rdfhdt.org/datasets/) to start analyzing classes
 ```
 mkdir kg/ && cd kg/
 wget -c http://fragments.dbpedia.org/hdt/dbpedia2016-04en.hdt
