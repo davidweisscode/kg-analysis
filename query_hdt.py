@@ -1,52 +1,41 @@
-#!/usr/bin/python3
+from rdflib import Graph
+from rdflib_hdt import HDTStore, optimize_sparql
+from rdflib.namespace import FOAF
 
-import networkx as nx
-from hdt import HDTDocument
+# Load an HDT file. Missing indexes are generated automatically
+# You can provide the index file by putting it in the same directory as the HDT file.
+store = HDTStore("./kg/dbpedia2016-04en.hdt")
 
-# SPARQL Prefixes
-rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-dbo = "http://dbpedia.org/ontology/"
-dbr = "http://dbpedia.org/resource/"
+# Display some metadata about the HDT document itself
+# print(f"Number of RDF triples: {len(store)}")
+# print(f"Number of subjects: {store.nb_subjects}")
+# print(f"Number of predicates: {store.nb_predicates}")
+# print(f"Number of objects: {store.nb_objects}")
+# print(f"Number of shared subject-object: {store.nb_shared}")
 
-document = HDTDocument("hdt/dbpedia2016-04en.hdt")
+# Create an RDFlib Graph with the HDT document as a backend
+graph = Graph(store=store)
 
-G = nx.Graph()
+# Fetch all triples that matches { ?s foaf:name ?o }
+# Use None to indicates variables
+# for s, p, o in graph.triples((None, FOAF["name"], None)): # Pull request
+#     print(s, p, o)
 
-# Get metadata
-# print("unique triples: %i" % document.total_triples)
-# print("unique subjects: %i" % document.nb_subjects)
-# print("unique predicates: %i" % document.nb_predicates)
-# print("unique objects: %i" % document.nb_objects)
-# print("unique shared subject-object: %i" % document.nb_shared, "\n")
+# Calling this function optimizes the RDFlib SPARQL engine for HDT documents
+optimize_sparql()
 
-# Query all triples that matches { ?s ?p ?o }
-# triples, cardinality = document.search_triples("", "", "", limit=10, offset=10)
-# print("query cardinality", cardinality)
-# for triple in triples:
-#     print(triple)
+# You can execute SPARQL queries using the regular RDFlib API
+query_results = graph.query("""
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX dbr: <http://dbpedia.org/resource/>
+    PREFIX dbo: <http://dbpedia.org/ontology/>
+    SELECT ?s ?img
+    WHERE {
+        ?s a dbo:City .
+        ?s dbo:thumbnail ?img .
+    }
+    """)
 
-# Option 1: Extract from mappings
-# tp_a = ("?s", "http://swrc.ontoware.org/ontology#url", "?o")
-# tp_b = ("?s", "?p", "http://dh2010.cch.kcl.ac.uk/academic-programme/abstracts/papers/pdf/ab-753.pdf")
-# iterator = document.search_join([tp_a, tp_b])
-# print("estimated join cardinality : %i" % len(iterator))
-# for mapping in iterator:
-#   print(mapping)
-
-# Option 2: Sequential search for triples
-musicians = list()
-edge_list = list()
-(triples, card) = document.search_triples("", rdf + "type", dbo + "MusicalArtist")
-for triple in triples:
-    musicians.append(triple[0])
-
-for musician in musicians:
-    (triples, card) = document.search_triples(musician, dbo + "birthPlace", dbr + "Karlsruhe", limit=10)
-    for triple in triples:
-        edge_list.append((musician, triple[1]))
-
-print(edge_list)
-
-# Construct Graph sequentially, Iterate over edge_list
-
-G.add_edges_from(edge_list)
+for row in query_results:
+    print(row.s, row.img)
